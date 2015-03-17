@@ -1,0 +1,169 @@
+@CHARSET "UTF-8";
+
+/* GENERAL STYLE */
+
+html, body {
+    margin: 0;
+    height: 100%;
+    overflow: hidden;
+    text-align: justify;
+    text-justify: inter-word;
+}
+
+#content {
+    padding: 10px;
+    margin: 40px 0 0 40px;
+    overflow: hidden;
+    height: -moz-calc(100% - 60px);
+    height: -webkit-calc(100% - 60px);
+    height: calc(100% - 60px);
+}
+
+/* CONTACT INFO */
+
+h3#myName {
+    margin-bottom: 0;
+}
+
+div#contactInfo > * {
+    padding-left: 25px;
+}
+
+/* FORM STYLE */
+
+div#formBlock {
+    display: inline-block;
+    margin: 0;
+    min-width: 300px;
+    
+    font-family: inherit;
+    font-size: inherit;
+    text-align: center;
+}
+
+div#formBlock > h3,
+div#formBlock > div {
+    background: inherit;
+    color: inherit;
+    padding-right: 2.2em;
+}
+
+div#formBlock p {
+    padding: 2px;
+    margin: 0;
+    width: 100%;
+    text-align: right;
+}
+
+div#formBlock label,
+div#formBlock textarea,
+div#formBlock input {
+    max-width: 100px;
+    width: 50%;
+    margin: 0;
+    padding: 0;
+    resize: none;
+    border: 0;
+}
+
+div#formBlock input,
+div#formBlock textarea {
+    vertical-align: middle;
+}
+
+div#formBlock textarea {
+    margin-top: 5px;
+}
+
+p.error {
+    color: red;
+    font-weight: bold;
+    margin: 0;
+}
+
+.hidden {
+    display: none;
+}
+
+/* PICTURE FEATHERING STYLE */
+
+img#myPicture {
+    width: 270px;
+    height: 250px;
+}
+
+div#pictureBlock {
+    width: 270px;
+    height: 250px;
+    
+    float: left;
+    margin-bottom: 30px;
+    
+    box-shadow: 0 0 20px 10px #101018;
+}
+
+div#pictureBlock::before {
+    content: '';
+    width: 270px;
+    height: 250px;
+    position: absolute;
+    box-shadow: inset 0px 0px 30px 10px #101018;
+}
+
+a.shadow {
+    width: 270px;
+    height: 250px;
+    display: block;
+}
+
+/* PANE FOR MY ASSIGNMENTS STYLE */
+
+div#work {
+    overflow: hidden;
+    float: left;
+    position: relative;
+    width: 280px;
+    max-height: -moz-calc(100% - 280px);
+    max-height: -webkit-calc(100% - 280px);
+    max-height: calc(100% - 280px);
+}
+
+div#work :first-child,
+div#info > :first-child,
+div#info p {
+    margin-top: 0;
+}
+
+div#info {
+    overflow: hidden;
+    position: relative;
+    padding-right: 10px;
+}
+
+div#aboutMe {
+    position: relative;
+    overflow: hidden;
+    padding-right: 10px;
+    
+    max-height: -moz-calc(100% - 150px);
+    max-height: -webkit-calc(100% - 150px);
+    max-height: calc(100% - 150px);
+}
+
+/* SIDE BY SIDE STUFF */
+
+div.leftPane, div.rightPane {
+    float: left;
+    height: 100%;
+}
+
+div.leftPane {
+    width: 270px;
+    margin-right: 30px;
+}
+
+div.rightPane {
+    width: -moz-calc(100% - 310px);
+    width: -webkit-calc(100% - 310px);
+    width: calc(100% - 310px);
+}

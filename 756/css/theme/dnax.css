@@ -1,0 +1,24 @@
+@CHARSET "UTF-8";
+
+body {
+    background: url(../../images/dnax.jpg);
+    background-size: cover;
+    background-repeat: no-repeat;
+    
+    font-family: Verdana, sans-serif;
+    color: darkgoldenrod;
+    word-spacing: 2px;
+    letter-spacing: 1px;
+}
+
+#content {
+    margin-right: 22%;
+}
+
+a {
+    color: #5A5;
+}
+
+input, textarea {
+    background-color: silver;
+}

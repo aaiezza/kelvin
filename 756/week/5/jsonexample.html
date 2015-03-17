@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang='en'>
+<head>
+  <title>jSon Tutorial</title>
+	<script>
+		function validate()
+		{
+			var p = document.forms['personal'],
+			    jsonObject = {},
+			    jsonString = "";
+		 
+			jsonObject.firstname = p['firstname'].value;
+			jsonObject.email = p['email'].value;
+			jsonObject.hobby = [];
+		 
+			for(var i=0; i<3; i++)
+			{
+				jsonObject.hobby[i] = {};
+				jsonObject.hobby[i].hobbyName = p['hobby'][i].value;
+				jsonObject.hobby[i].isHobby = p['hobby'][i].checked;
+			}
+		 
+			jsonString = "json="+JSON.stringify( jsonObject );
+			xmlhttpPost( jsonString );
+		 
+		}
+		function xmlhttpPost(str) {
+			var xmlHttpReq = false;
+			var self = this;
+		  self.xmlHttpReq = new XMLHttpRequest();
+			self.xmlHttpReq.open('POST', "parser.php", true);
+			self.xmlHttpReq.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+			self.xmlHttpReq.onreadystatechange = function() {
+				if (self.xmlHttpReq.readyState == 4) {
+					updatepage(self.xmlHttpReq.responseText);
+				}
+			}
+			self.xmlHttpReq.send(str);
+		}
+		
+		
+		function updatepage(str){
+			document.getElementById("result").innerHTML = str;
+		}
+	</script>
+</head>
+<body>
+<form name="personal" action="" method="POST">
+	Name: <input type="text" name="firstname"><br>
+	Email: <input type="text" name="email"><br>
+	Hobby: 
+	<input type="checkbox" name="hobby" value="sport"   id="sport">
+	  <label for="sport">Sport</label>&emsp;
+	<input type="checkbox" name="hobby" value="reading" id="reading"> 
+	  <label for="reading">Reading</label>&emsp;
+	<input type="checkbox" name="hobby" value="music"   id="music"> 
+	  <label for="music">Music</label>&emsp;
+	<input type="button" name="valid" value="Validate" onclick="validate()">
+</form>
+<div id="result"></div>
+</body>
+</html>

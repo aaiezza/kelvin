@@ -1,0 +1,29 @@
+@CHARSET "UTF-8";
+
+/* GENERAL STYLE */
+
+html, body {
+    margin: 0;
+    height: 100%;
+    overflow: hidden;
+    text-align: justify;
+    text-justify: inter-word;
+    
+    font-style: Veranda, Trebuchet, san serif;
+}
+
+div#content {
+    padding: 10px;
+    margin: 40px;
+    height: -moz-calc(100% - 100px);
+    height: -webkit-calc(100% - 100px);
+    height: calc(100% - 100px);
+}
+
+table {
+    border-collapse: collapse;
+}
+
+table, th, td {
+    border: black 2px solid;
+}

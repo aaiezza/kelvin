@@ -1,0 +1,30 @@
+@CHARSET "UTF-8";
+
+@font-face {
+    font-family: "Space Gothic";
+    src: url(../fonts/space_gothic.otf);
+}
+
+body {
+    background: url(../../images/spaceDNA.jpg);
+    background-size: cover;
+    background-repeat: no-repeat;
+    
+    font-family: "Space Gothic", Verdana, sans-serif;
+    color: #636cdc;
+    word-spacing: 2px;
+    letter-spacing: 2px;
+}
+
+div#content {
+    margin-right: 22%;
+    font-size: larger;
+}
+
+a {
+    color: #A55;
+}
+
+input, textarea {
+    background-color: #8EBFBF;
+}

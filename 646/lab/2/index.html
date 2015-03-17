@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+<meta charset='UTF-8' />
+<title>Lab 2 - HTML Form</title>
+
+<link rel="stylesheet" href="css/style.css" >
+
+</head>
+<body>
+
+	<div id="content">
+	<h1>Contact Us</h1>
+	  <form method="post" action="form-processor.php">
+		<p>
+			<label for="contact-name">Name:</label>
+			<input id="contact-name" name="contact-name" type="text">
+		</p>
+		<p>
+			<label for="contact-email">Email:</label>
+			<input id="contact-email" name="contact-email" type="email">
+		</p>
+		<p>
+			<label for="contact-telephone">Telephone:</label>
+			<input id="contact-telephone" name="contact-telephone" type="tel">
+		</p>
+		<fieldset>
+			<legend>Browsers</legend>
+
+			<h3>What browsers do you use?</h3>
+
+			<p>
+				<input id="checkFirefox" name="check-firefox" type="checkbox"
+				    value="checkFirefox"
+				>
+				<label for="checkFirefox">Firefox</label>
+			</p>
+			<p>
+				<input id="checkChrome" name="check-chrome" type="checkbox"
+				    value="checkChrome"
+				>
+				<label for="checkChrome">Chrome</label>
+			</p>
+			<p>
+				<input id="checkSafari" name="check-safari" type="checkbox"
+				    value="checkSafari"
+				>
+				<label for="checkSafari">Safari</label>
+			</p>
+			<p>
+				<input id="checkIe" name="check-ie" type="checkbox"
+				    value="checkIe"
+				>
+				<label for="checkIe">Internet Explorer</label>
+			</p>
+
+			<h3>What is your favorite browser?</h3>
+
+			<p>
+				<input  id="radioFirefox" name="radioBrowser" type="radio"
+				    value="radioFirefox"
+				>
+				<label for="radioFirefox">Firefox</label>
+			</p>
+			<p>
+				<input  id="radioChrome" name="radioBrowser" type="radio"
+				    value="checkChrome"
+				>
+				<label for="radioChrome">Chrome</label>
+			</p>
+			<p>
+				<input  id="radioSafari" name="radioBrowser" type="radio"
+				    value="radioSafari"
+				>
+				<label for="radioSafari">Safari</label>
+			</p>
+			<p>
+				<input  id="radioIe" name="radioBrowser" type="radio"
+				    value="radioIe"
+				>
+				<label for="radioIe">Internet Explorer</label>
+			</p>
+
+		</fieldset>
+
+		<p>
+			<label for="contact-message">Message:</label>
+			<textarea id="contact-message" name="contact-message"
+			    cols=50 rows=5></textarea>
+		</p>
+
+		<p>
+			<input id="contact-submit" name="contact-submit" type="submit"
+			    value="Send"
+			>
+		</p>
+
+	  </form>
+  </div>
+</body>
+
+</html>

@@ -1,0 +1,44 @@
+@CHARSET "UTF-8";
+
+/* GENERAL STYLE */
+
+html, body {
+    margin: 0;
+    height: 100%;
+    text-align: justify;
+    text-justify: inter-word;
+}
+
+div#content {
+    padding: 10px;
+    margin: 0 40px;
+    height: -moz-calc(100% - 20px);
+    height: -webkit-calc(100% - 20px);
+    height: calc(100% - 20px);
+}
+
+h1 {
+    margin-left: 50px;
+}
+
+label,
+input [type="text"],
+input [type="email"],
+input [type="tel"],
+textarea {
+    display: block;
+    max-width: 200px;
+    width: 50%;
+    margin: 0;
+    padding: 0;
+
+    resize: none;
+}
+
+fieldset p {
+   margin: 0 10px;
+}
+
+fieldset p * {
+   display: inline-block;
+}

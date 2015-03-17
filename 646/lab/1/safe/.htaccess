@@ -1,0 +1,4 @@
+AuthType Basic
+AuthName "Password Protected Area"
+AuthUserFile /home/axa9070/Sites/646/lab/1/safe/passwords/.htpasswd
+Require valid-user

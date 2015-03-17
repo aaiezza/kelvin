@@ -1,0 +1,66 @@
+body {
+    background-color: #A5A8CB;
+
+    font-family: Arial;
+    color: #333333;
+}
+
+div {
+    /* 80% of the veiwport (10% left, 10% right) */
+    margin: 10px 10%;
+}
+
+table {
+    max-width: 300px;
+    width: 300px;
+
+    border: 1px solid black;
+    background-color: white;
+
+    font-size: 12px;
+}
+
+caption {
+    padding: 5px;
+
+    color: white;
+    background-color: #44436B;
+}
+
+/* The initial value of text-align for
+ *   the th and caption elements is
+ *   center.
+ */
+th, caption {
+    text-align: left;
+}
+
+th, td {
+    padding: 2px 10px;
+}
+
+th {
+    font-family: "Times New Roman";
+    font-size: 14px;
+}
+
+/* The spacing above and below the tbody
+ *   element can be acheived with either
+ *   the next two style blocks, or the
+ *   single latter block.
+ */
+tr:first-child th {
+    padding-top: 10px;
+}
+
+tr:last-child td {
+    padding-bottom: 10px;
+}
+
+/*
+tbody:after, thead:before {
+    line-height: 6px;
+    content: "\200C";
+    display: block;
+}
+*/

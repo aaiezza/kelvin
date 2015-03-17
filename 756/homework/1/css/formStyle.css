@@ -1,0 +1,34 @@
+@CHARSET "UTF-8";
+
+form {
+    display: inline-block;
+}
+
+form p {
+    padding: 2px;
+    margin: 0;
+    width: 100%;
+    text-align: center;
+}
+
+form p input[type=text],
+form p input[type=password],
+form p input[type=email],
+form p textarea {
+    float: right;
+    width: 10em;
+}
+
+div#formButtons {
+    float: right;
+}
+
+p.error {
+    color: red;
+    font-weight: bold;
+}
+
+p.message {
+    background-color: lightblue;
+    font-weight: bold;
+}

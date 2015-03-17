@@ -1,0 +1,232 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Fresh Free\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2013-08-19 10:05:11 UTC\n"
+"PO-Revision-Date: 2013-10-08 18:08+0530\n"
+"Last-Translator: Surya <surya@cyberchimps.com>\n"
+"Language-Team: Turkish\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.5.7\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#: ../../404.php
+msgid "Oops! That page cannot be found."
+msgstr "Oops! Bu sayfa bulunamadı."
+
+#: ../../404.php
+msgid ""
+"It looks like nothing was found at this location. Maybe try searching for it?"
+msgstr "Bu konumda hiçbir şey bulunamamış gözüküyor. Bir de aramayı deneyin?"
+
+#: ../../archive.php
+msgid "Category Archives: %s"
+msgstr "Kategori Archives: %s"
+
+msgid "Tag Archives: %s"
+msgstr "Tag Archives: %s"
+
+#: ../../archive.php
+msgid "Author Archives: %s"
+msgstr "Yazar Arşiv: %s"
+
+#: ../../archive.php
+msgid "Daily Archives: %s"
+msgstr "Günlük Arşiv: %s"
+
+#: ../../archive.php
+msgid "Monthly Archives: %s"
+msgstr "Aylık Arşiv: %s"
+
+#: ../../archive.php
+msgid "Yearly Archives: %s"
+msgstr "Yıllık arşiv: %s"
+
+#: ../../archive.php ../../footer.php ../../sidebar-left.php
+#: ../../sidebar-right.php ../../sidebar.php
+msgid "Archives"
+msgstr "Arşiv"
+
+#: ../../comments.php
+msgid "One thought on &ldquo;%2$s&rdquo;"
+msgid_plural "%1$s thoughts on &ldquo;%2$s&rdquo;"
+msgstr[0] ""
+
+#: ../../comments.php
+msgid "Comment navigation"
+msgstr "Yorum Gezinti"
+
+#: ../../comments.php
+msgid "Older Comments"
+msgstr "Eski yorumlar"
+
+#: ../../comments.php
+msgid "Newer Comments"
+msgstr "Yeni Yorumlar"
+
+#: ../../comments.php
+msgid "Comments are closed."
+msgstr "Yorumlar kapalıdır."
+
+#: ../../content.php
+msgid "Permalink to %s"
+msgstr "Kalıcı %s"
+
+#: ../../content.php
+msgid "Continue reading"
+msgstr "Okumaya devam etmek"
+
+#: ../../content.php ../../image.php
+msgid "Pages:"
+msgstr "Sayfalar"
+
+#: ../../content.php ../../image.php
+msgid "Edit"
+msgstr "Düzen"
+
+#: ../../footer.php ../../sidebar-left.php ../../sidebar-right.php
+#: ../../sidebar.php
+msgid "Pages"
+msgstr "Sayfalar"
+
+#: ../../footer.php ../../sidebar-left.php ../../sidebar-right.php
+#: ../../sidebar.php
+msgid "Categories"
+msgstr "Kategoriler"
+
+#: ../../footer.php ../../sidebar-left.php ../../sidebar-right.php
+#: ../../sidebar.php
+msgid "WordPress"
+msgstr "WordPress"
+
+#: ../../footer.php ../../sidebar-left.php ../../sidebar-right.php
+#: ../../sidebar.php
+msgid ""
+"Powered by WordPress, state-of-the-art semantic personal publishing platform."
+msgstr "WordPress'in desteğiyle, kişisel yayımlama ortamı"
+
+msgid "Pingback:"
+msgstr "Pingback:"
+
+#: ../../functions.php
+msgid "(Edit)"
+msgstr "(Düzenleme)"
+
+#: ../../functions.php
+msgid "says:"
+msgstr "diyor ki:"
+
+#: ../../functions.php
+msgid "Your comment is awaiting moderation."
+msgstr "Yorumunu ılımlılık bekliyor."
+
+#: ../../functions.php
+msgid "%1$s at %2$s"
+msgstr "%1$s, %2$s"
+
+#: ../../functions.php
+msgid "Fresh Free Professional Responsive WordPress Theme"
+msgstr "CyberChimps Pro duyarlı WordPress Starter Tema"
+
+#: ../../functions.php
+msgid "Header Image"
+msgstr ""
+
+msgid ""
+"The image used for the header needs to be a large image. We recommend a "
+"minimum width of 1000px and a maximum height of 550px"
+msgstr ""
+"Başlık için kullanılan görüntü büyük bir görüntü olması gerekir. Biz 1000px "
+"en az genişlik ve 550px bir maksimum yükseklik tavsiye"
+
+#: ../../image.php
+msgid "Published"
+msgstr "Yayımlanmış"
+
+#: ../../image.php
+msgid "size"
+msgstr "Boyut"
+
+#: ../../image.php
+msgid "in"
+msgstr "içinde"
+
+#: ../../image.php
+msgid "Previous"
+msgstr "İleri"
+
+#: ../../image.php
+msgid "Next"
+msgstr "Geri"
+
+#: ../../image.php
+msgid "Post a comment"
+msgstr "Yorum Gönder"
+
+#: ../../image.php
+msgid "or leave a trackback"
+msgstr "ya da trackback"
+
+msgid "Trackback URL"
+msgstr "Trackback URL"
+
+#: ../../image.php
+msgid "Comments are closed, but you can leave a trackback: "
+msgstr "Yorum are yumuk, ama eğer trackback bırakabilirsiniz:"
+
+#: ../../image.php
+msgid "Trackbacks are closed, but you can %s"
+msgstr "Trackbacks kapalı, ancak %s yapabilirsiniz"
+
+#: ../../image.php
+msgid "post a comment"
+msgstr "Yorum Gönder"
+
+#: ../../image.php
+msgid "Both comments and trackbacks are currently closed."
+msgstr "Yorum ve notlarını şu anda kapalı."
+
+#: ../../no-results.php
+msgid "Nothing Found"
+msgstr "Hiçbir şey bulunamadı"
+
+#: ../../no-results.php
+msgid "Ready to publish your first post?"
+msgstr "İlk yazı yayımlamak hazır mısın?"
+
+#: ../../no-results.php
+msgid "Get started here"
+msgstr "Burada başlamak"
+
+#: ../../no-results.php
+msgid ""
+"Sorry, but nothing matched your search terms. Please try again with some "
+"different keywords."
+msgstr ""
+"Üzgünüz, ama hiçbir şey arama terimlerinizle eşleşen. Tekrar biraz farklı "
+"anahtar kelimeler ile deneyin."
+
+#: ../../no-results.php
+msgid ""
+"It seems we can&rsquo;t find what you&rsquo;re looking for. Perhaps "
+"searching can help."
+msgstr ""
+"Görünüşe göre biz ne aradığını bulamıyor. Belki de arama yardımcı olabilir."
+
+#: ../../search.php
+msgid "Search Results for: %s"
+msgstr "Arama sonuçları: %s"
+
+#: ../../sidebar-left.php ../../sidebar-right.php ../../sidebar.php
+msgid "Subscribe"
+msgstr "Abone"
+
+#: ../../sidebar-left.php ../../sidebar-right.php ../../sidebar.php
+msgid "Entries (RSS)"
+msgstr "Yazılar (RSS)"
+
+#: ../../sidebar-left.php ../../sidebar-right.php ../../sidebar.php
+msgid "Comments (RSS)"
+msgstr "Yorumlar (RSS)"
