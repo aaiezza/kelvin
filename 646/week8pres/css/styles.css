@@ -1,0 +1,38 @@
+@CHARSET "UTF-8";
+
+/* GENERAL STYLE */
+
+html, body {
+    margin: 0;
+    height: 100%;
+    overflow: hidden;
+    text-align: justify;
+    text-justify: inter-word;
+}
+
+div#content {
+    padding: 10px;
+    margin: 40px 0 0 40px;
+    height: -moz-calc(100% - 60px);
+    height: -webkit-calc(100% - 60px);
+    height: calc(100% - 60px);
+}
+
+table#niceTable {
+    margin: 0 auto;
+
+    border-spacing: 0px;
+    border-collapse: collapse;
+}
+
+table#niceTable td {
+    border: 1px solid black;
+
+    padding: 10px;
+}
+
+table#niceTable th {
+    border: 2px solid black;
+    text-align: center;
+    padding: 5px;
+}
