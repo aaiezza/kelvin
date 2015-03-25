@@ -49,7 +49,7 @@ div {
     border-bottom-left-radius: 9px;
 }
 
-tbody tr:hover td, tr.selected td {
+#nice_tableBlock tbody tr:hover td, tr.selected td {
     background-color: #ffffff;
     background: -o-linear-gradient(bottom, #ffffff 5%, #d00b0b 100%);
     background: -webkit-gradient(linear, left top, left bottom, color-stop(0.05, #ffffff
@@ -60,7 +60,7 @@ tbody tr:hover td, tr.selected td {
     background: -o-linear-gradient(top, #ffffff, d00b0b);
 }
 
-thead tr:first-child th {
+#nice_tableBlock thead tr:first-child th {
     background-color: #d80505;
     border: 0px solid #000000;
     text-align: center;

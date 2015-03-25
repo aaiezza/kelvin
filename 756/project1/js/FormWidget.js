@@ -58,5 +58,5 @@ var FormWidget = function()
 
 $(document).ready(function()
 {
-    formWidget = makeFormWidget($("#content"))
+    formWidget = makeFormWidget($("#content"));
 });

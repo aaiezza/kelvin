@@ -10,9 +10,9 @@ $username = getActingUsername( "You cannot access another user's cart!" );
 <html lang="EN">
 
 <?php
-echo templateHead( "Cart", array ( 'css/managementStyle.css', 'css/cartStyle.css' ),
+echo templateHead( "Cart", array ( 'css/managementStyle.css', 'css/cartStyle.css', 'css/lib/jalert.css' ),
         array ( 'js/lib/jquery.tablesorter.js', 'js/lib/underscore-min.js',
-                'js/lib/underscore.string.min.js',
+                'js/lib/underscore.string.min.js', 'js/lib/jquery.jalert.min.js',
                 'js/lib/jquery.formatCurrency-1.4.0.min.js',
                 'js/CartWidget.js', 'js/FormWidget.js' ) );
 ?>
