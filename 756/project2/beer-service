@@ -1,0 +1,86 @@
+#!/bin/sh
+SERVICE_NAME="Beer Service"
+PATH_TO_JAR=/home/axa9070/Sites/756/project2/BeerService.jar
+PID_PATH_NAME=/home/axa9070/Sites/756/project2/resources/MyService-pid
+SERVICE_LOG_PATH=/home/axa9070/Sites/756/project2/beer_service.log
+IS_RUNNING=/home/axa9070/Sites/756/project2/resources/isRunning.sh
+PORT=""
+
+pushd /home/axa9070/Sites/756/project2/ > /dev/null
+
+while (( "$#" ));
+do
+    case $1 in
+        -port|-p)
+            shift;
+            PORT=$1;
+        ;;
+        start)
+            echo "Starting $SERVICE_NAME ..."
+            if [ ! -f $PID_PATH_NAME ]; then
+                nohup java -jar $PATH_TO_JAR $PORT 2>> /dev/null >> $SERVICE_LOG_PATH &
+                    echo $! > $PID_PATH_NAME
+                    while [ -z "`$(echo $IS_RUNNING)`" ]
+                    do
+                        sleep 1
+                    done
+
+                P="`$(echo $IS_RUNNING)`"
+
+                if [ "$P" -eq 0 ];
+                then
+                    >&2 echo "$SERVICE_NAME did not start!"
+                    rm $PID_PATH_NAME
+                else
+                    echo "$SERVICE_NAME started ..."
+                    echo $P >> $PID_PATH_NAME
+                fi
+            else
+                echo "$SERVICE_NAME is already running ..."
+            fi
+        ;;
+        stop)
+            if [ -f $PID_PATH_NAME ]; then
+                PID=$(head -n 1 $PID_PATH_NAME);
+                echo "$SERVICE_NAME stopping ..."
+                kill $PID;
+                echo "$SERVICE_NAME stopped ..."
+                rm $PID_PATH_NAME
+            else
+                echo "$SERVICE_NAME is not running ..."
+            fi
+        ;;
+        restart)
+            if [ -f $PID_PATH_NAME ]; then
+                PID=$(head -n 1 $PID_PATH_NAME);
+                echo "$SERVICE_NAME stopping ...";
+                kill $PID;
+                echo "$SERVICE_NAME stopped ...";
+                rm $PID_PATH_NAME
+                echo "$SERVICE_NAME starting ..."
+                nohup java -jar $PATH_TO_JAR $PORT 2>> /dev/null >> $SERVICE_LOG_PATH &
+                    echo $! > $PID_PATH_NAME
+                    while [ -z "`$(echo $IS_RUNNING)`" ]
+                    do
+                        sleep 1
+                    done
+
+                P="`$(echo $IS_RUNNING)`"
+
+                if [ "$P" -eq 0 ];
+                then
+                    >&2 echo "$SERVICE_NAME did not start!"
+                    rm $PID_PATH_NAME
+                else
+                    echo "$SERVICE_NAME started ..."
+                    echo $P >> $PID_PATH_NAME
+                fi
+            else
+                echo "$SERVICE_NAME is not running ..."
+            fi
+        ;;
+    esac
+    shift;
+done
+
+popd /home/axa9070/Sites/756/project2/ > /dev/null
