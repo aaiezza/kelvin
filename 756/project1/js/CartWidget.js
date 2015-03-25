@@ -171,7 +171,7 @@ var CartWidget = function()
                 }).done( function( response ) {
                     if ( response )
                     {
-                        alert( response.error );
+                        $('body').jAlert( response.error, 'fatal' );
                     }
                     retrieveCart();
                 });
@@ -244,13 +244,13 @@ var CartWidget = function()
         });
 
         checkoutButton.click(function() {
-            alert( s.sprintf('Subtotal:%1$1s$%2$.2f\
-                            \nTax:%1$6s$%3$.2f\
-                            \nShipping:%1$1s$%4$.2f\
-                            \n\nTotal:%1$4s$%5$.2f\
-                            \n\nHa! I wish!', ' ',
+            $('#nice_tableBlock').jAlert(  s.sprintf('Subtotal:%1$1s$%2$.2f\
+                            <br>Tax:%1$6s$%3$.2f\
+                            <br>Shipping:%1$1s$%4$.2f\
+                            <br><br>Total:%1$4s$%5$.2f\
+                            <br><br>Ha! I wish!', ' ',
                     total, total * 0.08, _.keys(quantities).length * 4.10,
-                    (total * 1.08) + (_.keys(quantities).length * 4 ) ) );
+                    (total * 1.08) + (_.keys(quantities).length * 4 ) ), 'success');
         });
 
         $("#nice_tableBlock").append(emptyCartButton).append(removeProductsButton)
