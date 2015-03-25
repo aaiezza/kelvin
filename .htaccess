@@ -1,0 +1,12 @@
+# Adds a MIME type for a font
+# This one actually already exists, but I wanted the reference
+AddType application/font-sfnt ttf
+
+<FilesMatch "(^([^\.\d_]+)$)|(\.(htaccess|htpasswd|ini|log|sh|inc|bak|properties))$">
+Order Allow,Deny
+Deny from all
+</FilesMatch>
+
+php_value date.timezone "America/New_York"
+
+php_flag upload_max_filesize 1M
