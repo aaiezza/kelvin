@@ -1,0 +1,57 @@
+@CHARSET "UTF-8";
+
+/* GENERAL STYLE */
+
+html, body {
+    margin: 0;
+    height: 100%;
+    /*overflow: hidden;*/
+    text-align: justify;
+    text-justify: inter-word;
+
+    font-family: Verdana;
+}
+
+div#content {
+    padding: 10px;
+    margin: 0 40px;
+    height: -moz-calc(100% - 20px);
+    height: -webkit-calc(100% - 20px);
+    height: calc(100% - 20px);
+}
+
+h2#title, div#beerTable {
+    text-align: center;
+}
+
+div#beerTable table {
+    border-spacing: 0px;
+    border-collapse: collapse;
+    margin: 0 auto;
+    width: 80%;
+}
+
+div#beerTable table td {
+    border: 1px solid black;
+    text-align: left;
+    padding: 10px;
+}
+
+div#beerTable table th {
+    border: 3px solid black;
+    text-align: center;
+    padding: 5px;
+}
+
+table#stats {
+    margin-top: 15px !important;
+}
+
+table#stats td {
+    border: 3px solid black !important;
+}
+
+h4 {
+    margin: 0;
+}
+
