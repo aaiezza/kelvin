@@ -6,7 +6,7 @@ html, body {
     margin: 0;
     height: 100%;
     /*overflow: hidden;*/
-    text-align: justify;
+    /*text-align: justify;*/
     text-justify: inter-word;
 
     font-family: Verdana;
@@ -18,13 +18,36 @@ div#content {
     height: -moz-calc(100% - 20px);
     height: -webkit-calc(100% - 20px);
     height: calc(100% - 20px);
-}
 
-h2#title, div#beerTable {
     text-align: center;
 }
 
-div#beerTable table {
+div#beerWidget {
+    display: inline-block;
+}
+
+div#beerWidget > p {
+    display: flex;
+}
+
+div#beerWidget > p > * {
+    margin: 0 3px;
+    padding: .3em;
+}
+
+input[type=text],
+input[type=url],
+select {
+    flex-grow: 50;
+    flex-basis: 0;
+}
+
+input[type=button] {
+    flex-grow: 1;
+    min-width: 18%;
+}
+
+/*div#beerTable table {
     border-spacing: 0px;
     border-collapse: collapse;
     margin: 0 auto;
@@ -53,5 +76,4 @@ table#stats td {
 
 h4 {
     margin: 0;
-}
-
+}*/
