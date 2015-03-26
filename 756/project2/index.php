@@ -34,7 +34,8 @@ $clientURL =
         <hr>
         <p>
             The server is written in Java and all of the source is available in
-            this directory. Instead of running the main class file
+            this directory. The javadocs can be accessed <a href="./doc/">here</a>.
+            Instead of running the main class file
             though there is an executable jar file called <code>BeerService.jar</code>.
         </p>
         <p>
@@ -71,7 +72,7 @@ $clientURL =
             parameter is given in this <code>GET</code> request specifying where
             to find the service.
             <p class="teensy">If <code>server</code> is not provided in
-                the <code>GET</code>, the default is: <code>http://alvin.ist.rit.edu</code></p>
+                the <code>GET</code>, the default is: <code>http://alvin.ist.rit.edu:8100</code></p>
         </p>
         <hr>
         <p>
