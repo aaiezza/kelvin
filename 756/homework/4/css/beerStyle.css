@@ -47,7 +47,7 @@ input[type=button] {
     min-width: 18%;
 }
 
-/*div#beerTable table {
+div#beerTable table {
     border-spacing: 0px;
     border-collapse: collapse;
     margin: 0 auto;
@@ -76,4 +76,4 @@ table#stats td {
 
 h4 {
     margin: 0;
-}*/
+}

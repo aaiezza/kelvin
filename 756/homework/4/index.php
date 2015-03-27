@@ -3,7 +3,11 @@ require 'xmlrpc_client.php';
 
 if ( isset( $_GET['server'] ) )
     connect( $_GET['server'] );
-else connect();
+else 
+{
+    $_GET['server'] = DEFAULT_SERVER;
+    connect();
+}
 
 ?>
 
@@ -21,8 +25,11 @@ else connect();
 
     <link rel="stylesheet" href="css/beerStyle.css">
 
-    <script type='text/javascript' src='//code.jquery.com/jquery-git2.min.js'></script>
+    <script type='text/javascript' src='//code.jquery.com/jquery-git2.js'></script>
     <script type='text/javascript' src="js/lib/jquery.formatCurrency-1.4.0.min.js"></script>
+    <script type='text/javascript' src="js/lib/jquery.xmlrpc.js"></script>
+    <script type='text/javascript' src="js/lib/underscore-min.js"></script>
+    <script type='text/javascript' src="js/lib/underscore.string.min.js"></script>
     <script type='text/javascript' src="js/XmlRpcWidget.js"></script>
     <script type='text/javascript' src="js/main.js"></script>
 </head>
@@ -50,22 +57,22 @@ else connect();
                 <select id='getBeersField'></select>
 
                 <input id='getPriceButton' class='serviceCall' type='button'
-                    value='Get Price' in='getBeersField' out='getPriceField' dest='beer.getBeers'>
+                    value='Get Price' in='getBeersField' out='getPriceField' dest='beer.getPrice'>
                 <input id='getPriceField' class='currency' type='text' readonly>
             </p>
 
             <p>
-                <input id='getCheepestButton' class='serviceCall' type='button'
-                    value='Get Cheepest' in='' out='getCheepestName' dest='beer.getCheepest'>
-                <label for='getCheepestName'>Name:</label>
-                <input id='getCheepestName' type='text' readonly>
-                <label for='getCheepestPrice'>Price:</label>
-                <input id='getCheepestPrice' class='currency' type='text' readonly>
+                <input id='getCheapestButton' class='serviceCall' type='button'
+                    value='Get Cheapest' in='' out='getCheapestName getCheapestPrice' dest='beer.getCheapest'>
+                <label for='getCheapestName'>Name:</label>
+                <input id='getCheapestName' type='text' readonly>
+                <label for='getCheapestPrice'>Price:</label>
+                <input id='getCheapestPrice' class='currency' type='text' readonly>
             </p>
 
             <p>
                 <input id='getCostliestButton' class='serviceCall' type='button'
-                    value='Get Costliest' in='' out='getCheepestName' dest='beer.getCostliest'>
+                    value='Get Costliest' in='' out='getCostliestName getCostliestPrice' dest='beer.getCostliest'>
                 <label for='getCostliestName'>Name:</label>
                 <input id='getCostliestName' type='text' readonly>
                 <label for='getCostliestPrice'>Price:</label>
@@ -74,7 +81,8 @@ else connect();
 
             <p>
                 <input id='setPriceButton' class='serviceCall' type='button'
-                    value='Set Price' in='' out='setPriceName' dest='beer.setPrice'>
+                    value='Set Price' in='setPriceName setPricePrice'
+                    out='' dest='beer.setPrice'>
                 <label for='setPriceName'>Name:</label>
                 <input id='setPriceName' type='text'>
                 <label for='setPricePrice'>Price:</label>

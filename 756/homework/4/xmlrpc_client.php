@@ -3,6 +3,8 @@ require_once './lib/xmlrpc.inc';
 require_once './lib/xmlrpcs.inc';
 require_once './lib/xmlrpc_wrappers.inc';
 
+define( 'DEFAULT_SERVER', 'http://alvin.ist.rit.edu:8100' );
+
 $client;
 
 function connect( $server = 'http://alvin.ist.rit.edu:8100' )
@@ -47,7 +49,6 @@ function handle_xmlrpc( $client, $msg, $echo = false )
     }
 }
 
-
 /** This will call a given method from the client declared above
  *
  * @return the response from the server
@@ -88,7 +89,7 @@ function test()
 
     foreach ( $beers as $beer )
     {
-        $price = callIt( 'beer.getPrice', array( new xmlrpcval( 'Sam Adams', $xmlrpcString ) ), false );
+        $price = callIt( 'beer.getPrice', array( new xmlrpcval( $beer->scalarval(), $xmlrpcString ) ), false );
         printf( '<p>%s: %f</p>', $beer->scalarval(), $price );
     }
 
@@ -98,5 +99,33 @@ function test()
     callIt( 'beer.getCostliest', array(), true );
 }
 
+
+// Handle a POST request to this file
+if ( $_SERVER['REQUEST_METHOD'] == 'POST' )
+{
+    $file = fopen( 'xmlrpc_client.log', 'a' );
+    fwrite( $file,
+        sprintf( "Request - %s\n  server: %s\n  msg: %s\n",
+            date( 'Y-m-t H:i:s', time() ),
+            $_POST[server],
+            $_POST[xmlrpcMsg] ) );
+    fclose( $file );
+
+    connect( $_POST['server'] );
+    $val = handle_xmlrpc( $client, $_POST['xmlrpcMsg'], false );
+    if ( is_array( $val ) )
+    {
+        $response = array();
+        foreach( $val as $v )
+        {
+            $response[] = $v->scalarval();
+        }
+        echo json_encode( $response );
+    }
+    else
+    {
+        echo json_encode( $val );
+    }
+}
 ?>
 
