@@ -13,7 +13,7 @@ $(document).ready(function()
 
     themeWidget = makeThemeWidget($("#pictureBlock"));
 
-    $.getScript("js/libs/perfect-scrollbar.min.js", function()
+    $.getScript("js/lib/perfect-scrollbar.min.js", function()
     {
         // Just tacking this in here for the scrollbar
         $("#work").perfectScrollbar();
