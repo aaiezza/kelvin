@@ -2,13 +2,19 @@ import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.Date;
 
+import static java.lang.String.format;
+
+import javax.servlet.ServletException;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.xmlrpc.XmlRpcException;
 import org.apache.xmlrpc.common.TypeFactoryImpl;
 import org.apache.xmlrpc.common.XmlRpcStreamConfig;
 import org.apache.xmlrpc.serializer.TypeSerializer;
 import org.apache.xmlrpc.server.PropertyHandlerMapping;
-import org.apache.xmlrpc.server.XmlRpcServer;
 import org.apache.xmlrpc.server.XmlRpcServerConfigImpl;
+import org.apache.xmlrpc.server.XmlRpcStreamServer;
 import org.apache.xmlrpc.webserver.WebServer;
 import org.xml.sax.SAXException;
 
@@ -17,8 +23,24 @@ import edu.kelvin.axa9070.data.entity.Beer;
 import edu.kelvin.axa9070.util.PropertiesSetter;
 import edu.kelvin.axa9070.web.BeerController;
 
+/**
+ * <p>
+ * The BeerService class holds the main method. This class acts as the
+ * <strong>SERVICE LAYER</strong>. An instance of Apache's {@link WebServer}
+ * runs in this class's main method and awaits requests.
+ * </p>
+ * <p>
+ * The main method initializes the {@link BeerJdbcManager} instance (Data Layer)
+ * and initializes the {@link BeerController} instance (Business Layer) with it.
+ * </p>
+ * 
+ * @author Alex Aiezza
+ *
+ */
 public class BeerService
 {
+    private static final Log    LOG          = LogFactory.getLog( BeerService.class );
+
     static
     {
         try
@@ -27,7 +49,7 @@ public class BeerService
             new PropertiesSetter();
         } catch ( IOException e )
         {
-            System.err.println( e.getMessage() );
+            LOG.fatal( e.getMessage() );
             System.exit( 1 );
         }
     }
@@ -37,7 +59,7 @@ public class BeerService
 
     private static final String SERVICE_NAME = System.getProperty( "service.name" );
 
-    public static void main( String [] args ) throws IOException, XmlRpcException
+    public static void main( String [] args ) throws IOException, XmlRpcException, ServletException
     {
         int port;
         if ( args.length > 0 )
@@ -47,8 +69,8 @@ public class BeerService
                 port = Integer.parseInt( args[0] );
             } catch ( NumberFormatException e )
             {
-                System.err.printf( "Given Port: '%s' cannot be used.\nResorting to Default: %d",
-                    args[0], PORT );
+                LOG.error( format(
+                    "Given Port: '%s' cannot be used.\n  Resorting to Default: %d", args[0], PORT ) );
                 port = PORT;
             }
 
@@ -82,14 +104,14 @@ public class BeerService
         mapping.addHandler( SERVICE_NAME, beerController.getClass() );
 
         final WebServer webServer = new WebServer( port );
-        System.out.println( "Service Created" );
+        LOG.info( "Service Created" );
 
         final XmlRpcServerConfigImpl config = new XmlRpcServerConfigImpl();
-        final XmlRpcServer server = webServer.getXmlRpcServer();
+        final XmlRpcStreamServer server = webServer.getXmlRpcServer();
 
         server.setConfig( config );
         server.setHandlerMapping( mapping );
-        System.out.println( "Handler Registered" );
+        LOG.info( "Handler Registered" );
 
         server.setTypeFactory( new TypeFactoryImpl( server )
         {
@@ -116,6 +138,6 @@ public class BeerService
         } );
 
         webServer.start();
-        System.out.printf( "Service Started at %s\n", new Timestamp( new Date().getTime() ) );
+        LOG.info( format( "Service Started at %s\n", new Timestamp( new Date().getTime() ) ) );
     }
 }

@@ -1,25 +1,59 @@
 package edu.kelvin.axa9070.data;
 
+import static java.lang.String.format;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
 
 import edu.kelvin.axa9070.data.entity.Beer;
 import edu.kelvin.axa9070.data.entity.BeerMapper;
+import edu.kelvin.axa9070.web.BeerController;
 
+/**
+ * The instance of BeerJdbcManager serves as the <strong>DATA LAYER</strong>.
+ * This instance is intended to be used by the instance of
+ * {@link BeerController} (Business Layer) as a way of efficiently and securely
+ * interacting with the Beer Database.
+ * 
+ * @author Alex Aiezza
+ *
+ */
 public class BeerJdbcManager extends JdbcTemplate
 {
+    private final Log           LOG                  = LogFactory.getLog( getClass() );
+
+    /**
+     * <p>
+     * <strong>SQL:</strong> {@value}
+     * </p>
+     * Uses a given Beer name to query that beer
+     */
     private static final String QUERY_BEER_BY_NAME   = "SELECT BeerId, Name, Price FROM Beer WHERE Name = ?;";
 
+    /**
+     * <p>
+     * <strong>SQL:</strong> {@value}
+     * </p>
+     * Selects all beers from the database
+     */
     private static final String SELECT_ALL_BEER      = "SELECT BeerId, Name, Price FROM Beer;";
 
-    private static final String UPDATE_PRICE_OF_BEER = "UPDATE Beer SET Price = ? WHERE BeerName = ?;";
+    /**
+     * <p>
+     * <strong>SQL:</strong> {@value}
+     * </p>
+     * With a given Beer name, this query updates a beer with a given Beer price
+     */
+    private static final String UPDATE_PRICE_OF_BEER = "UPDATE Beer SET Price = ? WHERE Name = ?;";
 
     private final BeerMapper    beerMapper;
 
@@ -37,6 +71,8 @@ public class BeerJdbcManager extends JdbcTemplate
         } );
 
         beerMapper = new BeerMapper();
+
+        LOG.info( "BeerJdbcManager instance initialized" );
     }
 
     /**
@@ -52,6 +88,8 @@ public class BeerJdbcManager extends JdbcTemplate
      */
     public Beer getBeerByName( String beerName ) throws SQLException, BeerNotFoundException
     {
+        LOG.debug( format( "Retrieving Beer with name: %s", beerName ) );
+
         final PreparedStatement sBeerPS = prepare( QUERY_BEER_BY_NAME );
         sBeerPS.setString( 1, beerName );
 
@@ -61,6 +99,7 @@ public class BeerJdbcManager extends JdbcTemplate
 
         if ( beers.size() <= 0 )
         {
+            LOG.warn( format( "Could not find Beer with name: %s", beerName ) );
             throw new BeerNotFoundException( beerName );
         }
 
@@ -74,6 +113,7 @@ public class BeerJdbcManager extends JdbcTemplate
      */
     public List<Beer> getBeers()
     {
+        LOG.debug( "Retrieving all beers" );
         return query( SELECT_ALL_BEER, beerMapper );
     }
 
@@ -99,6 +139,10 @@ public class BeerJdbcManager extends JdbcTemplate
         // This is see if the given beer name exists first
         getBeerByName( beerName );
 
+        LOG.debug( format(
+            "Attempting to change the Price of Beer with name: %s, to have a price of: %.2f",
+            beerName, price ) );
+
         if ( price < 0 )
             throw new IllegalArgumentException( "Price cannot be less than $0.00" );
 
@@ -108,6 +152,8 @@ public class BeerJdbcManager extends JdbcTemplate
         uBeerPS.setString( 2, beerName );
 
         uBeerPS.executeUpdate();
+
+        LOG.info( format( "Price of Beer with name: %s, has changed to: %.2f", beerName, price ) );
 
         return true;
     }
@@ -127,8 +173,9 @@ public class BeerJdbcManager extends JdbcTemplate
      */
     private PreparedStatement prepare( final String sqlStatement ) throws SQLException
     {
+        LOG.debug( format( "Preparing statement: %s", sqlStatement ) );
         final Connection connection = getDataSource().getConnection();
-        return connection.prepareStatement( QUERY_BEER_BY_NAME );
+        return connection.prepareStatement( sqlStatement );
     }
 
 }

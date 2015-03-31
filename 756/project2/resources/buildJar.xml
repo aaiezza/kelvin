@@ -3,21 +3,29 @@
     <!--this file was created by Eclipse Runnable JAR Export Wizard-->
     <!--ANT 1.7 is required                                        -->
     <target name="create_run_jar">
-        <jar destfile="/home/axa9070/Sites/756/project2/lib/BeerService.jar" filesetmanifest="mergewithoutmain">
+        <jar destfile="D:/School/RIT/2015SPRING/756/BeerService.jar" filesetmanifest="mergewithoutmain">
             <manifest>
                 <attribute name="Main-Class" value="BeerService"/>
                 <attribute name="Class-Path" value="."/>
             </manifest>
-            <fileset dir="/home/axa9070/Sites/756/project2/lib/workspace/BeerService/bin"/>
-            <zipfileset excludes="META-INF/*.SF" src="/home/axa9070/Sites/756/project2/lib/xmlrpc-server-3.1.3.jar"/>
-            <zipfileset excludes="META-INF/*.SF" src="/home/axa9070/Sites/756/project2/lib/xmlrpc-common-3.1.3.jar"/>
-            <zipfileset excludes="META-INF/*.SF" src="/home/axa9070/Sites/756/project2/lib/ws-commons-util-1.0.2.jar"/>
-            <zipfileset excludes="META-INF/*.SF" src="/home/axa9070/Sites/756/project2/lib/commons-logging-1.2.jar"/>
-            <zipfileset excludes="META-INF/*.SF" src="/home/axa9070/Sites/756/project2/lib/spring-core-4.1.5.RELEASE.jar"/>
-            <zipfileset excludes="META-INF/*.SF" src="/home/axa9070/Sites/756/project2/lib/spring-beans-4.1.5.RELEASE.jar"/>
-            <zipfileset excludes="META-INF/*.SF" src="/home/axa9070/Sites/756/project2/lib/spring-tx-4.1.5.RELEASE.jar"/>
-            <zipfileset excludes="META-INF/*.SF" src="/home/axa9070/Sites/756/project2/lib/spring-jdbc-4.1.5.RELEASE.jar"/>
-            <zipfileset excludes="META-INF/*.SF" src="/home/axa9070/Sites/756/project2/lib/mysql-connector-java-5.1.19-bin.jar"/>
+            <fileset dir="D:/School/RIT/2015SPRING/756/workspace/BeerService/bin"/>
+            <zipfileset excludes="META-INF/*.SF" src="D:/School/RIT/2015SPRING/756/ws-commons-util-1.0.2.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="D:/School/RIT/2015SPRING/756/commons-logging-1.2.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="D:/School/RIT/2015SPRING/756/spring-core-4.1.5.RELEASE.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="D:/School/RIT/2015SPRING/756/spring-beans-4.1.5.RELEASE.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="D:/School/RIT/2015SPRING/756/spring-tx-4.1.5.RELEASE.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="D:/School/RIT/2015SPRING/756/spring-jdbc-4.1.5.RELEASE.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="C:/Program Files/MySQL/mysql-connector-java-5.1.19/mysql-connector-java-5.1.19-bin.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="D:/School/RIT/2015SPRING/756/log4j-1.2.17.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="D:/School/RIT/2015SPRING/756/jaxmeapi-0.5.1.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="D:/School/RIT/2015SPRING/756/xml-apis-2.0.2.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="D:/School/RIT/2015SPRING/756/servlet-api-2.5.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="D:/School/RIT/2015SPRING/756/avalon-framework-4.1.5.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="D:/School/RIT/2015SPRING/756/commons-codec-1.10.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="D:/School/RIT/2015SPRING/756/xmlrpc-server-3.1.3.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="D:/School/RIT/2015SPRING/756/xmlrpc-common-3.1.3.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="D:/School/RIT/2015SPRING/756/commons-httpclient-3.1.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="D:/School/RIT/2015SPRING/756/xmlrpc-client-3.1.3.jar"/>
         </jar>
     </target>
 </project>

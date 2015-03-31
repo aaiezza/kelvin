@@ -7,12 +7,17 @@ import java.util.Properties;
 import org.springframework.core.io.FileSystemResource;
 
 /**
- * Set properties from a properties file
+ * Set properties from a properties file.
  * 
  * @author Alex Aiezza
  */
 public class PropertiesSetter
 {
+    /**
+     * <p>
+     * <strong>Property File:</strong> {@value}
+     * </p>
+     */
     private static final String PROPERTIES_FILE = "resources/beer_service.properties";
 
     public PropertiesSetter() throws IOException

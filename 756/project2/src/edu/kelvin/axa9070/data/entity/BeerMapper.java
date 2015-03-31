@@ -9,6 +9,16 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.jdbc.core.RowMapper;
 
+import edu.kelvin.axa9070.data.BeerJdbcManager;
+
+/**
+ * An instance of BeerMapper is used by the {@link BeerJdbcManager} (Data Layer)
+ * to more efficiently extract {@link Beer} entities from a given MySQL
+ * {@link ResultSet}.
+ * 
+ * @author Alex Aiezza
+ *
+ */
 public class BeerMapper implements ResultSetExtractor<List<Beer>>
 {
     private final RowMapper<Beer> rowMapper;
