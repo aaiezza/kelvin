@@ -18,7 +18,7 @@ do
         start)
             echo "Starting $SERVICE_NAME ..."
             if [ ! -f $PID_PATH_NAME ]; then
-                nohup java -jar $PATH_TO_JAR $PORT 2>> /dev/null >> $SERVICE_LOG_PATH &
+                nohup java -Dlog4j.configuration=file:resources/log4j.xml -jar $PATH_TO_JAR $PORT 2>> $SERVICE_LOG_PATH >> $SERVICE_LOG_PATH &
                     echo $! > $PID_PATH_NAME
                     while [ -z "`$(echo $IS_RUNNING)`" ]
                     do
@@ -58,7 +58,7 @@ do
                 echo "$SERVICE_NAME stopped ...";
                 rm $PID_PATH_NAME
                 echo "$SERVICE_NAME starting ..."
-                nohup java -jar $PATH_TO_JAR $PORT 2>> /dev/null >> $SERVICE_LOG_PATH &
+                nohup java -Dlog4j.configuration=file:resources/log4j.xml -jar $PATH_TO_JAR $PORT 2>> $SERVICE_LOG_PATH >> $SERVICE_LOG_PATH &
                     echo $! > $PID_PATH_NAME
                     while [ -z "`$(echo $IS_RUNNING)`" ]
                     do

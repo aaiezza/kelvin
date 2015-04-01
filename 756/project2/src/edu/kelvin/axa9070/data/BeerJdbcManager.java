@@ -19,10 +19,12 @@ import edu.kelvin.axa9070.data.entity.BeerMapper;
 import edu.kelvin.axa9070.web.BeerController;
 
 /**
+ * <p>
  * The instance of BeerJdbcManager serves as the <strong>DATA LAYER</strong>.
  * This instance is intended to be used by the instance of
  * {@link BeerController} (Business Layer) as a way of efficiently and securely
  * interacting with the Beer Database.
+ * </p>
  * 
  * @author Alex Aiezza
  *
