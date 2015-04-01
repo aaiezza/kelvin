@@ -1,0 +1,10 @@
+@CHARSET "UTF-8";
+
+/* CUSTOM STYLE */
+
+a.caret-before {
+    padding-right:1px !important;
+}
+a.caret-after {
+    padding-left:1px !important;
+}
