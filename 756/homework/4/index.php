@@ -93,7 +93,7 @@ else
             <div id='beerTable'>
                 <table>
                     <tr><th>Beer</th><th>Price</th></tr>
-                    <?php
+                    <\?php
                     if ( $client )
                     {
                         $beers = callIt( 'beer.getBeers' );
@@ -106,15 +106,15 @@ else
                                 $beer->scalarval(), $price );
                         }
                     }
-                    ?>
+                ?>
                 </table>
    
                 <table id='stats'>
                     <tr><td><h4>Cheapest Beer</h4></td><td>
-                        <?= $client? callIt( 'beer.getCheapest' ) : ''; ?>
+                        <\?= $client? callIt( 'beer.getCheapest' ) : ''; \?>
                     </td></tr>
                     <td><h4>Costliest Beer</h4></td><td>
-                        <?= $client? callIt( 'beer.getCostliest' ) : ''; ?>
+                        <\?= $client? callIt( 'beer.getCostliest' ) : ''; \?>
                     </td></tr>
                 </table>
             </div>
