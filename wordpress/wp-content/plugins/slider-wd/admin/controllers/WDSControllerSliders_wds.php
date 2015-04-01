@@ -24,6 +24,7 @@ class WDSControllerSliders_wds {
     $message = WDW_S_Library::get('message');
     echo WDW_S_Library::message_id($message);
     if (method_exists($this, $task)) {
+      check_admin_referer('nonce_wd', 'nonce_wd');
       $this->$task($id);
     }
     else {
@@ -174,11 +175,14 @@ class WDSControllerSliders_wds {
     $bullets_img_main_url = (isset($_POST['bullets_img_main_url']) ? esc_html(stripslashes($_POST['bullets_img_main_url'])) : '');
     $bullets_img_hov_url = (isset($_POST['bullets_img_hov_url']) ? esc_html(stripslashes($_POST['bullets_img_hov_url'])) : '');
     $bull_butt_img_or_not = (isset($_POST['bull_butt_img_or_not']) ? esc_html(stripslashes($_POST['bull_butt_img_or_not'])) : 'style');
-	$play_paus_butt_img_or_not = (isset($_POST['play_paus_butt_img_or_not']) ? esc_html(stripslashes($_POST['play_paus_butt_img_or_not'])) : 'style');
-	$play_butt_url = (isset($_POST['play_butt_url']) ? esc_html(stripslashes($_POST['play_butt_url'])) : '');
-	$play_butt_hov_url = (isset($_POST['play_butt_hov_url']) ? esc_html(stripslashes($_POST['play_butt_hov_url'])) : '');
-	$paus_butt_url = (isset($_POST['paus_butt_url']) ? esc_html(stripslashes($_POST['paus_butt_url'])) : '');
-	$paus_butt_hov_url = (isset($_POST['paus_butt_hov_url']) ? esc_html(stripslashes($_POST['paus_butt_hov_url'])) : '');
+    $play_paus_butt_img_or_not = (isset($_POST['play_paus_butt_img_or_not']) ? esc_html(stripslashes($_POST['play_paus_butt_img_or_not'])) : 'style');
+    $play_butt_url = (isset($_POST['play_butt_url']) ? esc_html(stripslashes($_POST['play_butt_url'])) : '');
+    $play_butt_hov_url = (isset($_POST['play_butt_hov_url']) ? esc_html(stripslashes($_POST['play_butt_hov_url'])) : '');
+    $paus_butt_url = (isset($_POST['paus_butt_url']) ? esc_html(stripslashes($_POST['paus_butt_url'])) : '');
+    $paus_butt_hov_url = (isset($_POST['paus_butt_hov_url']) ? esc_html(stripslashes($_POST['paus_butt_hov_url'])) : '');
+    $start_slide_num = ((isset($_POST['start_slide_num'])) ? (int) stripslashes($_POST['start_slide_num']) : 1);
+    $effect_duration = ((isset($_POST['effect_duration'])) ? (int) stripslashes($_POST['effect_duration']) : 800);
+
     if (!$slider_id) {
       $save = $wpdb->insert($wpdb->prefix . 'wdsslider', array(			
         'name' => $name,
@@ -258,13 +262,13 @@ class WDSControllerSliders_wds {
         'bullets_img_main_url' => $bullets_img_main_url,
         'bullets_img_hov_url' => $bullets_img_hov_url,
         'bull_butt_img_or_not' => $bull_butt_img_or_not,
-		'play_paus_butt_img_or_not' => $play_paus_butt_img_or_not,
-		'play_butt_url' => $play_butt_url,
-		'play_butt_hov_url' => $play_butt_hov_url,
-		'paus_butt_url' => $paus_butt_url,
-		'paus_butt_hov_url' => $paus_butt_hov_url,
-		
-		
+        'play_paus_butt_img_or_not' => $play_paus_butt_img_or_not,
+        'play_butt_url' => $play_butt_url,
+        'play_butt_hov_url' => $play_butt_hov_url,
+        'paus_butt_url' => $paus_butt_url,
+        'paus_butt_hov_url' => $paus_butt_hov_url,
+        'start_slide_num' => $start_slide_num,
+        'effect_duration' => $effect_duration,
       ), array(
         '%s',
         '%d',
@@ -343,11 +347,13 @@ class WDSControllerSliders_wds {
         '%s',
         '%s',
         '%s',
-		'%s',
-		'%s',
-		'%s',
-		'%s',
-		'%s',
+        '%s',
+        '%s',
+        '%s',
+        '%s',
+        '%s',
+        '%d',
+        '%d',
       ));
       $_POST['current_id'] = (int) $wpdb->get_var('SELECT MAX(`id`) FROM ' . $wpdb->prefix . 'wdsslider');
     }
@@ -430,11 +436,13 @@ class WDSControllerSliders_wds {
         'bullets_img_main_url' => $bullets_img_main_url,
         'bullets_img_hov_url' => $bullets_img_hov_url,
         'bull_butt_img_or_not' => $bull_butt_img_or_not,
-		'play_paus_butt_img_or_not' => $play_paus_butt_img_or_not,
-		'play_butt_url' => $play_butt_url,
-		'play_butt_hov_url' => $play_butt_hov_url,
-		'paus_butt_url' => $paus_butt_url,
-		'paus_butt_hov_url' => $paus_butt_hov_url,
+        'play_paus_butt_img_or_not' => $play_paus_butt_img_or_not,
+        'play_butt_url' => $play_butt_url,
+        'play_butt_hov_url' => $play_butt_hov_url,
+        'paus_butt_url' => $paus_butt_url,
+        'paus_butt_hov_url' => $paus_butt_hov_url,
+        'start_slide_num' => $start_slide_num,
+        'effect_duration' => $effect_duration,
         ), array('id' => $slider_id));
     }
     if ($save !== FALSE) {
@@ -901,7 +909,8 @@ class WDSControllerSliders_wds {
         'play_butt_hov_url' => $slider_row->play_butt_hov_url,
         'paus_butt_url' => $slider_row->paus_butt_url,
         'paus_butt_hov_url' => $slider_row->paus_butt_hov_url,
-        
+        'start_slide_num' => $slider_row->start_slide_num,
+        'effect_duration' => $slider_row->effect_duration,
       ), array(
         '%s',
         '%d',
@@ -985,6 +994,8 @@ class WDSControllerSliders_wds {
         '%s',
         '%s',
         '%s',
+        '%d',
+        '%d',
       ));
       $new_slider_id = $wpdb->get_var('SELECT MAX(id) FROM ' . $wpdb->prefix . 'wdsslider');
 

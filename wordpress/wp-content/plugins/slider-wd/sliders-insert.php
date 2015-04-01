@@ -86,6 +86,8 @@ function wds_insert() {
     `play_butt_hov_url` varchar(255) NOT NULL,
     `paus_butt_url` varchar(255) NOT NULL,
     `paus_butt_hov_url` varchar(255) NOT NULL,
+    `start_slide_num` int(4) NOT NULL,
+    `effect_duration` int(6) NOT NULL,
     PRIMARY KEY (`id`)
   ) DEFAULT CHARSET=utf8;";
   $wpdb->query($wdsslider);

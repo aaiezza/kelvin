@@ -6,6 +6,7 @@ function spider_ajax_save(form_id, event) {
   post_data["task"] = "apply";
   /* Global.*/
   post_data["current_id"] = jQuery("#current_id").val();
+  post_data["nonce_wd"] = jQuery("#nonce_wd").val();
   post_data["slide_ids_string"] = jQuery("#slide_ids_string").val();
   post_data["del_slide_ids_string"] = jQuery("#del_slide_ids_string").val();
   post_data["nav_tab"] = jQuery("#nav_tab").val();
@@ -36,6 +37,8 @@ function spider_ajax_save(form_id, event) {
   post_data["image_right_click"] = jQuery("input[name=image_right_click]:checked").val();
   post_data["layer_out_next"] = jQuery("input[name=layer_out_next]:checked").val();
   post_data["published"] = jQuery("input[name=published]:checked").val();
+  post_data["start_slide_num"] = jQuery("#start_slide_num").val();
+  post_data["effect_duration"] = jQuery("#effect_duration").val();
 
   /* Navigation.*/
   post_data["prev_next_butt"] = jQuery("input[name=prev_next_butt]:checked").val();

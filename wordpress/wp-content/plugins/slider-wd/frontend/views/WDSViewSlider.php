@@ -106,7 +106,7 @@ class WDSViewSlider {
       $outerWidth_or_outerHeight = 'outerHeight';
     }
 
-    if ($enable_slideshow_shuffle) {
+    if ($enable_slideshow_shuffle || ($slider_row->start_slide_num == 0)) {
       $slide_ids = array();
       foreach ($slide_rows as $slide_row) {
         $slide_ids[] += $slide_row->id;
@@ -114,7 +114,13 @@ class WDSViewSlider {
       $current_image_id = $slide_ids[array_rand($slide_ids)];
     }
     else {
-      $current_image_id = ($slide_rows ? $slide_rows[0]->id : 0);
+      if ($slider_row->start_slide_num > 0 && $slider_row->start_slide_num <= count($slide_rows)) {
+        $start_slide_num = $slider_row->start_slide_num - 1;
+      }
+      else {
+        $start_slide_num = 0;
+      }
+      $current_image_id = ($slide_rows ? $slide_rows[$start_slide_num]->id : 0);
     }
 
     global $wp;
@@ -950,7 +956,7 @@ class WDSViewSlider {
 
     <script>
       var wds_trans_in_progress_<?php echo $wds; ?> = false;
-      var wds_transition_duration_<?php echo $wds; ?> = <?php echo (($slideshow_interval < 4) && ($slideshow_interval != 0)) ? ($slideshow_interval * 1000) / 4 : 800; ?>;
+      var wds_transition_duration_<?php echo $wds; ?> = <?php echo (($slideshow_interval < 4) && ($slideshow_interval != 0)) ? ($slideshow_interval * 1000) / 4 : $slider_row->effect_duration; ?>;
       var wds_playInterval_<?php echo $wds; ?>;
       var progress = 0;
       var bottom_right_deggree_<?php echo $wds; ?>;

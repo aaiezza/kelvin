@@ -27,7 +27,7 @@ class WDSViewUninstall_wds {
     $prefix = $wpdb->prefix;
     ?>
     <form method="post" action="admin.php?page=uninstall_wds" style="width:99%;">
-      <?php wp_nonce_field('slider-wd uninstall');?>
+      <?php wp_nonce_field('nonce_wd', 'nonce_wd'); ?>
       <div class="wrap">
         <span class="uninstall_icon"></span>
         <h2>Uninstall Slider WD</h2>
@@ -86,7 +86,8 @@ class WDSViewUninstall_wds {
     global $wpdb;
     $this->model->delete_db_tables();
     $prefix = $wpdb->prefix;
-    $deactivate_url = wp_nonce_url('plugins.php?action=deactivate&amp;plugin=slider-wd/slider-wd.php', 'deactivate-plugin_slider-wd/slider-wd.php');
+    $deactivate_url = add_query_arg(array('action' => 'deactivate', 'plugin' => 'slider-wd/slider-wd.php'), admin_url('plugins.php'));
+    $deactivate_url = wp_nonce_url($deactivate_url, 'deactivate-plugin_slider-wd/slider-wd.php');
     ?>
     <div id="message" class="updated fade">
       <p>The following Database Tables successfully deleted:</p>

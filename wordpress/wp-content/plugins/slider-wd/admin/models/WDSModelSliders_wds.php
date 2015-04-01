@@ -171,11 +171,13 @@ class WDSModelSliders_wds {
       $row->bullets_img_main_url = WD_S_URL . '/images/bullet/bullet1/1/1.png';
       $row->bullets_img_hov_url = WD_S_URL . '/images/bullet/bullet1/1/2.png';
       $row->bull_butt_img_or_not = 'style';
-	  $row->play_paus_butt_img_or_not = 'style';
-	  $row->play_butt_url = WD_S_URL . '/images/button/button4/1/1.png';
-	  $row->play_butt_hov_url = WD_S_URL . '/images/button/button4/1/2.png';
-	  $row->paus_butt_url = WD_S_URL . '/images/button/button4/1/3.png';
-	  $row->paus_butt_hov_url = WD_S_URL . '/images/button/button4/1/4.png';
+      $row->play_paus_butt_img_or_not = 'style';
+      $row->play_butt_url = WD_S_URL . '/images/button/button4/1/1.png';
+      $row->play_butt_hov_url = WD_S_URL . '/images/button/button4/1/2.png';
+      $row->paus_butt_url = WD_S_URL . '/images/button/button4/1/3.png';
+      $row->paus_butt_hov_url = WD_S_URL . '/images/button/button4/1/4.png';
+      $row->start_slide_num = 1;
+      $row->effect_duration = 800;
     }
     return $row;
   }

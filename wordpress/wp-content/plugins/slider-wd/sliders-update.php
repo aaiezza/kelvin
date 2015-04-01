@@ -35,6 +35,12 @@ function wds_update($version) {
     // Whether to display play/pause buttons by image or not.
     $wpdb->query("ALTER TABLE " . $wpdb->prefix . "wdsslider ADD `play_paus_butt_img_or_not` varchar(8) NOT NULL DEFAULT 'style'");
   }
+  if (version_compare($version, '1.0.8') == -1) {
+    // Start slider with slide.
+    $wpdb->query("ALTER TABLE " . $wpdb->prefix . "wdsslider ADD `start_slide_num` int(4) NOT NULL DEFAULT 1");
+    // Transition effect duration.
+    $wpdb->query("ALTER TABLE " . $wpdb->prefix . "wdsslider ADD `effect_duration` int(6) NOT NULL DEFAULT 800");
+  }
   return;
 }
 

@@ -44,6 +44,7 @@ class WDSViewSliders_wds {
       </div>
     </div>
     <form class="wrap" id="sliders_form" method="post" action="admin.php?page=sliders_wds" style="float: left; width: 99%;">
+      <?php wp_nonce_field('nonce_wd', 'nonce_wd'); ?>
       <span class="slider-icon"></span>
       <h2>
         Sliders
@@ -393,6 +394,7 @@ class WDSViewSliders_wds {
       </div>
     </div>
     <form class="wrap" method="post" id="sliders_form" action="admin.php?page=sliders_wds" style="float: left; width: 99%;">
+      <?php wp_nonce_field('nonce_wd', 'nonce_wd'); ?>
       <span class="slider-icon"></span>
       <h2><?php echo $page_title; ?></h2>
       <div class="wds_buttons" style="float: right; position: absolute; right: 11px; z-index: 50;">
@@ -521,10 +523,10 @@ class WDSViewSliders_wds {
                     </td>
                   </tr>
                   <tr>
-                    <td class="spider_label"><label for="time_intervval">Time Interval: </label></td>
+                    <td class="spider_label"><label for="effect_duration">Еffect duration: </label></td>
                     <td>
-                      <input type="text" id="time_intervval" name="time_intervval" value="<?php echo $row->time_intervval; ?>" class="spider_int_input" onkeypress="return spider_check_isnum(event)" /> sec.
-                      <div class="spider_description">Set the time interval for the change of the sliders when autoplay is on.</div>
+                      <input type="text" id="effect_duration" name="effect_duration" value="<?php echo $row->effect_duration; ?>" class="spider_int_input" onkeypress="return spider_check_isnum(event)" /> ms
+                      <div class="spider_description">Define the time for the effect.</div>
                     </td>
                   </tr>
                   <tr>
@@ -533,6 +535,13 @@ class WDSViewSliders_wds {
                       <input type="radio" id="autoplay1" name="autoplay" <?php echo (($row->autoplay) ? 'checked="checked"' : ''); ?> value="1" /><label for="autoplay1">Yes</label>
                       <input type="radio" id="autoplay0" name="autoplay" <?php echo (($row->autoplay) ? '' : 'checked="checked"'); ?> value="0" /><label for="autoplay0">No</label>
                       <div class="spider_description">Choose whether to autoplay the sliders or not.</div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="spider_label"><label for="time_intervval">Time Interval: </label></td>
+                    <td>
+                      <input type="text" id="time_intervval" name="time_intervval" value="<?php echo $row->time_intervval; ?>" class="spider_int_input" onkeypress="return spider_check_isnum(event)" /> sec.
+                      <div class="spider_description">Set the time interval for the change of the sliders when autoplay is on.</div>
                     </td>
                   </tr>
                   <tr>
@@ -549,6 +558,13 @@ class WDSViewSliders_wds {
                       <input type="radio" id="shuffle1" name="shuffle" <?php echo (($row->shuffle) ? 'checked="checked"' : ''); ?> value="1" /><label for="shuffle1">Yes</label>
                       <input type="radio" id="shuffle0" name="shuffle" <?php echo (($row->shuffle) ? '' : 'checked="checked"'); ?> value="0" /><label for="shuffle0">No</label>
                       <div class="spider_description">Choose whether to have the slides change in a random manner or to keep the original sequence.</div>
+                    </td>
+                  </tr> 
+                  <tr>
+                    <td class="spider_label"><label for="start_slide_num">Start with slide: </label></td>
+                    <td>
+                      <input type="text" name="start_slide_num" id="start_slide_num" value="<?php echo $row->start_slide_num; ?>" class="spider_int_input" onkeypress="return spider_check_isnum(event)" />
+                      <div class="spider_description">The slider will start with the specified slide. You can use the value 0 for random.</div>
                     </td>
                   </tr>
                   <tr>
@@ -1173,7 +1189,7 @@ class WDSViewSliders_wds {
                   <script>				  
                     var wds_blt_img_type = [];
                     var blt_img_dir = '<?php echo WD_S_URL . '/images/bullet/'; ?>';
-					var bull_type_cur_fold = '1';
+                    var bull_type_cur_fold = '1';
                     <?php				    
                     $folder_names = scandir(WD_S_DIR . '/images/bullet'); 
                     $bull_cur_fold_name = '';
