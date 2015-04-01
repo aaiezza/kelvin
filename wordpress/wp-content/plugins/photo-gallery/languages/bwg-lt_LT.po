@@ -1,0 +1,349 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: bwg\n"
+"POT-Creation-Date: 2015-01-12 16:15+0300\n"
+"PO-Revision-Date: 2015-01-12 16:16+0300\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: lt_LT\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.6.9\n"
+"X-Poedit-Basepath: .\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && (n"
+"%100<10 || n%100>=20) ? 1 : 2);\n"
+"X-Poedit-KeywordsList: __\n"
+"X-Poedit-SearchPath-0: C:\\wamp\\www\\wordpress2\\wp-content\\plugins\\photo-"
+"gallery\n"
+
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/framework/WDWLibrary.php:514
+msgid " item(s)"
+msgstr "punktas"
+
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/framework/WDWLibrary.php:519
+msgid "First"
+msgstr "Pirmas"
+
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/framework/WDWLibrary.php:520
+msgid "Previous"
+msgstr "Ankstesnis"
+
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/framework/WDWLibrary.php:521
+msgid "Next"
+msgstr "Kitas"
+
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/framework/WDWLibrary.php:522
+msgid "Last"
+msgstr "Paskutinis"
+
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/framework/WDWLibrary.php:548
+msgid "Go to the first page"
+msgstr "Eiti į pirmąjį puslapį"
+
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/framework/WDWLibrary.php:549
+msgid "Go to the previous page"
+msgstr "Eiti į ankstesnį puslapį"
+
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/framework/WDWLibrary.php:551
+msgid "of"
+msgstr "iš"
+
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/framework/WDWLibrary.php:555
+msgid "Go to the next page"
+msgstr "Eiti į kitą puslapį"
+
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/framework/WDWLibrary.php:556
+msgid "Go to the last page"
+msgstr "Eiti į paskutinį puslapį"
+
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/framework/WDWLibrary.php:641
+msgid "Reset"
+msgstr "Nustatyti iš naujo"
+
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/framework/WDWLibrary.php:644
+msgid "Search"
+msgstr "Paieška"
+
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/framework/WDWLibrary.php:686
+msgid "Order by: "
+msgstr "Rūšiuoti pagal"
+
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/framework/WDWLibrary.php:688
+msgid "Default"
+msgstr "numatytasis"
+
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/framework/WDWLibrary.php:689
+msgid "Filename"
+msgstr "Failo pavadinimas"
+
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/framework/WDWLibrary.php:690
+msgid "Size"
+msgstr "dydis"
+
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/framework/WDWLibrary.php:691
+msgid "Random"
+msgstr "atsitiktinis"
+
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewAlbum_compact_preview.php:141
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewAlbum_extended_preview.php:87
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewAlbum_masonry_preview.php:128
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewBlog_style.php:32
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewImage_browser.php:71
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewSlideshow.php:45
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewSlideshow.php:104
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewThumbnails.php:144
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewThumbnails_masonry.php:148
+msgid "There is no theme selected or the theme was deleted."
+msgstr "Nėra tema pasirinkta arba tema buvo ištrinta."
+
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewAlbum_compact_preview.php:148
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewAlbum_compact_preview.php:180
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewAlbum_extended_preview.php:94
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewAlbum_extended_preview.php:126
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewAlbum_masonry_preview.php:133
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewAlbum_masonry_preview.php:165
+msgid "There is no album selected or the album was deleted."
+msgstr "Nėra albumai pasirinktas ar albumą buvo ištrintas."
+
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewAlbum_compact_preview.php:169
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewAlbum_extended_preview.php:115
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewAlbum_masonry_preview.php:154
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewBlog_style.php:94
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewImage_browser.php:82
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewSlideshow.php:166
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewThumbnails.php:161
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewThumbnails_masonry.php:159
+msgid "There are no images in this gallery."
+msgstr "Nėra šioje galerijoje vaizdai."
+
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewAlbum_compact_preview.php:667
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewAlbum_extended_preview.php:639
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewAlbum_masonry_preview.php:470
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewAlbum_masonry_preview.php:508
+msgid "Back"
+msgstr "Atgal"
+
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewAlbum_compact_preview.php:690
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewAlbum_extended_preview.php:650
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewAlbum_masonry_preview.php:524
+msgid "Album is empty."
+msgstr "Albumas tuščias."
+
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewAlbum_compact_preview.php:786
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewAlbum_extended_preview.php:760
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewAlbum_masonry_preview.php:587
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/photo-gallery.php:3089
+msgid "There are no images matching your search."
+msgstr "Nėra nuotraukos atitinkančių jūsų paiešką."
+
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewAlbum_compact_preview.php:791
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewAlbum_extended_preview.php:765
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewAlbum_masonry_preview.php:592
+msgid "Gallery is empty."
+msgstr "Galerija yra tuščia"
+
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewAlbum_compact_preview.php:833
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewAlbum_extended_preview.php:795
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewGalleryBox.php:854
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewGalleryBox.php:2517
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewSlideshow.php:1567
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewThumbnails.php:479
+msgid "Play"
+msgstr "Žaisti"
+
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewAlbum_extended_preview.php:730
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewAlbum_extended_preview.php:849
+msgid "More"
+msgstr "Daugiau"
+
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewAlbum_extended_preview.php:844
+msgid "Hide"
+msgstr "Slėpti"
+
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewBlog_style.php:88
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewImage_browser.php:76
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewSlideshow.php:161
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewThumbnails.php:155
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewThumbnails_masonry.php:153
+msgid "There is no gallery selected or the gallery was deleted."
+msgstr "Nėra galerija pasirinktas ar galerija buvo ištrintas."
+
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewBlog_style.php:512
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewGalleryBox.php:866
+msgid "Show comments"
+msgstr "Rodyti komentarus."
+
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewBlog_style.php:518
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewBlog_style.php:519
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewGalleryBox.php:874
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewGalleryBox.php:875
+msgid "Share on Facebook"
+msgstr " Share on Facebook."
+
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewBlog_style.php:525
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewBlog_style.php:526
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewGalleryBox.php:881
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewGalleryBox.php:882
+msgid "Share on Twitter"
+msgstr "Dalytis Twitter."
+
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewBlog_style.php:532
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewBlog_style.php:533
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewGalleryBox.php:888
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewGalleryBox.php:889
+msgid "Share on Google+"
+msgstr "Dalytis \"Google+\"."
+
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewBlog_style.php:539
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewBlog_style.php:540
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewGalleryBox.php:895
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewGalleryBox.php:896
+msgid "Share on Pinterest"
+msgstr "Dalintis apie Pinterest"
+
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewBlog_style.php:546
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewBlog_style.php:547
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewGalleryBox.php:902
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewGalleryBox.php:903
+msgid "Share on Tumblr"
+msgstr "Dalintis apie Tumblr"
+
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewGalleryBox.php:834
+msgid "The image has been deleted."
+msgstr "Vaizdas buvo ištrintas."
+
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewGalleryBox.php:858
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewGalleryBox.php:2353
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewGalleryBox.php:2450
+msgid "Maximize"
+msgstr "Padidinti"
+
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewGalleryBox.php:862
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewGalleryBox.php:2452
+msgid "Fullscreen"
+msgstr "Per visą ekraną."
+
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewGalleryBox.php:864
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewGalleryBox.php:2193
+msgid "Show info"
+msgstr "Rodyti informaciją"
+
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewGalleryBox.php:868
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewGalleryBox.php:2204
+msgid "Show rating"
+msgstr "Rodyti įvertinimus"
+
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewGalleryBox.php:910
+msgid "Open image in original size."
+msgstr "Atidaryti atvaizdą originalaus dydžio."
+
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewGalleryBox.php:918
+msgid "Download original image"
+msgstr "Atsisiųsti originalų vaizdą. "
+
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewGalleryBox.php:1011
+msgid "Hits: "
+msgstr "Hitai: "
+
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewGalleryBox.php:1022
+msgid "Rated."
+msgstr "Vardinė."
+
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewGalleryBox.php:1026
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewGalleryBox.php:1039
+msgid "Not rated yet."
+msgstr "Dar neįvertinta. "
+
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewGalleryBox.php:1028
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewGalleryBox.php:1061
+msgid "Votes: "
+msgstr "balsai: "
+
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewGalleryBox.php:1059
+msgid "Cancel your rating."
+msgstr "Atšaukti savo reitingą. "
+
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewGalleryBox.php:1061
+msgid "You have already rated."
+msgstr "Jūs jau įvertinote. "
+
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewGalleryBox.php:1141
+msgid "Error. Incorrect Verification Code."
+msgstr "Klaida. Neteisingas patvirtinimo kodas. "
+
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewGalleryBox.php:1148
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/photo-gallery.php:3088
+msgid "This is not a valid email address."
+msgstr "Tai nėra galiojantis elektroninio pašto adresą."
+
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewGalleryBox.php:1156
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewGalleryBox.php:2040
+msgid "Hide Comments"
+msgstr "Paslėpti komentarus"
+
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewGalleryBox.php:1160
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewGalleryBox.php:1188
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewGalleryBox.php:1195
+msgid "Name"
+msgstr "Vardas"
+
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewGalleryBox.php:1166
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewGalleryBox.php:1188
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewGalleryBox.php:1195
+msgid "Email"
+msgstr "laišką "
+
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewGalleryBox.php:1173
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewGalleryBox.php:1188
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewGalleryBox.php:1195
+msgid "Comment"
+msgstr "Komentaras"
+
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewGalleryBox.php:1178
+msgid "Verification Code"
+msgstr "Patvirtinimo kodas"
+
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewGalleryBox.php:1201
+msgid "Submit"
+msgstr "Pateikti"
+
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewGalleryBox.php:1202
+msgid "Your comment is awaiting moderation"
+msgstr "Jūsų komentaras laukia nuosaikumo "
+
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewGalleryBox.php:1231
+msgid "Delete Comment"
+msgstr "Ištrinti komentarą"
+
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewGalleryBox.php:1997
+msgid "Show Comments"
+msgstr "Rodyti komentarus"
+
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewGalleryBox.php:2189
+msgid "Hide info"
+msgstr "Slėpti informacija"
+
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewGalleryBox.php:2200
+msgid "Hide rating"
+msgstr "Slėpti įvertinimas."
+
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewGalleryBox.php:2388
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewGalleryBox.php:2582
+msgid "Restore"
+msgstr "Atkurti"
+
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewGalleryBox.php:2498
+msgid "Exit Fullscreen"
+msgstr "Išeikite per visą ekraną"
+
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewGalleryBox.php:2511
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewGalleryBox.php:2526
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewSlideshow.php:1558
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewSlideshow.php:1576
+msgid "Pause"
+msgstr "Pauzė"
+
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/photo-gallery.php:3087
+msgid "field is required."
+msgstr "laukelis būtinas."

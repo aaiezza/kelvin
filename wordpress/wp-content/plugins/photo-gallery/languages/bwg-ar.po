@@ -1,0 +1,349 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: bwg\n"
+"POT-Creation-Date: 2015-01-12 14:46+0300\n"
+"PO-Revision-Date: 2015-01-12 14:47+0300\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: ar\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.6.9\n"
+"X-Poedit-Basepath: .\n"
+"Plural-Forms: nplurals=6; plural=(n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 "
+"&& n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5);\n"
+"X-Poedit-KeywordsList: __\n"
+"X-Poedit-SearchPath-0: C:\\wamp\\www\\wordpress2\\wp-content\\plugins\\photo-"
+"gallery\n"
+
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/framework/WDWLibrary.php:514
+msgid " item(s)"
+msgstr "البند (ق)"
+
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/framework/WDWLibrary.php:519
+msgid "First"
+msgstr " أولا"
+
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/framework/WDWLibrary.php:520
+msgid "Previous"
+msgstr "  السابقة"
+
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/framework/WDWLibrary.php:521
+msgid "Next"
+msgstr "المقبل"
+
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/framework/WDWLibrary.php:522
+msgid "Last"
+msgstr "آخر"
+
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/framework/WDWLibrary.php:548
+msgid "Go to the first page"
+msgstr "  انتقل إلى الصفحة الأولى"
+
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/framework/WDWLibrary.php:549
+msgid "Go to the previous page"
+msgstr "  انتقل إلى الصفحة السابقة"
+
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/framework/WDWLibrary.php:551
+msgid "of"
+msgstr "  من"
+
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/framework/WDWLibrary.php:555
+msgid "Go to the next page"
+msgstr "  انتقل إلى الصفحة التالية"
+
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/framework/WDWLibrary.php:556
+msgid "Go to the last page"
+msgstr "  انتقل إلى الصفحة الأخيرة"
+
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/framework/WDWLibrary.php:641
+msgid "Reset"
+msgstr "إعادة تعيين"
+
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/framework/WDWLibrary.php:644
+msgid "Search"
+msgstr "البحث"
+
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/framework/WDWLibrary.php:686
+msgid "Order by: "
+msgstr "ترتيب حسب"
+
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/framework/WDWLibrary.php:688
+msgid "Default"
+msgstr "افتراضي"
+
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/framework/WDWLibrary.php:689
+msgid "Filename"
+msgstr "اسم الملف"
+
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/framework/WDWLibrary.php:690
+msgid "Size"
+msgstr "حجم"
+
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/framework/WDWLibrary.php:691
+msgid "Random"
+msgstr "عشوائية"
+
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewAlbum_compact_preview.php:141
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewAlbum_extended_preview.php:87
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewAlbum_masonry_preview.php:128
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewBlog_style.php:32
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewImage_browser.php:71
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewSlideshow.php:45
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewSlideshow.php:104
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewThumbnails.php:144
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewThumbnails_masonry.php:148
+msgid "There is no theme selected or the theme was deleted."
+msgstr " . لا يوجد أي موضوع المحددة أو تم حذف الموضوع"
+
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewAlbum_compact_preview.php:148
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewAlbum_compact_preview.php:180
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewAlbum_extended_preview.php:94
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewAlbum_extended_preview.php:126
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewAlbum_masonry_preview.php:133
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewAlbum_masonry_preview.php:165
+msgid "There is no album selected or the album was deleted."
+msgstr "  لا يوجد ألبوم المحددة أو تم حذف الألبوم"
+
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewAlbum_compact_preview.php:169
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewAlbum_extended_preview.php:115
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewAlbum_masonry_preview.php:154
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewBlog_style.php:94
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewImage_browser.php:82
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewSlideshow.php:166
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewThumbnails.php:161
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewThumbnails_masonry.php:159
+msgid "There are no images in this gallery."
+msgstr "ا توجد صور في هذا الألبوم"
+
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewAlbum_compact_preview.php:667
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewAlbum_extended_preview.php:639
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewAlbum_masonry_preview.php:470
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewAlbum_masonry_preview.php:508
+msgid "Back"
+msgstr "  الظهر"
+
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewAlbum_compact_preview.php:690
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewAlbum_extended_preview.php:650
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewAlbum_masonry_preview.php:524
+msgid "Album is empty."
+msgstr "  الألبوم فارغ"
+
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewAlbum_compact_preview.php:786
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewAlbum_extended_preview.php:760
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewAlbum_masonry_preview.php:587
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/photo-gallery.php:3089
+msgid "There are no images matching your search."
+msgstr "لا توجد صور تتوافق مع البحث."
+
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewAlbum_compact_preview.php:791
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewAlbum_extended_preview.php:765
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewAlbum_masonry_preview.php:592
+msgid "Gallery is empty."
+msgstr "  معرض فارغة"
+
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewAlbum_compact_preview.php:833
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewAlbum_extended_preview.php:795
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewGalleryBox.php:854
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewGalleryBox.php:2517
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewSlideshow.php:1567
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewThumbnails.php:479
+msgid "Play"
+msgstr "لعب"
+
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewAlbum_extended_preview.php:730
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewAlbum_extended_preview.php:849
+msgid "More"
+msgstr "أكثر"
+
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewAlbum_extended_preview.php:844
+msgid "Hide"
+msgstr "إخفاء"
+
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewBlog_style.php:88
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewImage_browser.php:76
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewSlideshow.php:161
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewThumbnails.php:155
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewThumbnails_masonry.php:153
+msgid "There is no gallery selected or the gallery was deleted."
+msgstr "لا توجد المعرض المحددة أو تم حذف المعرض"
+
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewBlog_style.php:512
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewGalleryBox.php:866
+msgid "Show comments"
+msgstr "تظهر التعليقات"
+
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewBlog_style.php:518
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewBlog_style.php:519
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewGalleryBox.php:874
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewGalleryBox.php:875
+msgid "Share on Facebook"
+msgstr "حصة في الفيسبوك"
+
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewBlog_style.php:525
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewBlog_style.php:526
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewGalleryBox.php:881
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewGalleryBox.php:882
+msgid "Share on Twitter"
+msgstr "مشاركة على تويتر"
+
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewBlog_style.php:532
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewBlog_style.php:533
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewGalleryBox.php:888
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewGalleryBox.php:889
+msgid "Share on Google+"
+msgstr "في + Google المشاركة"
+
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewBlog_style.php:539
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewBlog_style.php:540
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewGalleryBox.php:895
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewGalleryBox.php:896
+msgid "Share on Pinterest"
+msgstr "على حصة بينتيريست"
+
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewBlog_style.php:546
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewBlog_style.php:547
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewGalleryBox.php:902
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewGalleryBox.php:903
+msgid "Share on Tumblr"
+msgstr "نعرفكم على حصة"
+
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewGalleryBox.php:834
+msgid "The image has been deleted."
+msgstr "تم حذف الصورة"
+
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewGalleryBox.php:858
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewGalleryBox.php:2353
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewGalleryBox.php:2450
+msgid "Maximize"
+msgstr "تعظيم"
+
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewGalleryBox.php:862
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewGalleryBox.php:2452
+msgid "Fullscreen"
+msgstr "ملء الشاشة"
+
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewGalleryBox.php:864
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewGalleryBox.php:2193
+msgid "Show info"
+msgstr "تظهر المعلومات"
+
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewGalleryBox.php:868
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewGalleryBox.php:2204
+msgid "Show rating"
+msgstr "تظهر التصنيف"
+
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewGalleryBox.php:910
+msgid "Open image in original size."
+msgstr "صورة مفتوحة في حجمها الأصلي"
+
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewGalleryBox.php:918
+msgid "Download original image"
+msgstr "تحميل الصورة الأصلية"
+
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewGalleryBox.php:1011
+msgid "Hits: "
+msgstr "الفعالية:"
+
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewGalleryBox.php:1022
+msgid "Rated."
+msgstr "تصنيف."
+
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewGalleryBox.php:1026
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewGalleryBox.php:1039
+msgid "Not rated yet."
+msgstr "غير مصنفة حتى الآن."
+
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewGalleryBox.php:1028
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewGalleryBox.php:1061
+msgid "Votes: "
+msgstr "عدد الأصوات: "
+
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewGalleryBox.php:1059
+msgid "Cancel your rating."
+msgstr "إلغاء تقييمك"
+
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewGalleryBox.php:1061
+msgid "You have already rated."
+msgstr "لقد تقييما بالفعل"
+
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewGalleryBox.php:1141
+msgid "Error. Incorrect Verification Code."
+msgstr "خطأ. رمز التحقق غير صحيح. "
+
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewGalleryBox.php:1148
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/photo-gallery.php:3088
+msgid "This is not a valid email address."
+msgstr "هذا ليس عنوان بريد إلكتروني صحيح."
+
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewGalleryBox.php:1156
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewGalleryBox.php:2040
+msgid "Hide Comments"
+msgstr "إخفاء التعليقات"
+
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewGalleryBox.php:1160
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewGalleryBox.php:1188
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewGalleryBox.php:1195
+msgid "Name"
+msgstr "الاسم"
+
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewGalleryBox.php:1166
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewGalleryBox.php:1188
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewGalleryBox.php:1195
+msgid "Email"
+msgstr "مينا "
+
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewGalleryBox.php:1173
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewGalleryBox.php:1188
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewGalleryBox.php:1195
+msgid "Comment"
+msgstr "التعليق"
+
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewGalleryBox.php:1178
+msgid "Verification Code"
+msgstr "كود التحقق"
+
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewGalleryBox.php:1201
+msgid "Submit"
+msgstr "تقدم"
+
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewGalleryBox.php:1202
+msgid "Your comment is awaiting moderation"
+msgstr "تعليقك ينتظر الاعتدال"
+
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewGalleryBox.php:1231
+msgid "Delete Comment"
+msgstr "حذف تعليق"
+
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewGalleryBox.php:1997
+msgid "Show Comments"
+msgstr " عرض التعليقات"
+
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewGalleryBox.php:2189
+msgid "Hide info"
+msgstr "إخفاء المعلومات"
+
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewGalleryBox.php:2200
+msgid "Hide rating"
+msgstr "اخفاء تصنيف"
+
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewGalleryBox.php:2388
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewGalleryBox.php:2582
+msgid "Restore"
+msgstr "استعادة"
+
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewGalleryBox.php:2498
+msgid "Exit Fullscreen"
+msgstr "خروج ملء الشاشة"
+
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewGalleryBox.php:2511
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewGalleryBox.php:2526
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewSlideshow.php:1558
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/frontend/views/BWGViewSlideshow.php:1576
+msgid "Pause"
+msgstr "وقفة"
+
+#: C:\wamp\www\wordpress2\wp-content\plugins\photo-gallery/photo-gallery.php:3087
+msgid "field is required."
+msgstr "مطلوب الميدان. "
