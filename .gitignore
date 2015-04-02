@@ -1,3 +1,8 @@
+###
+# Standard ignores
+#   We don't want the repo clogged with files that are
+#   generated at runtime or that change often
+# # # # # # # # # #
+
 *.log
 *.zip
-*.db
