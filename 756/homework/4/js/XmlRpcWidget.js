@@ -47,13 +47,17 @@ var XmlRpcWidget = function()
 
             if (inputs && !(inputs.length == 0 || inputs[0] == '' ))
             {
+                var inputElements = [];
+
                 $.each( inputs, function() {
                     var element = $('#' + this);
                     if ( element == undefined )
                         throw new Error('Element with id: \''+this+'\' was not found.');
 
+                    inputElements.push(element);
+
                     var value = element.is('.currency')?
-                        parseFloat(element.val().replace('$','')) : element.val();
+                        parseFloat(element.val().replace(/\$|,/g,'')) : element.val();
                     if ( element.is('.currency') && value == "" )
                         value = 0;
                     request['params'].push(value);
@@ -71,7 +75,6 @@ var XmlRpcWidget = function()
                         if ( response )
                         {
                             alert( 'Price changed!' );
-                            inputs.val('');
                         }
                         else alert( 'There was an issue with your update!' );
                     };
