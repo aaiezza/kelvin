@@ -139,7 +139,7 @@ var XmlRpcWidget = function()
 
             request['error'] = function(jqXHR, status, error) {
                 console.error(jqXHR.responseText);
-                console.error(error.stack);
+                // console.error(error.stack);
             };
 
             $.xmlrpc(request);

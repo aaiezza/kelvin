@@ -24,7 +24,7 @@ function handle_xmlrpc( $client, $msg, $echo = false )
 {
     // invoke the method
     $result = $client->send( $msg );
-    
+
     if ( $result )
     {
         if ( $result->value() )
@@ -33,13 +33,15 @@ function handle_xmlrpc( $client, $msg, $echo = false )
             $val = $result->value()->scalarval();
             if ( $echo )
                 echo "We got this result: $val<br/>";
-            
-            return $val;
+
+            return $result;
         } else
         {
             // deal with XML-RPC error
             echo "We got an error!<br/>";
             echo $result->faultCode() . ": " . $result->faultString() . "<br/>";
+
+            return $result;
         }
     } else
     { // a low-level I/O error has occurred
@@ -65,7 +67,7 @@ function callIt( $call, $params = array(), $echo = false )
     if ( $echo )
         echo '<hr>';
 
-    return $val;
+    return $val->value()->scalarval();
 }
 
 // $val = callIt( 'system.listMethods' );
@@ -109,10 +111,21 @@ if ( $_SERVER['REQUEST_METHOD'] == 'POST' )
             date( 'Y-m-t H:i:s', time() ),
             $_POST[server],
             $_POST[xmlrpcMsg] ) );
-    fclose( $file );
 
     connect( $_POST['server'] );
     $val = handle_xmlrpc( $client, $_POST['xmlrpcMsg'], false );
+
+    fwrite( $file,
+        sprintf( "Response |\n  %s\n\n", print_r( $val, true ) ) );
+
+    fclose( $file );
+
+    if ( $val->faultCode() > 0 )
+    {
+        die( $val->faultString() );
+    }
+    $val = $val->value()->scalarval();
+
     if ( is_array( $val ) )
     {
         $response = array();

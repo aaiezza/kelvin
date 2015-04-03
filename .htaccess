@@ -2,7 +2,7 @@
 # This one actually already exists, but I wanted the reference
 AddType application/font-sfnt ttf
 
-<FilesMatch "(\.(htaccess|htpasswd|ini|log|sh|inc|bak|properties))$">
+<FilesMatch "(\.(htaccess|htpasswd|ini|sh|inc|bak|properties))$">
 Order Allow,Deny
 Deny from all
 </FilesMatch>
