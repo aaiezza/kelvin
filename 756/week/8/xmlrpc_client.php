@@ -46,14 +46,14 @@ function callIt( $call, $params = array() )
 }
 
 callIt( 'area.helloWorld' );
-callIt( 'area.calcCircle', array ( new xmlrpcval( 5, $xmlrpcDouble ) ) );
+callIt( 'area.calcCircle', array ( new xmlrpcval( 5, $GLOBALS['xmlrpcDouble'] ) ) );
 callIt( 'area.calcRectangle', 
-        array ( new xmlrpcval( 5, $xmlrpcDouble ), new xmlrpcval( 3, $xmlrpcDouble ) ) );
+        array ( new xmlrpcval( 5, $GLOBALS['xmlrpcDouble'] ), new xmlrpcval( 3, $GLOBALS['xmlrpcDouble'] ) ) );
 
 callIt( 'system.listMethods' );
-callIt( 'system.methodHelp', array ( new xmlrpcval( 'area.helloWorld', $xmlrpcString ) ) );
-callIt( 'system.methodHelp', array ( new xmlrpcval( 'area.calcCircle', $xmlrpcString ) ) );
-callIt( 'system.methodHelp', array ( new xmlrpcval( 'area.calcRectangle', $xmlrpcString ) ) );
+callIt( 'system.methodHelp', array ( new xmlrpcval( 'area.helloWorld', $GLOBALS['xmlrpcString'] ) ) );
+callIt( 'system.methodHelp', array ( new xmlrpcval( 'area.calcCircle', $GLOBALS['xmlrpcString'] ) ) );
+callIt( 'system.methodHelp', array ( new xmlrpcval( 'area.calcRectangle', $GLOBALS['xmlrpcString'] ) ) );
 
 ?>
 
