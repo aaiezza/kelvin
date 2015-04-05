@@ -77,6 +77,7 @@ function callIt( $call, $params = array(), $echo = false )
 
 // callIt( 'system.methodHelp', array ( new xmlrpcval( 'getMethods', $xmlrpcString ) ) );
 
+// DEBUG
 function test()
 {
     connect( $_GET['server'] );
@@ -101,6 +102,7 @@ function test()
     callIt( 'beer.getCostliest', array(), true );
 }
 
+// test();
 
 // Handle a POST request to this file
 if ( $_SERVER['REQUEST_METHOD'] == 'POST' )
@@ -116,7 +118,7 @@ if ( $_SERVER['REQUEST_METHOD'] == 'POST' )
     $val = handle_xmlrpc( $client, $_POST['xmlrpcMsg'], false );
 
     fwrite( $file,
-        sprintf( "Response |\n  %s\n\n", print_r( $val, true ) ) );
+        sprintf( "Response |\n  %s\n\n", print_r( $val->value()->scalarval(), true ) ) );
 
     fclose( $file );
 
@@ -124,6 +126,7 @@ if ( $_SERVER['REQUEST_METHOD'] == 'POST' )
     {
         die( $val->faultString() );
     }
+
     $val = $val->value()->scalarval();
 
     if ( is_array( $val ) )
