@@ -1,119 +1,111 @@
 <?php
-include_once './lib/xmlrpc.inc';
-include_once './lib/xmlrpcs.inc';
-include_once './lib/xmlrpc_wrappers.inc';
+require_once './lib/xmlrpc.inc';
+require_once './lib/xmlrpcs.inc';
+require_once './lib/xmlrpc_wrappers.inc';
 
-function getMethods()
+require_once 'BeerDataSourceManager.class.php';
+require_once 'BeerHandler.class.php';
+
+// Create Data Layer
+$beerDataSourceManager = new BeerDataSourceManager();
+
+// Create Business Layer
+$beerHandler = new BeerHandler( $beerDataSourceManager );
+
+// Create Service Layer
+function getMethods   ( xmlrpcmsg $params )
 {
-    $response = new xmlrpcval( -1, $xmlrpcArray );
-    $methods = array(
-        new xmlrpcval( 'getPrice'     , $xmlrpcString),
-        new xmlrpcval( 'setPrice'     , $xmlrpcString),
-        new xmlrpcval( 'getBeers'     , $xmlrpcString),
-        new xmlrpcval( 'getCheapest'  , $xmlrpcString),
-        new xmlrpcval( 'getCostliest' , $xmlrpcString) 
-    );
-
-    $response->addArray( $methods );
-
-    return new xmlrpcresp( $response );
+    global $beerHandler;
+    $methodsList = array();
+    foreach ( $beerHandler->getMethods() as $method )
+    {
+        $methodsList[] = new xmlrpcval( $method, $GLOBALS['xmlrpcString'] );
+    }
+    return new xmlrpcresp( new xmlrpcval(
+        $methodsList, $GLOBALS['xmlrpcArray'] ) );
 }
 
-function getPrice( $params )
+function getBeers     ( xmlrpcmsg $params )
 {
-    // parse our params
-    $beer = $params->getParam( 0 )->scalarval();
-    // $price = $BeerManager->getPriceOfBeer( $beer );
-    $price = 3.98;
-    
-    return new xmlrpcresp( new xmlrpcval( $price, $xmlrpcDouble ) );
+    global $beerHandler;
+    $beers = array();
+    foreach( $beerHandler->getBeers() as $beer )
+    {
+        $beers[] = new xmlrpcval( $beer, $GLOBALS['xmlrpcString'] );
+    }
+    return new xmlrpcresp( new xmlrpcval(
+        $beers, $GLOBALS['xmlrpcArray'] ) );
 }
 
-function setPrice( $params )
+function getPrice     ( xmlrpcmsg $params )
 {
-    // parse our params
-    $beer = $params->getParam( 0 )->scalarval();
-    $price = $params->getParam( 1 )->scalarval();
-
-    // $priceChanged = $BeerManager->setPriceOfBeer( $beer, $price );
-    $priceChanged = false;
-    
-    return new xmlrpcresp( new xmlrpcval( $priceChanged, $xmlrpcBoolean ) );
+    global $beerHandler;
+    return new xmlrpcresp( new xmlrpcval(
+        $beerHandler->getPrice(
+            $params->getParam( 0 )->scalarval() ), $GLOBALS['xmlrpcDouble'] ) );
 }
 
-function getBeers()
+function getCheapest  ( xmlrpcmsg $params )
 {
-    $response = new xmlrpcval( -1, $xmlrpcArray );
-
-    // $beers = $BeerManager->getBeers();
-    $beers = array(
-        new xmlrpcval( 'Bud'       , $xmlrpcString ),
-        new xmlrpcval( 'Sam Adams' , $xmlrpcString )
-    );
-
-    $response->addArray( $beers );
-
-    return new xmlrpcresp( $response );
+    global $beerHandler;
+    return new xmlrpcresp( new xmlrpcval(
+        $beerHandler->getCheapest(), $GLOBALS['xmlrpcString'] ) );
 }
 
-function getCheapest()
+function getCostliest ( xmlrpcmsg $params )
 {
-    // $beer = $BeerManager->getCheapest();
-    $beer = 'Bud';
-    
-    return new xmlrpcresp( new xmlrpcval( $beer, $xmlrpcString ) );
+    global $beerHandler;
+    return new xmlrpcresp( new xmlrpcval(
+        $beerHandler->getCostliest(), $GLOBALS['xmlrpcString'] ) );
 }
 
-function getCostliest( $params )
+function setPrice     ( xmlrpcmsg $params )
 {
-    // $beer = $BeerManager->getCostliest();
-    $beer = 'Sam Adams';
-    
-    return new xmlrpcresp( new xmlrpcval( $beer, $xmlrpcString ) );
+    global $beerHandler;
+    return new xmlrpcresp( new xmlrpcval(
+        $beerHandler->setPrice(
+            $params->getParam( 0 )->scalarval(),
+            $params->getParam( 1 )->scalarval() ), $GLOBALS['xmlrpcBoolean'] ) );
 }
 
-/*
- * Declare out signature and provide some information
- *     in a "dispath map".
- * The PHP server supports "remote introspection". (Ask about my API)
- * Signature: array or signatures, where each is an array
- *     that includes the return type and one or more param types
- */
-$getMethods_sig = array ( array ( $xmlrpcArray ) );
-$getPrice_sig = array ( array ( $xmlrpcString, $xmlrpcString ) );
-$setPrice_sig = array ( array ( $xmlrpcString, $xmlrpcDouble, $xmlrpcBoolean ) );
-$getBeers_sig = array ( array ( $xmlrpcArray ) );
-$getCheapest_sig = array ( array ( $xmlrpcString ) );
-$getCostliest_sig = array ( array ( $xmlrpcString ) );
+$getMethods_sig = array( array( $GLOBALS['xmlrpcArray'] ) );
+$getBeers_sig = array( array( $GLOBALS['xmlrpcArray'] ) );
+$getPrice_sig = array( array( $GLOBALS['xmlrpcDouble'], $GLOBALS['xmlrpcString'] ) );
+$setPrice_sig = array( array( $GLOBALS['xmlrpcBoolean'], $GLOBALS['xmlrpcString'], $GLOBALS['xmlrpcDouble'] ) );
+$getCheapest_sig = array( array( $GLOBALS['xmlrpcString'] ) );
+$getCostliest_sig = array( array($GLOBALS['xmlrpcString'] ) );
 
-$getMethods_doc = 'Takes no arguments and returns a list of the methods contained in the service.';
-$getPrice_doc = 'Takes a string denoting the beer brand and returns a double representing the beer price.';
-$setPrice_doc = 'Takes a string denoting the beer brand and a double denoting the price returns true or false depending on success';
-$getBeers_doc = 'Takes no arguments and returns a list of the known beers.';
-$getCheapest_doc = 'Takes no arguments and returns the name of the least expensive beer.';
-$getCostliest_doc = 'Takes no arguments and returns the name of the most expensive beer.';
+$getMethods_doc = "Get all the methods from server";
+$getBeers_doc = "Get all the beers from server";
+$getPrice_doc = "Get the price of Beer";
+$setPrice_doc = "Set the price of Beer";
+$getCheapest_doc= "Get the cheapest price of Beer";
+$getCostliest_doc="Get the costliest price of Beer";
 
-new xmlrpc_server( 
-    array (
-        'beer.getMethods' => array( 'function' => 'getMethods', 
-                        'signature' => $getMethods_sig, 
-                        'docstring' => $getMethods_doc ),
-        'beer.getPrice' => array( 'function' => 'getPrice',
-                        'signature' => $getPrice_sig,
-                        'docstring' => $getPrice_doc ),
-        'beer.setPrice' => array( 'function' => 'setPrice',
-                        'signature' => $setPrice_sig,
-                        'docstring' => $setPrice_doc ),
-        'beer.getBeers' => array( 'function' => 'getBeers',
-                        'signature' => $getBeers_sig,
-                        'docstring' => $getBeers_doc ),
-        'beer.getCheapest' => array( 'function' => 'getCheapest',
-                        'signature' => $getCheapest_sig,
-                        'docstring' => $getCheapest_doc ),
-        'beer.getCostliest' => array( 'function' => 'getCostliest',
-                        'signature' => $getCostliest_sig,
-                        'docstring' => $getCostliest_doc )
-     )
-);
-
+new xmlrpc_server( array(
+    'beer.getMethods'=>
+    array('function' => 'getMethods',
+        'signature'=> $getMethods_sig,
+        'docstring'=> $getMethods_doc),
+    "beer.getBeers"=>
+        array("function" => 'getBeers',
+            "signature"=> $getBeers_sig,
+            "docstring"=>$getBeers_doc),
+    "beer.getPrice"=>
+        array("function" => 'getPrice',
+            "signature"=> $getPrice_sig,
+            "docstring"=>$getPrice_doc),
+    "beer.setPrice"=>
+        array("function" => 'setPrice',
+            "signature"=> $setPrice_sig,
+            "docstring"=>$setPrice_doc),
+    'beer.getCheapest'=>
+        array('function' => 'getCheapest',
+            'signature'=> $getCheapest_sig,
+            'docstring'=> $getCheapest_doc),
+    "beer.getCostliest"=>
+        array("function" => 'getCostliest',
+            "signature"=> $getCostliest_sig,
+            "docstring"=>$getCostliest_doc),
+));
 ?>
