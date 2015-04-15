@@ -22,7 +22,7 @@
 
 <body>
     <div id="content">
-        <h2>Here we are!</h2>
+        <h2>Start GlassFish locally! Then run <a href="AreaService/AreaService.war">this jar</a>.</h2>
     </div>
 </body>
 
