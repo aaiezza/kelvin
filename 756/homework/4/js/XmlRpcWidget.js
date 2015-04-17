@@ -138,7 +138,7 @@ var XmlRpcWidget = function()
             }
 
             request['error'] = function(jqXHR, status, error) {
-                console.error(jqXHR.responseText);
+                console.error(jqXHR.responseText.replace(/(<br\/>)/g, "\n"));
                 // console.error(error.stack);
             };
 
