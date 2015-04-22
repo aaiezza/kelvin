@@ -49,7 +49,7 @@
 		<p>
 			The second option would be to download the beer-service.jar file
 			located here:
-			<code>/home/axa9070/Sites/756/homework/05/beer-service.jar</code>
+			<a href="./beer-service.jar"><code>/home/axa9070/Sites/756/homework/05/beer-service.jar</code></a>
 			and then download all of the class files found in here:
 			<code>/home/axa9070/Sites/756/homework/05/build/classes</code>
 			. Then, on your local machine, open a terminal and run:
