@@ -253,7 +253,7 @@ public class BeerJdbcManager extends JdbcTemplate
     /**
      * Retrieve the authorization token for a given hash
      * 
-     * @param hashcode
+     * @param hash
      *            hashcode of the token to look for
      * @return the token with the given hashcode
      * @throws SQLException

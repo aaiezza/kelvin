@@ -59,10 +59,14 @@ public class BeerController
      *            the password
      * @return a token that will expire after a certain amount of time. This is
      *         <code>null</code> if user does not exist.
-     * @throws UserUnderageException
-     * @throws SQLException
      * @throws UserNotFoundException
+     *             Thrown if the given username is not found
+     * @throws SQLException
+     *             Thrown when an issue with SQLite or the SQL itself occurs
+     * @throws UserUnderageException
+     *             Thrown when an underage user attempts to become authorized
      * @throws AuthorizationTokenNotFoundException
+     *             Thrown when an given username does not have a token
      */
     public String getToken( final String username, final String password )
             throws UserNotFoundException, SQLException, UserUnderageException,
@@ -102,7 +106,7 @@ public class BeerController
     public double getPrice( final String beerName )
     {
         LOG.info( format( "Calling: getPrice( %s )", beerName ) );
-        
+
         double price = -1;
         try
         {
@@ -149,8 +153,7 @@ public class BeerController
     public String [] getBeers()
     {
         LOG.info( "Calling: getBeers()" );
-        
-        
+
 
         final List<Beer> beerList = BEER_MANAGER.getBeers();
         final String [] beers = new String [beerList.size()];

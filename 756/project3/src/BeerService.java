@@ -54,10 +54,14 @@ public class BeerService
      *            the password
      * @return a token that will expire after a certain amount of time. This is
      *         <code>null</code> if user does not exist.
-     * @throws UserUnderageException
-     * @throws SQLException
      * @throws UserNotFoundException
+     *             Thrown if the given username is not found
+     * @throws SQLException
+     *             Thrown when an issue with SQLite or the SQL itself occurs
+     * @throws UserUnderageException
+     *             Thrown when an underage user attempts to become authorized
      * @throws AuthorizationTokenNotFoundException
+     *             Thrown when an given username does not have a token
      */
     @WebMethod
     public String getToken( final String username, final String password )

@@ -26,7 +26,7 @@
 		</p>
 		<hr>
 		<p>
-			The Java docs for this project can be found <a href="docs">here</a>.
+			The Java docs for this project can be found <a href="doc">here</a>.
 		</p>
 	</div>
 </body>

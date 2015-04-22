@@ -5,10 +5,10 @@ import javax.security.auth.login.AccountNotFoundException;
 import edu.rit.p3.data.BeerJdbcManager;
 
 /**
- * Within the {@link BeerJdbcManager#getTokenExpirationTimeByUsername(String)}
- * method (Data Layer), an attempt at finding a User's authentication token with
- * a certain username may not exist. In which case, an instance of this
- * exception is thrown.
+ * Within the {@link BeerJdbcManager#getTokenByUsername(String)} and the
+ * {@link BeerJdbcManager#getTokenByHash(String)} methods (Data Layer), an
+ * attempt at finding a User's authentication token with a certain username may
+ * not exist. In which case, an instance of this exception is thrown.
  * 
  * @author Alex Aiezza
  *
