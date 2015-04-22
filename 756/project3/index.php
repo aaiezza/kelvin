@@ -19,15 +19,14 @@
 
 <body>
 	<div id="content">
+		<p>The code for the Beer Service can be found in this directory on the
+			server.</p>
 		<p>
-			The code for the Beer Service
-			can be found in this directory on the server.
+			The client for accessing this service can be found <a href="">here</a>.
 		</p>
-		<p>The <a href="../homework/05">client</a> built for Homework 5 (Week 10) can be used to access this
-			service.</p>
 		<hr>
 		<p>
-		  The Java docs for this project can be found <a href="docs">here</a>.
+			The Java docs for this project can be found <a href="docs">here</a>.
 		</p>
 	</div>
 </body>
