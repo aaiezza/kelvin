@@ -47,7 +47,11 @@ CREATE TABLE IF NOT EXISTS `Token` (
   `Username` VARCHAR(20) NOT NULL,
   `Expiration` DATETIME NOT NULL DEFAULT DATETIME('now', '+5 minutes'),
   PRIMARY KEY (`TokenHash`),
-  UNIQUE INDEX `Username_UNIQUE` (`Username` ASC));
+  UNIQUE INDEX `Username_UNIQUE` (`Username` ASC),
+  FOREIGN KEY (`Username`)
+    REFERENCES `User` (`Username`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION);
 
 
 -- -----------------------------------------------------

@@ -345,7 +345,7 @@ public class BeerJdbcManager extends JdbcTemplate
         LOG.debug( format(
             "Attempting to change the Price of Beer with name: %s, to have a price of: %.2f",
             beerName, price ) );
-
+        
         if ( price < 0 )
             throw new IllegalArgumentException( "Price cannot be less than $0.00" );
 

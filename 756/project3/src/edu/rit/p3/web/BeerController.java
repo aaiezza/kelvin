@@ -1,7 +1,5 @@
 package edu.rit.p3.web;
 
-import static java.lang.String.format;
-
 import java.sql.SQLException;
 import java.util.Collections;
 import java.util.List;
@@ -40,7 +38,7 @@ public class BeerController
 
     private final BeerJdbcManager BEER_MANAGER;
 
-    private static String         NO_BEER = "NO_BEER";
+    public static String          NO_BEER = "NO_BEER";
 
     @Autowired
     public BeerController( final BeerJdbcManager beerJdbcManager )
@@ -72,27 +70,10 @@ public class BeerController
             throws UserNotFoundException, SQLException, UserUnderageException,
             AuthorizationTokenNotFoundException
     {
-        // User is trying to get authenticated! //
+        // User is trying to get authenticated
         if ( BEER_MANAGER.updateUserToken( username, password ) )
             return BEER_MANAGER.getTokenByUsername( username ).getTokenHash();
         else return null;
-    }
-
-    /**
-     * Takes no arguments and returns a list of the methods contained in the
-     * service.
-     * 
-     * @return a list of the methods contained in the service.
-     */
-    public String [] getMethods()
-    {
-        LOG.info( "Calling: getMethods()" );
-
-        final String [] methods = new String [] { "Double getPrice(String beerName)",
-                "Boolean setPrice(String beerName, Double price)", "String[] getBeers()",
-                "String getCheapest()", "String getCostliest()" };
-
-        return methods;
     }
 
     /**
@@ -105,8 +86,6 @@ public class BeerController
      */
     public double getPrice( final String beerName )
     {
-        LOG.info( format( "Calling: getPrice( %s )", beerName ) );
-
         double price = -1;
         try
         {
@@ -132,8 +111,6 @@ public class BeerController
      */
     public boolean setPrice( final String beerName, final double price )
     {
-        LOG.info( format( "Calling: setPrice( %s, %.2f )", beerName, price ) );
-
         try
         {
             return BEER_MANAGER.updatePriceOfBeer( beerName, price );
@@ -141,57 +118,40 @@ public class BeerController
         {
             LOG.error( e.getMessage() );
         }
-
         return false;
     }
 
     /**
      * Takes no arguments and returns a list of the known beers.
      * 
-     * @return the names of all the beers in the database
+     * @return the beers in the database
      */
-    public String [] getBeers()
+    public List<Beer> getBeers()
     {
-        LOG.info( "Calling: getBeers()" );
-
-
-        final List<Beer> beerList = BEER_MANAGER.getBeers();
-        final String [] beers = new String [beerList.size()];
-
-        for ( int i = 0; i < beerList.size(); i++ )
-        {
-            beers[i] = beerList.get( i ).getName();
-        }
-
-        return beers;
+        return BEER_MANAGER.getBeers();
     }
 
     /**
-     * Takes no arguments and returns the name of the least expensive beer.
+     * Takes no arguments and returns the least expensive beer.
      * 
-     * @return The name of the least expensive beer
+     * @return The least expensive beer
      */
-    public String getCheapest()
+    public Beer getCheapest()
     {
-        LOG.info( "Calling: getCheapest()" );
-
         final List<Beer> beers = getSortedBeers();
-
-        return beers.size() <= 0 ? NO_BEER : beers.get( 0 ).getName();
+        return beers.size() <= 0 ? null : beers.get( 0 );
     }
 
     /**
-     * Takes no arguments and returns the name of the most expensive beer.
+     * Takes no arguments and returns the the most expensive beer.
      * 
-     * @return The name of the most expensive beer.
+     * @return The most expensive beer. Returns <code>null</code> if no beers
+     *         exist.
      */
-    public String getCostliest()
+    public Beer getCostliest()
     {
-        LOG.info( "Calling: getCostliest()" );
-
         final List<Beer> beers = getSortedBeers();
-
-        return beers.size() <= 0 ? NO_BEER : beers.get( beers.size() - 1 ).getName();
+        return beers.size() <= 0 ? null : beers.get( beers.size() - 1 );
     }
 
     /**

@@ -1,4 +1,7 @@
+import static java.lang.String.format;
+
 import java.sql.SQLException;
+import java.util.List;
 
 import javax.annotation.Resource;
 import javax.jws.WebMethod;
@@ -7,12 +10,12 @@ import javax.jws.soap.SOAPBinding;
 import javax.jws.soap.SOAPBinding.Style;
 import javax.jws.soap.SOAPBinding.Use;
 import javax.xml.ws.WebServiceContext;
-import javax.xml.ws.handler.MessageContext;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import edu.rit.p3.data.entity.Beer;
 import edu.rit.p3.data.exception.AuthorizationTokenNotFoundException;
 import edu.rit.p3.data.exception.UserNotFoundException;
 import edu.rit.p3.data.exception.UserUnderageException;
@@ -68,6 +71,7 @@ public class BeerService
             throws UserNotFoundException, SQLException, UserUnderageException,
             AuthorizationTokenNotFoundException
     {
+        LOG.info( format( "Calling: getToken( %s, %s )", username, password ) );
         return BEER_CONTROLLER.getToken( username, password );
     }
 
@@ -77,10 +81,22 @@ public class BeerService
      * 
      * @return a list of the methods contained in the service.
      */
+    /**
+     * Takes no arguments and returns a list of the methods contained in the
+     * service.
+     * 
+     * @return a list of the methods contained in the service.
+     */
     @WebMethod
     public String [] getMethods()
     {
-        return BEER_CONTROLLER.getMethods();
+        LOG.info( "Calling: getMethods()" );
+
+        final String [] methods = new String [] { "Double getPrice(String beerName)",
+                "Boolean setPrice(String beerName, Double price)", "String[] getBeers()",
+                "String getCheapest()", "String getCostliest()" };
+
+        return methods;
     }
 
     /**
@@ -94,10 +110,7 @@ public class BeerService
     @WebMethod
     public double getPrice( final String beerName )
     {
-        // TODO figure out how to get headers
-        Object object = context.getMessageContext().get( MessageContext.HTTP_REQUEST_HEADERS );
-
-        LOG.info( object );
+        LOG.info( format( "Calling: getPrice( %s )", beerName ) );
         return BEER_CONTROLLER.getPrice( beerName );
     }
 
@@ -114,6 +127,7 @@ public class BeerService
     @WebMethod
     public boolean setPrice( final String beerName, final double price )
     {
+        LOG.info( format( "Calling: setPrice( %s, %.2f )", beerName, price ) );
         return BEER_CONTROLLER.setPrice( beerName, price );
     }
 
@@ -125,7 +139,17 @@ public class BeerService
     @WebMethod
     public String [] getBeers()
     {
-        return BEER_CONTROLLER.getBeers();
+        LOG.info( "Calling: getBeers()" );
+
+        final List<Beer> beers = BEER_CONTROLLER.getBeers();
+
+        final String [] beerNames = new String [beers.size()];
+        int b = 0;
+        for ( final Beer beer : beers )
+        {
+            beerNames[b++] = beer.getName();
+        }
+        return beerNames;
     }
 
     /**
@@ -136,7 +160,8 @@ public class BeerService
     @WebMethod
     public String getCheapest()
     {
-        return BEER_CONTROLLER.getCheapest();
+        LOG.info( "Calling: getCheapest()" );
+        return BEER_CONTROLLER.getCheapest().getName();
     }
 
     /**
@@ -147,7 +172,8 @@ public class BeerService
     @WebMethod
     public String getCostliest()
     {
-        return BEER_CONTROLLER.getCostliest();
+        LOG.info( "Calling: getCostliest()" );
+        return BEER_CONTROLLER.getCostliest().getName();
     }
 
 }
