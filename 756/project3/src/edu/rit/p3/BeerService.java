@@ -134,9 +134,13 @@ public class BeerService
      * @param token
      *            the authentication token for accessing this method
      * @return The price of the given beer
-     * @throws BeerServiceClosedException
-     * @throws TokenExpiredException
      * @throws AuthorizationTokenNotFoundException
+     *             Thrown if the <code>tokenHash</code> given does not exist.
+     * @throws TokenExpiredException
+     *             Thrown when the <code>tokenHash</code> given is expired.
+     * @throws BeerServiceClosedException
+     *             Thrown if the Beer Service is being accessed outside of
+     *             working hours.
      */
     @WebMethod
     public double getPrice( final String beerName, final String token )
@@ -187,9 +191,13 @@ public class BeerService
      * @param token
      *            authentication token for accessing this method
      * @return the names of all the beers in the database
-     * @throws BeerServiceClosedException
-     * @throws TokenExpiredException
      * @throws AuthorizationTokenNotFoundException
+     *             Thrown if the <code>tokenHash</code> given does not exist.
+     * @throws TokenExpiredException
+     *             Thrown when the <code>tokenHash</code> given is expired.
+     * @throws BeerServiceClosedException
+     *             Thrown if the Beer Service is being accessed outside of
+     *             working hours.
      */
     @WebMethod
     public String [] getBeers( final String token ) throws AuthorizationTokenNotFoundException,
@@ -216,12 +224,17 @@ public class BeerService
      * @param token
      *            authentication token for accessing this method
      * @return The name of the least expensive beer
-     * @throws BeerServiceClosedException
-     * @throws TokenExpiredException
      * @throws AuthorizationTokenNotFoundException
+     *             Thrown if the <code>tokenHash</code> given does not exist.
+     * @throws TokenExpiredException
+     *             Thrown when the <code>tokenHash</code> given is expired.
+     * @throws BeerServiceClosedException
+     *             Thrown if the Beer Service is being accessed outside of
+     *             working hours.
      */
     @WebMethod
-    public String getCheapest( final String token ) throws AuthorizationTokenNotFoundException, TokenExpiredException, BeerServiceClosedException
+    public String getCheapest( final String token ) throws AuthorizationTokenNotFoundException,
+            TokenExpiredException, BeerServiceClosedException
     {
         LOG.info( "Calling: getCheapest()" );
         return BEER_CONTROLLER.getCheapest( token ).getName();
@@ -234,9 +247,13 @@ public class BeerService
      * @param token
      *            authentication token for accessing this method
      * @return The name of the most expensive beer.
-     * @throws BeerServiceClosedException
-     * @throws TokenExpiredException
      * @throws AuthorizationTokenNotFoundException
+     *             Thrown if the <code>tokenHash</code> given does not exist.
+     * @throws TokenExpiredException
+     *             Thrown when the <code>tokenHash</code> given is expired.
+     * @throws BeerServiceClosedException
+     *             Thrown if the Beer Service is being accessed outside of
+     *             working hours.
      */
     @WebMethod
     public String getCostliest( final String token ) throws AuthorizationTokenNotFoundException,

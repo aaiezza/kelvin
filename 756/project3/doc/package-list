@@ -1,7 +1,1 @@
-
-edu.rit.p3.data
-edu.rit.p3.data.entity
-edu.rit.p3.data.entity.mapper
-edu.rit.p3.data.exception
-edu.rit.p3.util
-edu.rit.p3.web
+edu.rit.p3
