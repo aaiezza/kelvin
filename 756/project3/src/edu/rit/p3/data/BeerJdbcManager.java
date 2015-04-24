@@ -43,6 +43,8 @@ import edu.rit.p3.web.BeerController;
 @Component
 public class BeerJdbcManager extends JdbcTemplate
 {
+    private static final String SQL_ERROR                   = "Problem with SQL: '%s'";
+
     private final Log           LOG                         = LogFactory.getLog( getClass() );
 
     /**
@@ -159,29 +161,34 @@ public class BeerJdbcManager extends JdbcTemplate
      * @param username
      *            the username of the user to retrieve
      * @return the {@link User user} object with the given username
-     * @throws SQLException
-     *             Thrown when an issue in SQLite or the SQL itself occurs
      * @throws UserNotFoundException
      *             Thrown when a username cannot be found in the database
      */
-    public User getUserByUsername( String username ) throws SQLException, UserNotFoundException
+    public User getUserByUsername( String username ) throws UserNotFoundException
     {
         LOG.debug( format( "Retrieving User with name: %s", username ) );
-
-        final PreparedStatement sUserPS = prepare( QUERY_USER_BY_USERNAME );
-        sUserPS.setString( 1, username );
-
-        final ResultSet rs = sUserPS.executeQuery();
-
-        final List<User> users = userMapper.extractData( rs );
-
-        if ( users.size() <= 0 )
+        try
         {
-            LOG.warn( format( "Could not find User with username: %s", username ) );
-            throw new UserNotFoundException( username );
-        }
 
-        return users.get( 0 );
+            final PreparedStatement sUserPS = prepare( QUERY_USER_BY_USERNAME );
+            sUserPS.setString( 1, username );
+
+            final ResultSet rs = sUserPS.executeQuery();
+
+            final List<User> users = userMapper.extractData( rs );
+
+            if ( users.size() <= 0 )
+            {
+                LOG.warn( format( "Could not find User with username: %s", username ) );
+                throw new UserNotFoundException( username );
+            }
+
+            return users.get( 0 );
+        } catch ( SQLException e )
+        {
+            LOG.error( format( SQL_ERROR, QUERY_USER_BY_USERNAME ) );
+            return null;
+        }
     }
 
     /**
@@ -206,13 +213,11 @@ public class BeerJdbcManager extends JdbcTemplate
      *         <code>false</code> if the user's password is incorrect.
      * @throws UserNotFoundException
      *             Thrown if the given username is not found
-     * @throws SQLException
-     *             Thrown when an issue with SQLite or the SQL itself occurs
      * @throws UserUnderageException
      *             Thrown when an underage user attempts to become authorized
      */
     public boolean updateUserToken( final String username, final String password )
-            throws UserNotFoundException, SQLException, UserUnderageException
+            throws UserNotFoundException, UserUnderageException
     {
         // This is see if the given username exists first
         final User user = getUserByUsername( username );
@@ -235,24 +240,31 @@ public class BeerJdbcManager extends JdbcTemplate
         } catch ( AuthorizationTokenNotFoundException e )
         {}
 
-        PreparedStatement uTokenPS;
-        if ( token != null )
+        try
         {
-            uTokenPS = prepare( UPDATE_TOKEN_FOR_EXPIRATION );
+            PreparedStatement uTokenPS;
+            if ( token != null )
+            {
+                uTokenPS = prepare( UPDATE_TOKEN_FOR_EXPIRATION );
 
-            uTokenPS.setInt( 1, TOKEN_EXPIRATION_MINUTES );
-            uTokenPS.setString( 2, username );
+                uTokenPS.setInt( 1, TOKEN_EXPIRATION_MINUTES );
+                uTokenPS.setString( 2, username );
 
-        } else
+            } else
+            {
+                uTokenPS = prepare( UPDATE_TOKEN_FOR_USER );
+
+                uTokenPS.setString( 1, generateHex() );
+                uTokenPS.setInt( 2, TOKEN_EXPIRATION_MINUTES );
+                uTokenPS.setString( 3, username );
+            }
+
+            uTokenPS.executeUpdate();
+        } catch ( SQLException e )
         {
-            uTokenPS = prepare( UPDATE_TOKEN_FOR_USER );
-
-            uTokenPS.setString( 1, generateHex() );
-            uTokenPS.setInt( 2, TOKEN_EXPIRATION_MINUTES );
-            uTokenPS.setString( 3, username );
+            LOG.error( format( SQL_ERROR, token == null ? UPDATE_TOKEN_FOR_USER
+                                                       : UPDATE_TOKEN_FOR_EXPIRATION ) );
         }
-
-        uTokenPS.executeUpdate();
 
         LOG.info( format( "Token of User with username: %s, will expire %d minutes from now.",
             username, TOKEN_EXPIRATION_MINUTES ) );
@@ -260,13 +272,26 @@ public class BeerJdbcManager extends JdbcTemplate
         return true;
     }
 
-    public void deleteTokenByHash( final String hash ) throws SQLException
+    /**
+     * Deletes an entry in the Token table
+     * 
+     * @param hash
+     *            the <code>tokenHash</code> of the row in the Token table to
+     *            delete
+     */
+    public void deleteTokenByHash( final String hash )
     {
-        final PreparedStatement dTokenPS = prepare( DELETE_TOKEN_BY_HASH );
+        try
+        {
+            final PreparedStatement dTokenPS = prepare( DELETE_TOKEN_BY_HASH );
 
-        dTokenPS.setString( 1, hash );
+            dTokenPS.setString( 1, hash );
 
-        dTokenPS.executeUpdate();
+            dTokenPS.executeUpdate();
+        } catch ( SQLException e )
+        {
+            LOG.error( format( SQL_ERROR, DELETE_TOKEN_BY_HASH ) );
+        }
     }
 
     /**
@@ -275,26 +300,31 @@ public class BeerJdbcManager extends JdbcTemplate
      * @param username
      *            username to get the token for
      * @return the token of the given username
-     * @throws SQLException
-     *             Thrown when an issue with SQLite or the SQL itself occurs
      * @throws AuthorizationTokenNotFoundException
      *             Thrown when an given username does not have a token
      */
-    public Token getTokenByUsername( final String username ) throws SQLException,
-            AuthorizationTokenNotFoundException
+    public Token getTokenByUsername( final String username )
+            throws AuthorizationTokenNotFoundException
     {
-        final PreparedStatement sTokenPS = prepare( QUERY_TOKEN_BY_USERNAME );
-        sTokenPS.setString( 1, username );
+        try
+        {
+            final PreparedStatement sTokenPS = prepare( QUERY_TOKEN_BY_USERNAME );
+            sTokenPS.setString( 1, username );
 
-        final ResultSet rs = sTokenPS.executeQuery();
+            final ResultSet rs = sTokenPS.executeQuery();
 
-        final List<Token> tokens = tokenMapper.extractData( rs );
+            final List<Token> tokens = tokenMapper.extractData( rs );
 
-        if ( tokens.size() <= 0 )
-            throw new AuthorizationTokenNotFoundException( username,
-                    AuthorizationTokenNotFoundException.USERNAME );
+            if ( tokens.size() <= 0 )
+                throw new AuthorizationTokenNotFoundException( username,
+                        AuthorizationTokenNotFoundException.USERNAME );
 
-        return tokens.get( 0 );
+            return tokens.get( 0 );
+        } catch ( SQLException e )
+        {
+            LOG.error( format( SQL_ERROR, QUERY_TOKEN_BY_USERNAME ) );
+            return null;
+        }
     }
 
     /**
@@ -303,26 +333,30 @@ public class BeerJdbcManager extends JdbcTemplate
      * @param hash
      *            hashcode of the token to look for
      * @return the token with the given hashcode
-     * @throws SQLException
-     *             Thrown when an issue with SQLite or the SQL itself occurs
      * @throws AuthorizationTokenNotFoundException
      *             Thrown when an given hashcode does not have a token
      */
-    public Token getTokenByHash( final String hash ) throws SQLException,
-            AuthorizationTokenNotFoundException
+    public Token getTokenByHash( final String hash ) throws AuthorizationTokenNotFoundException
     {
-        final PreparedStatement sTokenPS = prepare( QUERY_TOKEN_BY_HASHCODE );
-        sTokenPS.setString( 1, hash );
+        try
+        {
+            final PreparedStatement sTokenPS = prepare( QUERY_TOKEN_BY_HASHCODE );
+            sTokenPS.setString( 1, hash );
 
-        final ResultSet rs = sTokenPS.executeQuery();
+            final ResultSet rs = sTokenPS.executeQuery();
 
-        final List<Token> tokens = tokenMapper.extractData( rs );
+            final List<Token> tokens = tokenMapper.extractData( rs );
 
-        if ( tokens.size() <= 0 )
-            throw new AuthorizationTokenNotFoundException( hash,
-                    AuthorizationTokenNotFoundException.HASHCODE );
+            if ( tokens.size() <= 0 )
+                throw new AuthorizationTokenNotFoundException( hash,
+                        AuthorizationTokenNotFoundException.HASHCODE );
 
-        return tokens.get( 0 );
+            return tokens.get( 0 );
+        } catch ( SQLException e )
+        {
+            LOG.error( format( SQL_ERROR, QUERY_TOKEN_BY_HASHCODE ) );
+            return null;
+        }
     }
 
     /**
@@ -331,29 +365,36 @@ public class BeerJdbcManager extends JdbcTemplate
      * @param beerName
      *            the name of the beer to retrieve
      * @return the {@link Beer beer} object with the given name
-     * @throws SQLException
-     *             Thrown when an issue with SQLite or the SQL itself occurs
      * @throws BeerNotFoundException
      *             Thrown when a beer name cannot be found in the database
      */
-    public Beer getBeerByName( String beerName ) throws SQLException, BeerNotFoundException
+    public Beer getBeerByName( String beerName ) throws BeerNotFoundException
     {
         LOG.debug( format( "Retrieving Beer with name: %s", beerName ) );
 
-        final PreparedStatement sBeerPS = prepare( QUERY_BEER_BY_NAME );
-        sBeerPS.setString( 1, beerName );
-
-        final ResultSet rs = sBeerPS.executeQuery();
-
-        final List<Beer> beers = beerMapper.extractData( rs );
-
-        if ( beers.size() <= 0 )
+        try
         {
-            LOG.warn( format( "Could not find Beer with name: %s", beerName ) );
-            throw new BeerNotFoundException( beerName );
-        }
 
-        return beers.get( 0 );
+            final PreparedStatement sBeerPS = prepare( QUERY_BEER_BY_NAME );
+            sBeerPS.setString( 1, beerName );
+
+            final ResultSet rs = sBeerPS.executeQuery();
+
+            final List<Beer> beers = beerMapper.extractData( rs );
+
+            if ( beers.size() <= 0 )
+            {
+                LOG.warn( format( "Could not find Beer with name: %s", beerName ) );
+                throw new BeerNotFoundException( beerName );
+            }
+
+            return beers.get( 0 );
+
+        } catch ( SQLException e )
+        {
+            LOG.error( format( SQL_ERROR, QUERY_BEER_BY_NAME ) );
+            return null;
+        }
     }
 
     /**
@@ -374,17 +415,14 @@ public class BeerJdbcManager extends JdbcTemplate
      *            the name of the beer to change the price of
      * @param price
      *            the new price of the beer
-     * @return <code>true</code> if the update was successful. This method in
-     *         fact does not return <code>false</code> under any circumstance,
-     *         but if something goes wrong, one of a few exceptions will be
-     *         thrown.
+     * @return <code>true</code> if the update was successful. This method will
+     *         return <code>false</code> if the database does not accept the
+     *         SQL.
      * @throws BeerNotFoundException
      *             Thrown if the given beer name is not found
-     * @throws SQLException
-     *             Thrown when an issue MySQL or the SQL itself occurs
      */
     public boolean updatePriceOfBeer( final String beerName, final double price )
-            throws BeerNotFoundException, SQLException
+            throws BeerNotFoundException
     {
         // This is see if the given beer name exists first
         getBeerByName( beerName );
@@ -396,14 +434,21 @@ public class BeerJdbcManager extends JdbcTemplate
         if ( price < 0 )
             throw new IllegalArgumentException( "Price cannot be less than $0.00" );
 
-        final PreparedStatement uBeerPS = prepare( UPDATE_PRICE_OF_BEER );
+        try
+        {
+            final PreparedStatement uBeerPS = prepare( UPDATE_PRICE_OF_BEER );
 
-        uBeerPS.setDouble( 1, price );
-        uBeerPS.setString( 2, beerName );
+            uBeerPS.setDouble( 1, price );
+            uBeerPS.setString( 2, beerName );
 
-        uBeerPS.executeUpdate();
+            uBeerPS.executeUpdate();
 
-        LOG.info( format( "Price of Beer with name: %s, has changed to: %.2f", beerName, price ) );
+            LOG.info( format( "Price of Beer with name: %s, has changed to: %.2f", beerName, price ) );
+        } catch ( SQLException e )
+        {
+            LOG.error( format( SQL_ERROR, UPDATE_PRICE_OF_BEER ) );
+            return false;
+        }
 
         return true;
     }
@@ -419,7 +464,7 @@ public class BeerJdbcManager extends JdbcTemplate
      *         processed by setting any <code>?</code> characters in it. Then it
      *         may be executed.
      * @throws SQLException
-     *             Thrown when an issue MySQL or the SQL itself occurs
+     *             Thrown when an issue preparing the SQL statement occurs
      */
     private PreparedStatement prepare( final String sqlStatement ) throws SQLException
     {

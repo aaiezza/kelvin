@@ -1,6 +1,5 @@
 package edu.rit.p3.web;
 
-import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -20,6 +19,7 @@ import edu.rit.p3.data.exception.AuthorizationTokenNotFoundException;
 import edu.rit.p3.data.exception.BeerNotFoundException;
 import edu.rit.p3.data.exception.BeerServiceClosedException;
 import edu.rit.p3.data.exception.TokenExpiredException;
+import edu.rit.p3.data.exception.UserHasInsufficientPrivilegesException;
 import edu.rit.p3.data.exception.UserNotFoundException;
 import edu.rit.p3.data.exception.UserUnderageException;
 
@@ -84,15 +84,13 @@ public class BeerController
      *         <code>null</code> if user does not exist.
      * @throws UserNotFoundException
      *             Thrown if the given username is not found
-     * @throws SQLException
-     *             Thrown when an issue with SQLite or the SQL itself occurs
      * @throws UserUnderageException
      *             Thrown when an underage user attempts to become authorized
      * @throws AuthorizationTokenNotFoundException
      *             Thrown when an given username does not have a token
      */
     public String getToken( final String username, final String password )
-            throws UserNotFoundException, SQLException, UserUnderageException,
+            throws UserNotFoundException, UserUnderageException,
             AuthorizationTokenNotFoundException
     {
         // User is trying to get authenticated
@@ -107,13 +105,20 @@ public class BeerController
      * 
      * @param beerName
      *            the name of the beer to get the price of
+     * @param token
+     *            authentication token for accessing this method
      * @return The price of the given beer
-     * @throws BeerServiceClosedException
-     * @throws SQLException
-     * @throws TokenExpiredException
      * @throws AuthorizationTokenNotFoundException
+     *             Thrown if the <code>tokenHash</code> given does not exist.
+     * @throws TokenExpiredException
+     *             Thrown when the <code>tokenHash</code> given is expired.
+     * @throws BeerServiceClosedException
+     *             Thrown if the Beer Service is being accessed outside of
+     *             working hours.
      */
-    public double getPrice( final String beerName, final String token ) throws AuthorizationTokenNotFoundException, TokenExpiredException, SQLException, BeerServiceClosedException
+    public double getPrice( final String beerName, final String token )
+            throws AuthorizationTokenNotFoundException, TokenExpiredException,
+            BeerServiceClosedException
     {
         verifyToken( token );
         double price = -1;
@@ -121,7 +126,7 @@ public class BeerController
         {
             final Beer beer = BEER_MANAGER.getBeerByName( beerName );
             price = beer.getPrice();
-        } catch ( BeerNotFoundException | SQLException e )
+        } catch ( BeerNotFoundException e )
         {
             LOG.error( e.getMessage() );
         }
@@ -137,19 +142,37 @@ public class BeerController
      *            the name of the beer to set the price of
      * @param price
      *            the new price of the given beer
+     * @param token
+     *            authentication token for accessing this method
      * @return <code>true</code> if the new price was set
-     * @throws BeerServiceClosedException 
-     * @throws SQLException 
-     * @throws TokenExpiredException 
-     * @throws AuthorizationTokenNotFoundException 
+     * @throws AuthorizationTokenNotFoundException
+     *             Thrown if the <code>tokenHash</code> given does not exist.
+     * @throws TokenExpiredException
+     *             Thrown when the <code>tokenHash</code> given is expired.
+     * @throws BeerServiceClosedException
+     *             Thrown if the Beer Service is being accessed outside of
+     *             working hours.
+     * @throws UserHasInsufficientPrivilegesException
+     *             Thrown if the user associated with the given authentication
+     *             <code>token</code> has insufficient privleges for accessing
+     *             this method.
      */
-    public boolean setPrice( final String beerName, final double price, final String token ) throws AuthorizationTokenNotFoundException, TokenExpiredException, SQLException, BeerServiceClosedException
+    public boolean setPrice( final String beerName, final double price, final String token )
+            throws AuthorizationTokenNotFoundException, TokenExpiredException,
+            BeerServiceClosedException, UserHasInsufficientPrivilegesException
     {
         verifyToken( token );
         try
         {
+            final User user = BEER_MANAGER.getUserByUsername( BEER_MANAGER.getTokenByHash( token )
+                    .getUsername() );
+            if ( !user.isAccessLevel() )
+            {
+                throw new UserHasInsufficientPrivilegesException( user, beerName );
+            }
+
             return BEER_MANAGER.updatePriceOfBeer( beerName, price );
-        } catch ( BeerNotFoundException | SQLException e )
+        } catch ( BeerNotFoundException | UserNotFoundException e )
         {
             LOG.error( e.getMessage() );
         }
@@ -159,13 +182,19 @@ public class BeerController
     /**
      * Takes no arguments and returns a list of the known beers.
      * 
+     * @param token
+     *            authentication token for accessing this method
      * @return the beers in the database
-     * @throws BeerServiceClosedException
-     * @throws SQLException
-     * @throws TokenExpiredException
      * @throws AuthorizationTokenNotFoundException
+     *             Thrown if the <code>tokenHash</code> given does not exist.
+     * @throws TokenExpiredException
+     *             Thrown when the <code>tokenHash</code> given is expired.
+     * @throws BeerServiceClosedException
+     *             Thrown if the Beer Service is being accessed outside of
+     *             working hours.
      */
-    public List<Beer> getBeers( final String token ) throws AuthorizationTokenNotFoundException, TokenExpiredException, SQLException, BeerServiceClosedException
+    public List<Beer> getBeers( final String token ) throws AuthorizationTokenNotFoundException,
+            TokenExpiredException, BeerServiceClosedException
     {
         verifyToken( token );
         return BEER_MANAGER.getBeers();
@@ -174,13 +203,19 @@ public class BeerController
     /**
      * Takes no arguments and returns the least expensive beer.
      * 
+     * @param token
+     *            authentication token for accessing this method
      * @return The least expensive beer
-     * @throws BeerServiceClosedException
-     * @throws SQLException
-     * @throws TokenExpiredException
      * @throws AuthorizationTokenNotFoundException
+     *             Thrown if the <code>tokenHash</code> given does not exist.
+     * @throws TokenExpiredException
+     *             Thrown when the <code>tokenHash</code> given is expired.
+     * @throws BeerServiceClosedException
+     *             Thrown if the Beer Service is being accessed outside of
+     *             working hours.
      */
-    public Beer getCheapest( final String token ) throws AuthorizationTokenNotFoundException, TokenExpiredException, SQLException, BeerServiceClosedException
+    public Beer getCheapest( final String token ) throws AuthorizationTokenNotFoundException,
+            TokenExpiredException, BeerServiceClosedException
     {
         verifyToken( token );
         final List<Beer> beers = getSortedBeers();
@@ -190,14 +225,20 @@ public class BeerController
     /**
      * Takes no arguments and returns the the most expensive beer.
      * 
+     * @param token
+     *            authentication token for accessing this method
      * @return The most expensive beer. Returns <code>null</code> if no beers
      *         exist.
-     * @throws BeerServiceClosedException
-     * @throws SQLException
-     * @throws TokenExpiredException
      * @throws AuthorizationTokenNotFoundException
+     *             Thrown if the <code>tokenHash</code> given does not exist.
+     * @throws TokenExpiredException
+     *             Thrown when the <code>tokenHash</code> given is expired.
+     * @throws BeerServiceClosedException
+     *             Thrown if the Beer Service is being accessed outside of
+     *             working hours.
      */
-    public Beer getCostliest( final String token ) throws AuthorizationTokenNotFoundException, TokenExpiredException, SQLException, BeerServiceClosedException
+    public Beer getCostliest( final String token ) throws AuthorizationTokenNotFoundException,
+            TokenExpiredException, BeerServiceClosedException
     {
         verifyToken( token );
         final List<Beer> beers = getSortedBeers();
@@ -218,8 +259,23 @@ public class BeerController
         return beers;
     }
 
+
+    /**
+     * This method is called locally within an instance of the BeerController in
+     * methods that perform operations that require authentication.
+     * 
+     * @param tokenHash
+     *            the authentication token string
+     * @throws AuthorizationTokenNotFoundException
+     *             Thrown if the <code>tokenHash</code> given does not exist.
+     * @throws TokenExpiredException
+     *             Thrown when the <code>tokenHash</code> given is expired.
+     * @throws BeerServiceClosedException
+     *             Thrown if the Beer Service is being accessed outside of
+     *             working hours.
+     */
     private void verifyToken( final String tokenHash ) throws AuthorizationTokenNotFoundException,
-            SQLException, TokenExpiredException, BeerServiceClosedException
+            TokenExpiredException, BeerServiceClosedException
     {
         // What will make this method fail:
         // The token doesn't exist

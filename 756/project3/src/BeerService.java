@@ -1,6 +1,5 @@
 import static java.lang.String.format;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,6 +16,7 @@ import edu.rit.p3.data.entity.Beer;
 import edu.rit.p3.data.exception.AuthorizationTokenNotFoundException;
 import edu.rit.p3.data.exception.BeerServiceClosedException;
 import edu.rit.p3.data.exception.TokenExpiredException;
+import edu.rit.p3.data.exception.UserHasInsufficientPrivilegesException;
 import edu.rit.p3.data.exception.UserNotFoundException;
 import edu.rit.p3.data.exception.UserUnderageException;
 import edu.rit.p3.web.BeerController;
@@ -58,8 +58,6 @@ public class BeerService
      *         <code>null</code> if user does not exist.
      * @throws UserNotFoundException
      *             Thrown if the given username is not found
-     * @throws SQLException
-     *             Thrown when an issue with SQLite or the SQL itself occurs
      * @throws UserUnderageException
      *             Thrown when an underage user attempts to become authorized
      * @throws AuthorizationTokenNotFoundException
@@ -67,19 +65,13 @@ public class BeerService
      */
     @WebMethod
     public String getToken( final String username, final String password )
-            throws UserNotFoundException, SQLException, UserUnderageException,
+            throws UserNotFoundException, UserUnderageException,
             AuthorizationTokenNotFoundException
     {
         LOG.info( format( "Calling: getToken( %s, %s )", username, password ) );
         return BEER_CONTROLLER.getToken( username, password );
     }
 
-    /**
-     * Takes no arguments and returns a list of the methods contained in the
-     * service.
-     * 
-     * @return a list of the methods contained in the service.
-     */
     /**
      * Takes no arguments and returns a list of the methods contained in the
      * service.
@@ -99,11 +91,13 @@ public class BeerService
     }
 
     /**
-     * Takes a string denoting the beer brand and returns a double representing
-     * the beer price.
+     * Takes a string denoting the beer brand and a string denoting a token and
+     * returns a double representing the beer price if the token is valid.
      * 
      * @param beerName
      *            the name of the beer to get the price of
+     * @param token
+     *            the authentication token for accessing this method
      * @return The price of the given beer
      */
     @WebMethod
@@ -113,44 +107,54 @@ public class BeerService
         try
         {
             return BEER_CONTROLLER.getPrice( beerName, token );
-        } catch ( AuthorizationTokenNotFoundException | TokenExpiredException | SQLException
+        } catch ( AuthorizationTokenNotFoundException | TokenExpiredException
                 | BeerServiceClosedException e )
         {
-            // TODO SEND SOAP FAULT
+            // TODO Auto-generated catch block
             e.printStackTrace();
         }
         return 0;
     }
 
     /**
-     * Takes a string denoting the beer brand and a double denoting the price
-     * returns <code>true</code> or <code>false</code> depending on success.
+     * Takes a string denoting the beer brand, a double denoting the price and a
+     * string denoting a token returns <code>true</code> or <code>false</code>
+     * depending on success and if the token is valid.
      * 
      * @param beerName
      *            the name of the beer to set the price of
      * @param price
      *            the new price of the given beer
+     * @param token
+     *            authentication token for accessing this method
      * @return <code>true</code> if the new price was set
+     * @throws AuthorizationTokenNotFoundException
+     *             Thrown if the <code>tokenHash</code> given does not exist.
+     * @throws TokenExpiredException
+     *             Thrown when the <code>tokenHash</code> given is expired.
+     * @throws BeerServiceClosedException
+     *             Thrown if the Beer Service is being accessed outside of
+     *             working hours.
+     * @throws UserHasInsufficientPrivilegesException
+     *             Thrown if the user associated with the given authentication
+     *             <code>token</code> has insufficient privleges for accessing
+     *             this method.
      */
     @WebMethod
     public boolean setPrice( final String beerName, final double price, final String token )
+            throws UserHasInsufficientPrivilegesException, AuthorizationTokenNotFoundException,
+            TokenExpiredException, BeerServiceClosedException
     {
         LOG.info( format( "Calling: setPrice( %s, %.2f )", beerName, price ) );
-        try
-        {
-            return BEER_CONTROLLER.setPrice( beerName, price, token );
-        } catch ( AuthorizationTokenNotFoundException | TokenExpiredException | SQLException
-                | BeerServiceClosedException e )
-        {
-            // TODO SEND SOAP FAULT
-            e.printStackTrace();
-        }
-        return false;
+        return BEER_CONTROLLER.setPrice( beerName, price, token );
     }
 
     /**
-     * Takes no arguments and returns a list of the known beers.
+     * Takes a string denoting a token and returns a list of the known beers if
+     * the token is valid.
      * 
+     * @param token
+     *            authentication token for accessing this method
      * @return the names of all the beers in the database
      */
     @WebMethod
@@ -162,7 +166,7 @@ public class BeerService
         try
         {
             beers = BEER_CONTROLLER.getBeers( token );
-        } catch ( AuthorizationTokenNotFoundException | TokenExpiredException | SQLException
+        } catch ( AuthorizationTokenNotFoundException | TokenExpiredException
                 | BeerServiceClosedException e )
         {
             // TODO SEND SOAP FAULT
@@ -179,8 +183,11 @@ public class BeerService
     }
 
     /**
-     * Takes no arguments and returns the name of the least expensive beer.
+     * Takes a string denoting a token and returns the name of the least
+     * expensive beer if the token is valid.
      * 
+     * @param token
+     *            authentication token for accessing this method
      * @return The name of the least expensive beer
      */
     @WebMethod
@@ -190,7 +197,7 @@ public class BeerService
         try
         {
             return BEER_CONTROLLER.getCheapest( token ).getName();
-        } catch ( AuthorizationTokenNotFoundException | TokenExpiredException | SQLException
+        } catch ( AuthorizationTokenNotFoundException | TokenExpiredException
                 | BeerServiceClosedException e )
         {
             // TODO SEND SOAP FAULT
@@ -200,8 +207,11 @@ public class BeerService
     }
 
     /**
-     * Takes no arguments and returns the name of the most expensive beer.
+     * Takes a string denoting a token and returns the name of the most
+     * expensive beer if the token is valid.
      * 
+     * @param token
+     *            authentication token for accessing this method
      * @return The name of the most expensive beer.
      */
     @WebMethod
@@ -211,7 +221,7 @@ public class BeerService
         try
         {
             return BEER_CONTROLLER.getCostliest( token ).getName();
-        } catch ( AuthorizationTokenNotFoundException | TokenExpiredException | SQLException
+        } catch ( AuthorizationTokenNotFoundException | TokenExpiredException
                 | BeerServiceClosedException e )
         {
             // TODO SEND SOAP FAULT
