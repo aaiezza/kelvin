@@ -13,8 +13,6 @@ import javax.sql.DataSource;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import edu.rit.p3.data.entity.Beer;
@@ -138,11 +136,7 @@ public class BeerJdbcManager extends JdbcTemplate
 
     private final int           ACCESS_AGE;
 
-    @Autowired
-    public BeerJdbcManager(
-        final DataSource dataSource,
-        @Value ( "${token.expire}" ) final int tokenExpire,
-        @Value ( "${access.age}" ) final int accessAge )
+    public BeerJdbcManager( final DataSource dataSource, final int tokenExpire, final int accessAge )
     {
         super( dataSource );
 

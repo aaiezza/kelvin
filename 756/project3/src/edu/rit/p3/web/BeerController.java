@@ -39,7 +39,7 @@ import edu.rit.p3.data.exception.UserUnderageException;
  */
 public class BeerController
 {
-    public static final String   TIME_FORMAT = "HH:mm:ss";
+    public static final String    TIME_FORMAT = "HH:mm:ss";
 
     public final Date             CLOSE_TIME, OPEN_TIME;
 

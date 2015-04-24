@@ -4,6 +4,8 @@ import static java.lang.String.format;
 import static java.lang.System.getProperty;
 
 import java.io.IOException;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -12,12 +14,11 @@ import java.util.List;
 
 import javax.jws.WebMethod;
 import javax.jws.WebService;
-import javax.jws.soap.SOAPBinding;
 import javax.sql.DataSource;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.springframework.jdbc.datasource.DriverManagerDataSource;
+import org.springframework.jdbc.datasource.SimpleDriverDataSource;
 
 import edu.rit.p3.data.BeerJdbcManager;
 import edu.rit.p3.data.entity.Beer;
@@ -39,8 +40,7 @@ import edu.rit.p3.web.BeerController;
  * @author Alex Aiezza
  *
  */
-@WebService
-@SOAPBinding
+@WebService ( serviceName = "BeerService" )
 public class BeerService
 {
     private final Log            LOG = LogFactory.getLog( getClass() );
@@ -57,9 +57,10 @@ public class BeerService
         }
     }
 
-    public BeerService() throws ParseException
+    public BeerService() throws ParseException, SQLException
     {
-        final DataSource dataSource = new DriverManagerDataSource( getProperty( "db.url" ) );
+        final DataSource dataSource = new SimpleDriverDataSource(
+                DriverManager.getDriver( getProperty( "db.driver" ) ), getProperty( "db.url" ) );
 
         BeerJdbcManager beerMan = new BeerJdbcManager( dataSource,
                 parseInt( getProperty( "token.expire" ) ), parseInt( getProperty( "access.age" ) ) );
