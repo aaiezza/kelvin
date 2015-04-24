@@ -4,6 +4,6 @@
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src"/>
         <wb-resource deploy-path="/resources" source-path="/local-resources"/>
         <property name="java-output-path" value="/756-project3/build/classes"/>
-        <property name="context-root" value="beer"/>
+        <property name="context-root" value="/"/>
     </wb-module>
 </project-modules>

@@ -1,7 +1,5 @@
 package edu.rit.p3.web;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
@@ -9,7 +7,6 @@ import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import edu.rit.p3.data.BeerJdbcManager;
 import edu.rit.p3.data.entity.Beer;
@@ -42,22 +39,9 @@ import edu.rit.p3.data.exception.UserUnderageException;
  */
 public class BeerController
 {
-    private static final String   TIME_FORMAT = "HH:mm:ss";
+    public static final String   TIME_FORMAT = "HH:mm:ss";
 
-    public static final Date      CLOSE_TIME, OPEN_TIME;
-
-    static
-    {
-        Date closeTime = null, openTime = null;
-        try
-        {
-            closeTime = new SimpleDateFormat( TIME_FORMAT ).parse( "00:00:00" );
-            openTime = new SimpleDateFormat( TIME_FORMAT ).parse( "10:00:00" );
-        } catch ( ParseException e )
-        {}
-        CLOSE_TIME = closeTime;
-        OPEN_TIME = openTime;
-    }
+    public final Date             CLOSE_TIME, OPEN_TIME;
 
     private final Log             LOG         = LogFactory.getLog( getClass() );
 
@@ -65,10 +49,14 @@ public class BeerController
 
     public static String          NO_BEER     = "NO_BEER";
 
-    @Autowired
-    public BeerController( final BeerJdbcManager beerJdbcManager )
+    public BeerController(
+        final BeerJdbcManager beerJdbcManager,
+        final Date closeTime,
+        final Date openTime )
     {
-        this.BEER_MANAGER = beerJdbcManager;
+        BEER_MANAGER = beerJdbcManager;
+        CLOSE_TIME = closeTime;
+        OPEN_TIME = openTime;
         LOG.info( "Beer Controller initialized" );
     }
 

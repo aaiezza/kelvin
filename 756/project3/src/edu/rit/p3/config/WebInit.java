@@ -38,6 +38,5 @@ public class WebInit implements WebApplicationInitializer
             new DispatcherServlet( dispatcherContext ) );
         dispatcher.setLoadOnStartup( 1 );
         dispatcher.addMapping( "/" );
-
     }
 }

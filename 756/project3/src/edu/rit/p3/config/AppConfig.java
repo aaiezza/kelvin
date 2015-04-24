@@ -15,7 +15,7 @@ import edu.rit.p3.web.BeerController;
  *
  */
 @Configuration
-@PropertySource ( "classpath:/resources/project3.properties" )
+@PropertySource ( "/resources/project3.properties" )
 @ComponentScan ( basePackageClasses = { BeerJdbcManager.class, BeerController.class } )
 public class AppConfig
 {}

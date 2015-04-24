@@ -18,7 +18,7 @@ public class PropertiesSetter
      * <strong>Property File:</strong> {@value}
      * </p>
      */
-    private static final String PROPERTIES_FILE = "resources/beer_service.properties";
+    private static final String PROPERTIES_FILE = "/resources/beer_service.properties";
 
     public PropertiesSetter() throws IOException
     {

@@ -1,17 +1,25 @@
+import static edu.rit.p3.web.BeerController.TIME_FORMAT;
+import static java.lang.Integer.parseInt;
 import static java.lang.String.format;
+import static java.lang.System.getProperty;
 
+import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
-import javax.annotation.Resource;
 import javax.jws.WebMethod;
 import javax.jws.WebService;
-import javax.xml.ws.WebServiceContext;
+import javax.jws.soap.SOAPBinding;
+import javax.sql.DataSource;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
+import edu.rit.p3.data.BeerJdbcManager;
 import edu.rit.p3.data.entity.Beer;
 import edu.rit.p3.data.exception.AuthorizationTokenNotFoundException;
 import edu.rit.p3.data.exception.BeerServiceClosedException;
@@ -19,6 +27,7 @@ import edu.rit.p3.data.exception.TokenExpiredException;
 import edu.rit.p3.data.exception.UserHasInsufficientPrivilegesException;
 import edu.rit.p3.data.exception.UserNotFoundException;
 import edu.rit.p3.data.exception.UserUnderageException;
+import edu.rit.p3.util.PropertiesSetter;
 import edu.rit.p3.web.BeerController;
 
 /**
@@ -31,19 +40,42 @@ import edu.rit.p3.web.BeerController;
  *
  */
 @WebService
+@SOAPBinding
 public class BeerService
 {
     private final Log            LOG = LogFactory.getLog( getClass() );
 
-    @Resource
-    private WebServiceContext    context;
-
     private final BeerController BEER_CONTROLLER;
 
-    @Autowired
-    public BeerService( BeerController beerController )
     {
-        BEER_CONTROLLER = beerController;
+        try
+        {
+            new PropertiesSetter();
+        } catch ( IOException e )
+        {
+            LOG.error( e.getMessage() );
+        }
+    }
+
+    public BeerService() throws ParseException
+    {
+        final DataSource dataSource = new DriverManagerDataSource( getProperty( "db.url" ) );
+
+        BeerJdbcManager beerMan = new BeerJdbcManager( dataSource,
+                parseInt( getProperty( "token.expire" ) ), parseInt( getProperty( "access.age" ) ) );
+
+        try
+        {
+            final Date closeTime = new SimpleDateFormat( TIME_FORMAT )
+                    .parse( getProperty( "time.close" ) );
+            final Date openTime = new SimpleDateFormat( TIME_FORMAT )
+                    .parse( getProperty( "time.open" ) );
+            BEER_CONTROLLER = new BeerController( beerMan, closeTime, openTime );
+        } catch ( ParseException e )
+        {
+            LOG.error( e.getMessage() );
+            throw e;
+        }
     }
 
     /**

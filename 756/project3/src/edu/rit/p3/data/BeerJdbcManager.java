@@ -9,13 +9,13 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
+import javax.sql.DataSource;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.datasource.DriverManagerDataSource;
-import org.springframework.stereotype.Component;
 
 import edu.rit.p3.data.entity.Beer;
 import edu.rit.p3.data.entity.Token;
@@ -40,7 +40,6 @@ import edu.rit.p3.web.BeerController;
  * @author Alex Aiezza
  *
  */
-@Component
 public class BeerJdbcManager extends JdbcTemplate
 {
     private static final String SQL_ERROR                   = "Problem with SQL: '%s'";
@@ -141,7 +140,7 @@ public class BeerJdbcManager extends JdbcTemplate
 
     @Autowired
     public BeerJdbcManager(
-        final DriverManagerDataSource dataSource,
+        final DataSource dataSource,
         @Value ( "${token.expire}" ) final int tokenExpire,
         @Value ( "${access.age}" ) final int accessAge )
     {
