@@ -3,17 +3,6 @@
 -- MySQL Workbench Forward Engineering
 
 -- -----------------------------------------------------
--- Schema project3_schema
--- -----------------------------------------------------
-DROP SCHEMA IF EXISTS `project3_schema`;
-
--- -----------------------------------------------------
--- Schema project3_schema
--- -----------------------------------------------------
-CREATE SCHEMA IF NOT EXISTS `project3_schema`;
-USE `project3_schema`;
-
--- -----------------------------------------------------
 -- Table `Beer`
 -- -----------------------------------------------------
 DROP TABLE IF EXISTS `Beer`;
@@ -45,9 +34,8 @@ DROP TABLE IF EXISTS `Token`;
 CREATE TABLE IF NOT EXISTS `Token` (
   `TokenHash` VARCHAR(16) NOT NULL,
   `Username` VARCHAR(20) NOT NULL,
-  `Expiration` DATETIME NOT NULL DEFAULT DATETIME('now', '+5 minutes'),
+  `Expiration` DATETIME DEFAULT (DATETIME('NOW', '+5 MINUTES')) NOT NULL,
   PRIMARY KEY (`TokenHash`),
-  UNIQUE INDEX `Username_UNIQUE` (`Username` ASC),
   FOREIGN KEY (`Username`)
     REFERENCES `User` (`Username`)
     ON DELETE NO ACTION
@@ -58,7 +46,6 @@ CREATE TABLE IF NOT EXISTS `Token` (
 -- Data for table `Beer`
 -- -----------------------------------------------------
 BEGIN TRANSACTION;
-USE `project3_schema`;
 INSERT INTO `Beer` (`Name`, `Price`) VALUES ('Budweiser', 10.49);
 INSERT INTO `Beer` (`Name`, `Price`) VALUES ('Coors', 9.99);
 INSERT INTO `Beer` (`Name`, `Price`) VALUES ('Corona', 13.49);
@@ -74,7 +61,6 @@ COMMIT;
 -- Data for table `User`
 -- -----------------------------------------------------
 BEGIN TRANSACTION;
-USE `project3_schema`;
 INSERT INTO `User` (`Username`, `Password`, `Age`, `AccessLevel`) VALUES ('test', 'testing', 25, 1);
 
 COMMIT;

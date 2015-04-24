@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
+import org.springframework.stereotype.Component;
 
 import edu.rit.p3.data.entity.Beer;
 import edu.rit.p3.data.entity.Token;
@@ -39,9 +40,10 @@ import edu.rit.p3.web.BeerController;
  * @author Alex Aiezza
  *
  */
+@Component
 public class BeerJdbcManager extends JdbcTemplate
 {
-    private final Log           LOG                     = LogFactory.getLog( getClass() );
+    private final Log           LOG                         = LogFactory.getLog( getClass() );
 
     /**
      * <p>
@@ -49,7 +51,7 @@ public class BeerJdbcManager extends JdbcTemplate
      * </p>
      * Uses a given Beer name to query that beer
      */
-    private static final String QUERY_BEER_BY_NAME      = "SELECT Name, Price FROM Beer WHERE Name = ?;";
+    private static final String QUERY_BEER_BY_NAME          = "SELECT Name, Price FROM Beer WHERE Name = ?;";
 
     /**
      * <p>
@@ -57,7 +59,7 @@ public class BeerJdbcManager extends JdbcTemplate
      * </p>
      * Uses a given Username to query that user
      */
-    private static final String QUERY_USER_BY_USERNAME  = "SELECT Username, Password FROM User WHERE Username = ?;";
+    private static final String QUERY_USER_BY_USERNAME      = "SELECT Username, Password FROM User WHERE Username = ?;";
 
     /**
      * <p>
@@ -65,7 +67,7 @@ public class BeerJdbcManager extends JdbcTemplate
      * </p>
      * Uses a given Username to query that user's authentication token
      */
-    private static final String QUERY_TOKEN_BY_USERNAME = "SELECT TokenHash, Username, Expiration FROM Token WHERE Username = ?;";
+    private static final String QUERY_TOKEN_BY_USERNAME     = "SELECT TokenHash, Username, Expiration FROM Token WHERE Username = ?;";
 
 
     /**
@@ -74,7 +76,7 @@ public class BeerJdbcManager extends JdbcTemplate
      * </p>
      * Uses a given token hash to query for a user's authentication token
      */
-    private static final String QUERY_TOKEN_BY_HASHCODE = "SELECT TokenHash, Username, Expiration FROM Token WHERE TokenHash = ?;";
+    private static final String QUERY_TOKEN_BY_HASHCODE     = "SELECT TokenHash, Username, Expiration FROM Token WHERE TokenHash = ?;";
 
     /**
      * <p>
@@ -82,7 +84,24 @@ public class BeerJdbcManager extends JdbcTemplate
      * </p>
      * With a given Username, this query updates the authorization token
      */
-    private static final String UPDATE_TOKEN_FOR_USER   = "UPDATE Token SET TokenHash = ?, Expiration = DATETIME('now', '+? minutes') WHERE Username = ?;";
+    private static final String UPDATE_TOKEN_FOR_USER       = "UPDATE Token SET TokenHash = ?, Expiration = DATETIME('now', '+? minutes') WHERE Username = ?;";
+
+    /**
+     * <p>
+     * <strong>SQL:</strong> {@value}
+     * </p>
+     * With a given TokenHash, this query updates the authorization token's
+     * expiration time
+     */
+    private static final String UPDATE_TOKEN_FOR_EXPIRATION = "UPDATE Token SET Expiration = DATETIME('now', '+? minutes') WHERE Username = ?;";
+
+    /**
+     * <p>
+     * <strong>SQL:</strong> {@value}
+     * </p>
+     * With a given TokenHash, this query deletes the authorization token
+     */
+    private static final String DELETE_TOKEN_BY_HASH        = "DELETE FROM Token WHERE TokenHash = ?;";
 
     /**
      * <p>
@@ -90,7 +109,7 @@ public class BeerJdbcManager extends JdbcTemplate
      * </p>
      * Selects all users from the database
      */
-    private static final String SELECT_ALL_USERS        = "SELECT Username, Password FROM User;";
+    private static final String SELECT_ALL_USERS            = "SELECT Username, Password FROM User;";
 
     /**
      * <p>
@@ -98,7 +117,7 @@ public class BeerJdbcManager extends JdbcTemplate
      * </p>
      * Selects all beers from the database
      */
-    private static final String SELECT_ALL_BEER         = "SELECT Name, Price FROM Beer;";
+    private static final String SELECT_ALL_BEER             = "SELECT Name, Price FROM Beer;";
 
     /**
      * <p>
@@ -106,7 +125,7 @@ public class BeerJdbcManager extends JdbcTemplate
      * </p>
      * With a given Beer name, this query updates a beer with a given Beer price
      */
-    private static final String UPDATE_PRICE_OF_BEER    = "UPDATE Beer SET Price = ? WHERE Name = ?;";
+    private static final String UPDATE_PRICE_OF_BEER        = "UPDATE Beer SET Price = ? WHERE Name = ?;";
 
     private final BeerMapper    beerMapper;
 
@@ -208,11 +227,30 @@ public class BeerJdbcManager extends JdbcTemplate
         if ( !user.getPassword().equals( password ) )
             return false;
 
-        final PreparedStatement uTokenPS = prepare( UPDATE_TOKEN_FOR_USER );
+        Token token = null;
+        try
+        {
+            // Check to see if token exists already
+            token = getTokenByUsername( username );
+        } catch ( AuthorizationTokenNotFoundException e )
+        {}
 
-        uTokenPS.setString( 1, generateHex() );
-        uTokenPS.setInt( 2, TOKEN_EXPIRATION_MINUTES );
-        uTokenPS.setString( 3, username );
+        PreparedStatement uTokenPS;
+        if ( token != null )
+        {
+            uTokenPS = prepare( UPDATE_TOKEN_FOR_EXPIRATION );
+
+            uTokenPS.setInt( 1, TOKEN_EXPIRATION_MINUTES );
+            uTokenPS.setString( 2, username );
+
+        } else
+        {
+            uTokenPS = prepare( UPDATE_TOKEN_FOR_USER );
+
+            uTokenPS.setString( 1, generateHex() );
+            uTokenPS.setInt( 2, TOKEN_EXPIRATION_MINUTES );
+            uTokenPS.setString( 3, username );
+        }
 
         uTokenPS.executeUpdate();
 
@@ -220,6 +258,15 @@ public class BeerJdbcManager extends JdbcTemplate
             username, TOKEN_EXPIRATION_MINUTES ) );
 
         return true;
+    }
+
+    public void deleteTokenByHash( final String hash ) throws SQLException
+    {
+        final PreparedStatement dTokenPS = prepare( DELETE_TOKEN_BY_HASH );
+
+        dTokenPS.setString( 1, hash );
+
+        dTokenPS.executeUpdate();
     }
 
     /**
@@ -345,7 +392,7 @@ public class BeerJdbcManager extends JdbcTemplate
         LOG.debug( format(
             "Attempting to change the Price of Beer with name: %s, to have a price of: %.2f",
             beerName, price ) );
-        
+
         if ( price < 0 )
             throw new IllegalArgumentException( "Price cannot be less than $0.00" );
 

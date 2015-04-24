@@ -1,6 +1,7 @@
 package edu.rit.p3.data.entity;
 
 import java.sql.Timestamp;
+import java.util.Date;
 
 
 /**
@@ -44,6 +45,11 @@ public class Token
     public Timestamp getExpiration()
     {
         return expiration;
+    }
+
+    public boolean isExpired()
+    {
+        return new Date().after( expiration );
     }
 
 }

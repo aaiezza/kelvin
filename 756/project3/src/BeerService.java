@@ -1,14 +1,12 @@
 import static java.lang.String.format;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Resource;
 import javax.jws.WebMethod;
 import javax.jws.WebService;
-import javax.jws.soap.SOAPBinding;
-import javax.jws.soap.SOAPBinding.Style;
-import javax.jws.soap.SOAPBinding.Use;
 import javax.xml.ws.WebServiceContext;
 
 import org.apache.commons.logging.Log;
@@ -17,6 +15,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import edu.rit.p3.data.entity.Beer;
 import edu.rit.p3.data.exception.AuthorizationTokenNotFoundException;
+import edu.rit.p3.data.exception.BeerServiceClosedException;
+import edu.rit.p3.data.exception.TokenExpiredException;
 import edu.rit.p3.data.exception.UserNotFoundException;
 import edu.rit.p3.data.exception.UserUnderageException;
 import edu.rit.p3.web.BeerController;
@@ -31,7 +31,6 @@ import edu.rit.p3.web.BeerController;
  *
  */
 @WebService
-@SOAPBinding ( style = Style.RPC, use = Use.LITERAL )
 public class BeerService
 {
     private final Log            LOG = LogFactory.getLog( getClass() );
@@ -108,10 +107,19 @@ public class BeerService
      * @return The price of the given beer
      */
     @WebMethod
-    public double getPrice( final String beerName )
+    public double getPrice( final String beerName, final String token )
     {
         LOG.info( format( "Calling: getPrice( %s )", beerName ) );
-        return BEER_CONTROLLER.getPrice( beerName );
+        try
+        {
+            return BEER_CONTROLLER.getPrice( beerName, token );
+        } catch ( AuthorizationTokenNotFoundException | TokenExpiredException | SQLException
+                | BeerServiceClosedException e )
+        {
+            // TODO SEND SOAP FAULT
+            e.printStackTrace();
+        }
+        return 0;
     }
 
     /**
@@ -125,10 +133,19 @@ public class BeerService
      * @return <code>true</code> if the new price was set
      */
     @WebMethod
-    public boolean setPrice( final String beerName, final double price )
+    public boolean setPrice( final String beerName, final double price, final String token )
     {
         LOG.info( format( "Calling: setPrice( %s, %.2f )", beerName, price ) );
-        return BEER_CONTROLLER.setPrice( beerName, price );
+        try
+        {
+            return BEER_CONTROLLER.setPrice( beerName, price, token );
+        } catch ( AuthorizationTokenNotFoundException | TokenExpiredException | SQLException
+                | BeerServiceClosedException e )
+        {
+            // TODO SEND SOAP FAULT
+            e.printStackTrace();
+        }
+        return false;
     }
 
     /**
@@ -137,11 +154,20 @@ public class BeerService
      * @return the names of all the beers in the database
      */
     @WebMethod
-    public String [] getBeers()
+    public String [] getBeers( final String token )
     {
         LOG.info( "Calling: getBeers()" );
 
-        final List<Beer> beers = BEER_CONTROLLER.getBeers();
+        List<Beer> beers = new ArrayList<Beer>();
+        try
+        {
+            beers = BEER_CONTROLLER.getBeers( token );
+        } catch ( AuthorizationTokenNotFoundException | TokenExpiredException | SQLException
+                | BeerServiceClosedException e )
+        {
+            // TODO SEND SOAP FAULT
+            e.printStackTrace();
+        }
 
         final String [] beerNames = new String [beers.size()];
         int b = 0;
@@ -158,10 +184,19 @@ public class BeerService
      * @return The name of the least expensive beer
      */
     @WebMethod
-    public String getCheapest()
+    public String getCheapest( final String token )
     {
         LOG.info( "Calling: getCheapest()" );
-        return BEER_CONTROLLER.getCheapest().getName();
+        try
+        {
+            return BEER_CONTROLLER.getCheapest( token ).getName();
+        } catch ( AuthorizationTokenNotFoundException | TokenExpiredException | SQLException
+                | BeerServiceClosedException e )
+        {
+            // TODO SEND SOAP FAULT
+            e.printStackTrace();
+        }
+        return null;
     }
 
     /**
@@ -170,10 +205,19 @@ public class BeerService
      * @return The name of the most expensive beer.
      */
     @WebMethod
-    public String getCostliest()
+    public String getCostliest( final String token )
     {
         LOG.info( "Calling: getCostliest()" );
-        return BEER_CONTROLLER.getCostliest().getName();
+        try
+        {
+            return BEER_CONTROLLER.getCostliest( token ).getName();
+        } catch ( AuthorizationTokenNotFoundException | TokenExpiredException | SQLException
+                | BeerServiceClosedException e )
+        {
+            // TODO SEND SOAP FAULT
+            e.printStackTrace();
+        }
+        return null;
     }
 
 }
