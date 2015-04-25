@@ -84,6 +84,13 @@ $clientURL =
         </p>
         <hr>
         <p>
+            I also realize this project was supposed to be completed in PHP. So to use the PHP version with my client, this link is available:
+        </p>
+        <p>
+            <tt><a href="http://kelvin.ist.rit.edu/~axa9070/756/homework/4/?server=http://localhost/~axa9070/756/project2/ophp/xmlrpc.php">http://kelvin.ist.rit.edu/~axa9070/756/homework/4/?server=http://localhost/~axa9070/756/project2/ophp/xmlrpc.php</a></tt>
+        </p>
+        <hr>
+        <p>
             Enjoy!
         </p>
     </div>

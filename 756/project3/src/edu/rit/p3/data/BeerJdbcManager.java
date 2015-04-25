@@ -58,7 +58,7 @@ public class BeerJdbcManager extends JdbcTemplate
      * </p>
      * Uses a given Username to query that user
      */
-    private static final String QUERY_USER_BY_USERNAME      = "SELECT Username, Password FROM User WHERE Username = ?;";
+    private static final String QUERY_USER_BY_USERNAME      = "SELECT Username, Password, Age, AccessLevel FROM User WHERE Username = ?;";
 
     /**
      * <p>
@@ -81,9 +81,9 @@ public class BeerJdbcManager extends JdbcTemplate
      * <p>
      * <strong>SQL:</strong> {@value}
      * </p>
-     * With a given Username, this query updates the authorization token
+     * With a given Username, this query inserts the authorization token
      */
-    private static final String UPDATE_TOKEN_FOR_USER       = "UPDATE Token SET TokenHash = ?, Expiration = DATETIME('now', '+? minutes') WHERE Username = ?;";
+    private static final String INSERT_TOKEN_FOR_USER       = "INSERT INTO Token ( TokenHash, Username, Expiration ) VALUES ( ?, ?, (DATETIME('now', ?)) );";
 
     /**
      * <p>
@@ -92,7 +92,7 @@ public class BeerJdbcManager extends JdbcTemplate
      * With a given TokenHash, this query updates the authorization token's
      * expiration time
      */
-    private static final String UPDATE_TOKEN_FOR_EXPIRATION = "UPDATE Token SET Expiration = DATETIME('now', '+? minutes') WHERE Username = ?;";
+    private static final String UPDATE_TOKEN_FOR_EXPIRATION = "UPDATE Token SET Expiration = (DATETIME('now', ?)) WHERE Username = ?;";
 
     /**
      * <p>
@@ -132,13 +132,17 @@ public class BeerJdbcManager extends JdbcTemplate
 
     private final TokenMapper   tokenMapper;
 
-    private final int           TOKEN_EXPIRATION_MINUTES;
+    private final String        TOKEN_EXPIRATION_MINUTES;
 
     private final int           ACCESS_AGE;
 
-    public BeerJdbcManager( final DataSource dataSource, final int tokenExpire, final int accessAge )
+    public BeerJdbcManager(
+        final DataSource dataSource,
+        final String tokenExpire,
+        final int accessAge )
     {
         super( dataSource );
+        update( "PRAGMA foreign_keys = ON;" );
 
         beerMapper = new BeerMapper();
         userMapper = new UserMapper();
@@ -162,7 +166,6 @@ public class BeerJdbcManager extends JdbcTemplate
         LOG.debug( format( "Retrieving User with name: %s", username ) );
         try
         {
-
             final PreparedStatement sUserPS = prepare( QUERY_USER_BY_USERNAME );
             sUserPS.setString( 1, username );
 
@@ -180,6 +183,7 @@ public class BeerJdbcManager extends JdbcTemplate
         } catch ( SQLException e )
         {
             LOG.error( format( SQL_ERROR, QUERY_USER_BY_USERNAME ) );
+            LOG.error( e.getMessage() );
             return null;
         }
     }
@@ -216,7 +220,7 @@ public class BeerJdbcManager extends JdbcTemplate
         final User user = getUserByUsername( username );
 
         LOG.debug( format(
-            "Attempting to update the authorization token for username: %s, to expire %d minutes from now.",
+            "Attempting to update the authorization token for username: %s, to expire %s from now.",
             username, TOKEN_EXPIRATION_MINUTES ) );
 
         if ( user.getAge() < ACCESS_AGE )
@@ -231,36 +235,44 @@ public class BeerJdbcManager extends JdbcTemplate
             // Check to see if token exists already
             token = getTokenByUsername( username );
         } catch ( AuthorizationTokenNotFoundException e )
-        {}
+        {
+            LOG.trace( format( "Token for user: %s did NOT exist", username ) );
+        }
 
         try
         {
             PreparedStatement uTokenPS;
             if ( token != null )
             {
+                LOG.debug( format( "Renewing Token for user: %s", username ) );
                 uTokenPS = prepare( UPDATE_TOKEN_FOR_EXPIRATION );
 
-                uTokenPS.setInt( 1, TOKEN_EXPIRATION_MINUTES );
+                uTokenPS.setString( 1, TOKEN_EXPIRATION_MINUTES );
                 uTokenPS.setString( 2, username );
 
             } else
             {
-                uTokenPS = prepare( UPDATE_TOKEN_FOR_USER );
+                LOG.info( format( "Creating Token for user: %s", username ) );
+
+                uTokenPS = prepare( INSERT_TOKEN_FOR_USER );
 
                 uTokenPS.setString( 1, generateHex() );
-                uTokenPS.setInt( 2, TOKEN_EXPIRATION_MINUTES );
-                uTokenPS.setString( 3, username );
+                uTokenPS.setString( 2, username );
+                uTokenPS.setString( 3, TOKEN_EXPIRATION_MINUTES );
             }
 
             uTokenPS.executeUpdate();
+
         } catch ( SQLException e )
         {
-            LOG.error( format( SQL_ERROR, token == null ? UPDATE_TOKEN_FOR_USER
+            LOG.error( format( SQL_ERROR, token == null ? INSERT_TOKEN_FOR_USER
                                                        : UPDATE_TOKEN_FOR_EXPIRATION ) );
+            LOG.error( e.getMessage() );
+            return false;
         }
 
-        LOG.info( format( "Token of User with username: %s, will expire %d minutes from now.",
-            username, TOKEN_EXPIRATION_MINUTES ) );
+        LOG.debug( format( "Token of User with username: %s, will expire %s from now.", username,
+            TOKEN_EXPIRATION_MINUTES ) );
 
         return true;
     }
@@ -274,6 +286,7 @@ public class BeerJdbcManager extends JdbcTemplate
      */
     public void deleteTokenByHash( final String hash )
     {
+        LOG.trace( format( "Deleting token: ", hash ) );
         try
         {
             final PreparedStatement dTokenPS = prepare( DELETE_TOKEN_BY_HASH );
@@ -284,6 +297,7 @@ public class BeerJdbcManager extends JdbcTemplate
         } catch ( SQLException e )
         {
             LOG.error( format( SQL_ERROR, DELETE_TOKEN_BY_HASH ) );
+            LOG.error( e.getMessage() );
         }
     }
 
@@ -299,6 +313,7 @@ public class BeerJdbcManager extends JdbcTemplate
     public Token getTokenByUsername( final String username )
             throws AuthorizationTokenNotFoundException
     {
+        LOG.debug( format( "Getting token for user: %s", username ) );
         try
         {
             final PreparedStatement sTokenPS = prepare( QUERY_TOKEN_BY_USERNAME );
@@ -316,6 +331,7 @@ public class BeerJdbcManager extends JdbcTemplate
         } catch ( SQLException e )
         {
             LOG.error( format( SQL_ERROR, QUERY_TOKEN_BY_USERNAME ) );
+            LOG.error( e.getMessage() );
             return null;
         }
     }
@@ -348,6 +364,7 @@ public class BeerJdbcManager extends JdbcTemplate
         } catch ( SQLException e )
         {
             LOG.error( format( SQL_ERROR, QUERY_TOKEN_BY_HASHCODE ) );
+            LOG.error( e.getMessage() );
             return null;
         }
     }
@@ -386,6 +403,7 @@ public class BeerJdbcManager extends JdbcTemplate
         } catch ( SQLException e )
         {
             LOG.error( format( SQL_ERROR, QUERY_BEER_BY_NAME ) );
+            LOG.error( e.getMessage() );
             return null;
         }
     }
@@ -440,6 +458,7 @@ public class BeerJdbcManager extends JdbcTemplate
         } catch ( SQLException e )
         {
             LOG.error( format( SQL_ERROR, UPDATE_PRICE_OF_BEER ) );
+            LOG.error( e.getMessage() );
             return false;
         }
 
@@ -463,7 +482,9 @@ public class BeerJdbcManager extends JdbcTemplate
     {
         LOG.debug( format( "Preparing statement: %s", sqlStatement ) );
         final Connection connection = getDataSource().getConnection();
-        return connection.prepareStatement( sqlStatement );
+        final PreparedStatement ps = connection.prepareStatement( sqlStatement );
+        ps.closeOnCompletion();
+        return ps;
     }
 
 }

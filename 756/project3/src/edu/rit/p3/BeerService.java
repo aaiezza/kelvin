@@ -6,7 +6,6 @@ import static java.lang.String.format;
 import static java.lang.System.getProperty;
 
 import java.io.IOException;
-import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -21,10 +20,12 @@ import javax.sql.DataSource;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.jdbc.datasource.SimpleDriverDataSource;
+import org.sqlite.JDBC;
 
 import edu.rit.p3.data.BeerJdbcManager;
 import edu.rit.p3.data.entity.Beer;
 import edu.rit.p3.data.exception.AuthorizationTokenNotFoundException;
+import edu.rit.p3.data.exception.BeerNotFoundException;
 import edu.rit.p3.data.exception.BeerServiceClosedException;
 import edu.rit.p3.data.exception.TokenExpiredException;
 import edu.rit.p3.data.exception.UserHasInsufficientPrivilegesException;
@@ -49,7 +50,9 @@ public class BeerService
 
     private final BeerController BEER_CONTROLLER;
 
+    public BeerService() throws ParseException, SQLException
     {
+        LOG.info( getProperty( "com.sun.aas.instanceRoot" ) );
         try
         {
             new PropertiesSetter();
@@ -57,15 +60,16 @@ public class BeerService
         {
             LOG.error( e.getMessage() );
         }
-    }
 
-    public BeerService() throws ParseException, SQLException
-    {
-        final DataSource dataSource = new SimpleDriverDataSource(
-                DriverManager.getDriver( getProperty( "db.driver" ) ), getProperty( "db.url" ) );
+        @SuppressWarnings ( "unused" )
+        final String driver = getProperty( "db.driver" );
+        final String url = format( getProperty( "db.url" ),
+            getProperty( "com.sun.aas.instanceRoot" ) );
 
-        BeerJdbcManager beerMan = new BeerJdbcManager( dataSource,
-                parseInt( getProperty( "token.expire" ) ), parseInt( getProperty( "access.age" ) ) );
+        final DataSource dataSource = new SimpleDriverDataSource( new JDBC(), url );
+
+        BeerJdbcManager beerMan = new BeerJdbcManager( dataSource, getProperty( "token.expire" ),
+                parseInt( getProperty( "access.age" ) ) );
 
         try
         {
@@ -174,11 +178,13 @@ public class BeerService
      *             Thrown if the user associated with the given authentication
      *             <code>token</code> has insufficient privleges for accessing
      *             this method.
+     * @throws BeerNotFoundException
+     *             Thrown when a beer name cannot be found in the database
      */
     @WebMethod
     public boolean setPrice( final String beerName, final double price, final String token )
             throws UserHasInsufficientPrivilegesException, AuthorizationTokenNotFoundException,
-            TokenExpiredException, BeerServiceClosedException
+            TokenExpiredException, BeerServiceClosedException, BeerNotFoundException
     {
         LOG.info( format( "Calling: setPrice( %s, %.2f )", beerName, price ) );
         return BEER_CONTROLLER.setPrice( beerName, price, token );

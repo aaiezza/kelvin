@@ -2,9 +2,14 @@ package edu.rit.p3.data.entity.mapper;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.TimeZone;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.jdbc.core.RowMapper;
@@ -23,7 +28,13 @@ import edu.rit.p3.data.entity.User;
  */
 public class TokenMapper implements ResultSetExtractor<List<Token>>
 {
+    private final Log              LOG        = LogFactory.getLog( getClass() );
     private final RowMapper<Token> rowMapper;
+    private final SimpleDateFormat dateFormat = new SimpleDateFormat( "yyyy-MM-dd HH:mm:ss" );
+
+    {
+        dateFormat.setTimeZone( TimeZone.getTimeZone( "UTC" ) );
+    }
 
     public TokenMapper()
     {
@@ -32,8 +43,15 @@ public class TokenMapper implements ResultSetExtractor<List<Token>>
             @Override
             public Token mapRow( final ResultSet rs, final int numRows ) throws SQLException
             {
-                final Token token = new Token( rs.getString( "TokenHash" ),
-                        rs.getString( "Username" ), rs.getTimestamp( "Expiration" ) );
+                Token token = null;
+                try
+                {
+                    token = new Token( rs.getString( "TokenHash" ), rs.getString( "Username" ),
+                            dateFormat.parse( rs.getString( "Expiration" ) ) );
+                } catch ( ParseException e )
+                {
+                    LOG.error( e.getMessage() );
+                }
 
                 return token;
             }

@@ -49,8 +49,8 @@ BEGIN TRANSACTION;
 INSERT INTO `Beer` (`Name`, `Price`) VALUES ('Budweiser', 10.49);
 INSERT INTO `Beer` (`Name`, `Price`) VALUES ('Coors', 9.99);
 INSERT INTO `Beer` (`Name`, `Price`) VALUES ('Corona', 13.49);
-INSERT INTO `Beer` (`Name`, `Price`) VALUES ('Genesse', 5.99);
-INSERT INTO `Beer` (`Name`, `Price`) VALUES ('Guiness', 14.99);
+INSERT INTO `Beer` (`Name`, `Price`) VALUES ('Genessee', 5.99);
+INSERT INTO `Beer` (`Name`, `Price`) VALUES ('Guinness', 14.99);
 INSERT INTO `Beer` (`Name`, `Price`) VALUES ('Labatt', 8.99);
 INSERT INTO `Beer` (`Name`, `Price`) VALUES ('Sam Adams', 13.99);
 

@@ -142,12 +142,15 @@ public class BeerController
      *             working hours.
      * @throws UserHasInsufficientPrivilegesException
      *             Thrown if the user associated with the given authentication
-     *             <code>token</code> has insufficient privleges for accessing
+     *             <code>token</code> has insufficient privileges for accessing
      *             this method.
+     * @throws BeerNotFoundException
+     *             Thrown when a beer name cannot be found in the database
      */
     public boolean setPrice( final String beerName, final double price, final String token )
             throws AuthorizationTokenNotFoundException, TokenExpiredException,
-            BeerServiceClosedException, UserHasInsufficientPrivilegesException
+            BeerServiceClosedException, UserHasInsufficientPrivilegesException,
+            BeerNotFoundException
     {
         verifyToken( token );
         try
@@ -160,9 +163,13 @@ public class BeerController
             }
 
             return BEER_MANAGER.updatePriceOfBeer( beerName, price );
-        } catch ( BeerNotFoundException | UserNotFoundException e )
+        } catch ( UserNotFoundException e )
         {
             LOG.error( e.getMessage() );
+        } catch ( BeerNotFoundException e )
+        {
+            LOG.error( e.getMessage() );
+            throw e;
         }
         return false;
     }

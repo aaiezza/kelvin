@@ -1,6 +1,5 @@
 package edu.rit.p3.data.entity;
 
-import java.sql.Timestamp;
 import java.util.Date;
 
 
@@ -12,11 +11,11 @@ import java.util.Date;
  */
 public class Token
 {
-    private final String    tokenHash;
-    private final String    username;
-    private final Timestamp expiration;
+    private final String tokenHash;
+    private final String username;
+    private final Date   expiration;
 
-    public Token( final String tokenHash, final String username, final Timestamp expiration )
+    public Token( final String tokenHash, final String username, final Date expiration )
     {
         this.tokenHash = tokenHash;
         this.username = username;
@@ -42,7 +41,7 @@ public class Token
     /**
      * @return the expiration
      */
-    public Timestamp getExpiration()
+    public Date getExpiration()
     {
         return expiration;
     }
