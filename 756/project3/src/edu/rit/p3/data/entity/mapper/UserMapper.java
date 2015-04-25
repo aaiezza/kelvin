@@ -16,7 +16,7 @@ import edu.rit.p3.data.entity.User;
  * An instance of UserMapper is used by the {@link BeerJdbcManager} (Data Layer)
  * to more efficiently extract {@link User} entities from a given SQLite
  * {@link ResultSet}.
- * 
+ *
  * @author Alex Aiezza
  *
  */
@@ -27,16 +27,16 @@ public class UserMapper implements ResultSetExtractor<List<User>>
     public UserMapper()
     {
         rowMapper = new RowMapper<User>()
-        {
+                {
             @Override
             public User mapRow( final ResultSet rs, final int numRows ) throws SQLException
             {
                 final User user = new User( rs.getString( "Username" ), rs.getString( "Password" ),
-                        rs.getInt( "Age" ), rs.getBoolean( "AccessLevel" ) );
+                    rs.getInt( "Age" ), rs.getBoolean( "AccessLevel" ) );
 
                 return user;
             }
-        };
+                };
     }
 
     @Override

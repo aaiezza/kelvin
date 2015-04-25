@@ -16,7 +16,7 @@ import edu.rit.p3.data.entity.Beer;
  * An instance of BeerMapper is used by the {@link BeerJdbcManager} (Data Layer)
  * to more efficiently extract {@link Beer} entities from a given MySQL
  * {@link ResultSet}.
- * 
+ *
  * @author Alex Aiezza
  *
  */
@@ -27,7 +27,7 @@ public class BeerMapper implements ResultSetExtractor<List<Beer>>
     public BeerMapper()
     {
         rowMapper = new RowMapper<Beer>()
-        {
+                {
             @Override
             public Beer mapRow( final ResultSet rs, final int numRows ) throws SQLException
             {
@@ -35,7 +35,7 @@ public class BeerMapper implements ResultSetExtractor<List<Beer>>
 
                 return beer;
             }
-        };
+                };
     }
 
     @Override

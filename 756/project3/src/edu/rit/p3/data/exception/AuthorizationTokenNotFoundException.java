@@ -9,7 +9,7 @@ import edu.rit.p3.data.BeerJdbcManager;
  * {@link BeerJdbcManager#getTokenByHash(String)} methods (Data Layer), an
  * attempt at finding a User's authentication token with a certain username may
  * not exist. In which case, an instance of this exception is thrown.
- * 
+ *
  * @author Alex Aiezza
  *
  */
@@ -24,8 +24,8 @@ public class AuthorizationTokenNotFoundException extends AccountNotFoundExceptio
     {
         super( String.format( "Authentication token for %s: '%s' not found!",
             tokenRetrievalMethod == USERNAME ? "User"
-                                            : tokenRetrievalMethod == HASHCODE ? "Token Hash" : "",
-            key ) );
+                                               : tokenRetrievalMethod == HASHCODE ? "Token Hash" : "",
+                                                                                  key ) );
     }
 
 }

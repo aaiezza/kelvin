@@ -1,26 +1,23 @@
 @CHARSET "UTF-8";
 
 /* GENERAL STYLE */
-
 html, body {
-    margin: 0;
-    height: 100%;
-    overflow: hidden;
-    text-align: justify;
-    text-justify: inter-word;
+	margin: 0;
+	height: 100%;
+	overflow: hidden;
+	text-align: justify;
+	text-justify: inter-word;
 }
 
 div#content {
-    padding: 10px;
-    margin: 40px;
-    height: -moz-calc(100% - 100px);
-    height: -webkit-calc(100% - 100px);
-    height: calc(100% - 100px);
-
-    overflow: auto;
-
-    font-size: 1.7em;
-    font-family: Verdana;
+	padding: 10px;
+	margin: 40px;
+	height: -moz-calc(100% - 100px);
+	height: -webkit-calc(100% - 100px);
+	height: calc(100% - 100px);
+	overflow: auto;
+	font-size: 1.7em;
+	font-family: Verdana;
 }
 
 img {
@@ -28,22 +25,48 @@ img {
 }
 
 p {
-    margin: 10px auto;
+	margin: 10px auto;
 }
 
 tt {
-    padding-left: 50px;
+	padding-left: 50px;
 }
 
 .teensy {
-    font-size: .7em;
-    font-family: 'Times New Roman';
+	font-size: .7em;
+	font-family: 'Times New Roman';
 }
 
 .good {
-    background-color: green;
+	background-color: green;
 }
 
 .nogood {
-    background-color: red;
+	background-color: red;
+}
+
+.bold {
+	font-weight: bold;
+}
+
+.optional {
+	margin-left: 35px;
+	background: antiquewhite;
+}
+
+.nowrap {
+	white-space: nowrap;
+}
+
+table, th, td {
+	border: black 2px solid;
+	border-collapse: collapse;
+}
+
+th, td {
+	padding: 2px;
+}
+
+th {
+	text-align: center;
 }

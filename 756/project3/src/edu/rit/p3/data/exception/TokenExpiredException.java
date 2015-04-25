@@ -8,7 +8,7 @@ import edu.rit.p3.data.BeerJdbcManager;
  * Within the {@link BeerJdbcManager} methods (Data Layer), if a user attempts
  * to perform an action that requires authentication, the token string they pass
  * may be expired. In which case, an instance of this exception is thrown.
- * 
+ *
  * @author Alex Aiezza
  *
  */

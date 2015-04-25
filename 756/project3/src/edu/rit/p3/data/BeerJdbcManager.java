@@ -24,7 +24,6 @@ import edu.rit.p3.data.entity.mapper.UserMapper;
 import edu.rit.p3.data.exception.AuthorizationTokenNotFoundException;
 import edu.rit.p3.data.exception.BeerNotFoundException;
 import edu.rit.p3.data.exception.UserNotFoundException;
-import edu.rit.p3.data.exception.UserUnderageException;
 import edu.rit.p3.web.BeerController;
 
 /**
@@ -34,15 +33,13 @@ import edu.rit.p3.web.BeerController;
  * {@link BeerController} (Business Layer) as a way of efficiently and securely
  * interacting with the Beer Database.
  * </p>
- * 
+ *
  * @author Alex Aiezza
  *
  */
 public class BeerJdbcManager extends JdbcTemplate
 {
     private static final String SQL_ERROR                   = "Problem with SQL: '%s'";
-
-    private final Log           LOG                         = LogFactory.getLog( getClass() );
 
     /**
      * <p>
@@ -68,7 +65,6 @@ public class BeerJdbcManager extends JdbcTemplate
      */
     private static final String QUERY_TOKEN_BY_USERNAME     = "SELECT TokenHash, Username, Expiration FROM Token WHERE Username = ?;";
 
-
     /**
      * <p>
      * <strong>SQL:</strong> {@value}
@@ -76,6 +72,7 @@ public class BeerJdbcManager extends JdbcTemplate
      * Uses a given token hash to query for a user's authentication token
      */
     private static final String QUERY_TOKEN_BY_HASHCODE     = "SELECT TokenHash, Username, Expiration FROM Token WHERE TokenHash = ?;";
+
 
     /**
      * <p>
@@ -108,7 +105,7 @@ public class BeerJdbcManager extends JdbcTemplate
      * </p>
      * Selects all users from the database
      */
-    private static final String SELECT_ALL_USERS            = "SELECT Username, Password FROM User;";
+    private static final String SELECT_ALL_USERS            = "SELECT Username, Password, Age, AccessLevel FROM User;";
 
     /**
      * <p>
@@ -126,20 +123,24 @@ public class BeerJdbcManager extends JdbcTemplate
      */
     private static final String UPDATE_PRICE_OF_BEER        = "UPDATE Beer SET Price = ? WHERE Name = ?;";
 
+    private final Log           LOG                         = LogFactory.getLog( getClass() );
+
     private final BeerMapper    beerMapper;
 
     private final UserMapper    userMapper;
 
     private final TokenMapper   tokenMapper;
 
+    /**
+     * This is retrieved from a <tt>project3.properties</tt>.<br>
+     * This is the SQLite varchar that will offset how long the token will
+     * expire from NOW. For more detail, visit the <a
+     * href="http://sqlite.org/lang_datefunc.html">SQLite Reference</a> and look
+     * in the <strong>Modifiers</strong> section.
+     */
     private final String        TOKEN_EXPIRATION_MINUTES;
 
-    private final int           ACCESS_AGE;
-
-    public BeerJdbcManager(
-        final DataSource dataSource,
-        final String tokenExpire,
-        final int accessAge )
+    public BeerJdbcManager( final DataSource dataSource, final String tokenExpire )
     {
         super( dataSource );
         update( "PRAGMA foreign_keys = ON;" );
@@ -148,138 +149,12 @@ public class BeerJdbcManager extends JdbcTemplate
         userMapper = new UserMapper();
         tokenMapper = new TokenMapper();
         TOKEN_EXPIRATION_MINUTES = tokenExpire;
-        ACCESS_AGE = accessAge;
         LOG.info( "BeerJdbcManager instance initialized" );
     }
 
     /**
-     * Retrieve a user by its username from the database
-     * 
-     * @param username
-     *            the username of the user to retrieve
-     * @return the {@link User user} object with the given username
-     * @throws UserNotFoundException
-     *             Thrown when a username cannot be found in the database
-     */
-    public User getUserByUsername( String username ) throws UserNotFoundException
-    {
-        LOG.debug( format( "Retrieving User with name: %s", username ) );
-        try
-        {
-            final PreparedStatement sUserPS = prepare( QUERY_USER_BY_USERNAME );
-            sUserPS.setString( 1, username );
-
-            final ResultSet rs = sUserPS.executeQuery();
-
-            final List<User> users = userMapper.extractData( rs );
-
-            if ( users.size() <= 0 )
-            {
-                LOG.warn( format( "Could not find User with username: %s", username ) );
-                throw new UserNotFoundException( username );
-            }
-
-            return users.get( 0 );
-        } catch ( SQLException e )
-        {
-            LOG.error( format( SQL_ERROR, QUERY_USER_BY_USERNAME ) );
-            LOG.error( e.getMessage() );
-            return null;
-        }
-    }
-
-    /**
-     * Get all user in the database
-     * 
-     * @return A {@link List} of all the users in the database
-     */
-    public List<User> getUsers()
-    {
-        LOG.debug( "Retrieving all users" );
-        return query( SELECT_ALL_USERS, userMapper );
-    }
-
-    /**
-     * Update the authorization token of a user
-     * 
-     * @param username
-     *            the username of the user to update the token of
-     * @param password
-     *            the user's password
-     * @return <code>true</code> if the update was successful.
-     *         <code>false</code> if the user's password is incorrect.
-     * @throws UserNotFoundException
-     *             Thrown if the given username is not found
-     * @throws UserUnderageException
-     *             Thrown when an underage user attempts to become authorized
-     */
-    public boolean updateUserToken( final String username, final String password )
-            throws UserNotFoundException, UserUnderageException
-    {
-        // This is see if the given username exists first
-        final User user = getUserByUsername( username );
-
-        LOG.debug( format(
-            "Attempting to update the authorization token for username: %s, to expire %s from now.",
-            username, TOKEN_EXPIRATION_MINUTES ) );
-
-        if ( user.getAge() < ACCESS_AGE )
-            throw new UserUnderageException( user, ACCESS_AGE );
-
-        if ( !user.getPassword().equals( password ) )
-            return false;
-
-        Token token = null;
-        try
-        {
-            // Check to see if token exists already
-            token = getTokenByUsername( username );
-        } catch ( AuthorizationTokenNotFoundException e )
-        {
-            LOG.trace( format( "Token for user: %s did NOT exist", username ) );
-        }
-
-        try
-        {
-            PreparedStatement uTokenPS;
-            if ( token != null )
-            {
-                LOG.debug( format( "Renewing Token for user: %s", username ) );
-                uTokenPS = prepare( UPDATE_TOKEN_FOR_EXPIRATION );
-
-                uTokenPS.setString( 1, TOKEN_EXPIRATION_MINUTES );
-                uTokenPS.setString( 2, username );
-
-            } else
-            {
-                LOG.info( format( "Creating Token for user: %s", username ) );
-
-                uTokenPS = prepare( INSERT_TOKEN_FOR_USER );
-
-                uTokenPS.setString( 1, generateHex() );
-                uTokenPS.setString( 2, username );
-                uTokenPS.setString( 3, TOKEN_EXPIRATION_MINUTES );
-            }
-
-            uTokenPS.executeUpdate();
-
-        } catch ( SQLException e )
-        {
-            LOG.error( format( SQL_ERROR, token == null ? INSERT_TOKEN_FOR_USER
-                                                       : UPDATE_TOKEN_FOR_EXPIRATION ) );
-            LOG.error( e.getMessage() );
-            return false;
-        }
-
-        LOG.debug( format( "Token of User with username: %s, will expire %s from now.", username,
-            TOKEN_EXPIRATION_MINUTES ) );
-
-        return true;
-    }
-
-    /**
      * Deletes an entry in the Token table
-     * 
+     *
      * @param hash
      *            the <code>tokenHash</code> of the row in the Token table to
      *            delete
@@ -294,7 +169,7 @@ public class BeerJdbcManager extends JdbcTemplate
             dTokenPS.setString( 1, hash );
 
             dTokenPS.executeUpdate();
-        } catch ( SQLException e )
+        } catch ( final SQLException e )
         {
             LOG.error( format( SQL_ERROR, DELETE_TOKEN_BY_HASH ) );
             LOG.error( e.getMessage() );
@@ -302,83 +177,15 @@ public class BeerJdbcManager extends JdbcTemplate
     }
 
     /**
-     * Retrieve the authorization token for a given username
-     * 
-     * @param username
-     *            username to get the token for
-     * @return the token of the given username
-     * @throws AuthorizationTokenNotFoundException
-     *             Thrown when an given username does not have a token
-     */
-    public Token getTokenByUsername( final String username )
-            throws AuthorizationTokenNotFoundException
-    {
-        LOG.debug( format( "Getting token for user: %s", username ) );
-        try
-        {
-            final PreparedStatement sTokenPS = prepare( QUERY_TOKEN_BY_USERNAME );
-            sTokenPS.setString( 1, username );
-
-            final ResultSet rs = sTokenPS.executeQuery();
-
-            final List<Token> tokens = tokenMapper.extractData( rs );
-
-            if ( tokens.size() <= 0 )
-                throw new AuthorizationTokenNotFoundException( username,
-                        AuthorizationTokenNotFoundException.USERNAME );
-
-            return tokens.get( 0 );
-        } catch ( SQLException e )
-        {
-            LOG.error( format( SQL_ERROR, QUERY_TOKEN_BY_USERNAME ) );
-            LOG.error( e.getMessage() );
-            return null;
-        }
-    }
-
-    /**
-     * Retrieve the authorization token for a given hash
-     * 
-     * @param hash
-     *            hashcode of the token to look for
-     * @return the token with the given hashcode
-     * @throws AuthorizationTokenNotFoundException
-     *             Thrown when an given hashcode does not have a token
-     */
-    public Token getTokenByHash( final String hash ) throws AuthorizationTokenNotFoundException
-    {
-        try
-        {
-            final PreparedStatement sTokenPS = prepare( QUERY_TOKEN_BY_HASHCODE );
-            sTokenPS.setString( 1, hash );
-
-            final ResultSet rs = sTokenPS.executeQuery();
-
-            final List<Token> tokens = tokenMapper.extractData( rs );
-
-            if ( tokens.size() <= 0 )
-                throw new AuthorizationTokenNotFoundException( hash,
-                        AuthorizationTokenNotFoundException.HASHCODE );
-
-            return tokens.get( 0 );
-        } catch ( SQLException e )
-        {
-            LOG.error( format( SQL_ERROR, QUERY_TOKEN_BY_HASHCODE ) );
-            LOG.error( e.getMessage() );
-            return null;
-        }
-    }
-
-    /**
      * Retrieve a beer by its name from the database
-     * 
+     *
      * @param beerName
      *            the name of the beer to retrieve
      * @return the {@link Beer beer} object with the given name
      * @throws BeerNotFoundException
      *             Thrown when a beer name cannot be found in the database
      */
-    public Beer getBeerByName( String beerName ) throws BeerNotFoundException
+    public Beer getBeerByName( final String beerName ) throws BeerNotFoundException
     {
         LOG.debug( format( "Retrieving Beer with name: %s", beerName ) );
 
@@ -400,7 +207,7 @@ public class BeerJdbcManager extends JdbcTemplate
 
             return beers.get( 0 );
 
-        } catch ( SQLException e )
+        } catch ( final SQLException e )
         {
             LOG.error( format( SQL_ERROR, QUERY_BEER_BY_NAME ) );
             LOG.error( e.getMessage() );
@@ -410,7 +217,7 @@ public class BeerJdbcManager extends JdbcTemplate
 
     /**
      * Get all beers in the database
-     * 
+     *
      * @return A {@link List} of all the beers in the database
      */
     public List<Beer> getBeers()
@@ -420,8 +227,145 @@ public class BeerJdbcManager extends JdbcTemplate
     }
 
     /**
+     * Retrieve the authorization token for a given hash
+     *
+     * @param hash
+     *            hashcode of the token to look for
+     * @return the token with the given hashcode
+     * @throws AuthorizationTokenNotFoundException
+     *             Thrown when an given hashcode does not have a token
+     */
+    public Token getTokenByHash( final String hash ) throws AuthorizationTokenNotFoundException
+    {
+        try
+        {
+            final PreparedStatement sTokenPS = prepare( QUERY_TOKEN_BY_HASHCODE );
+            sTokenPS.setString( 1, hash );
+
+            final ResultSet rs = sTokenPS.executeQuery();
+
+            final List<Token> tokens = tokenMapper.extractData( rs );
+
+            if ( tokens.size() <= 0 )
+                throw new AuthorizationTokenNotFoundException( hash,
+                    AuthorizationTokenNotFoundException.HASHCODE );
+
+            return tokens.get( 0 );
+        } catch ( final SQLException e )
+        {
+            LOG.error( format( SQL_ERROR, QUERY_TOKEN_BY_HASHCODE ) );
+            LOG.error( e.getMessage() );
+            return null;
+        }
+    }
+
+    /**
+     * Retrieve the authorization token for a given username
+     *
+     * @param username
+     *            username to get the token for
+     * @return the token of the given username
+     * @throws AuthorizationTokenNotFoundException
+     *             Thrown when an given username does not have a token
+     */
+    public Token getTokenByUsername( final String username )
+            throws AuthorizationTokenNotFoundException
+    {
+        LOG.debug( format( "Getting token for user: %s", username ) );
+        try
+        {
+            final PreparedStatement sTokenPS = prepare( QUERY_TOKEN_BY_USERNAME );
+            sTokenPS.setString( 1, username );
+
+            final ResultSet rs = sTokenPS.executeQuery();
+
+            final List<Token> tokens = tokenMapper.extractData( rs );
+
+            if ( tokens.size() <= 0 )
+                throw new AuthorizationTokenNotFoundException( username,
+                    AuthorizationTokenNotFoundException.USERNAME );
+
+            return tokens.get( 0 );
+        } catch ( final SQLException e )
+        {
+            LOG.error( format( SQL_ERROR, QUERY_TOKEN_BY_USERNAME ) );
+            LOG.error( e.getMessage() );
+            return null;
+        }
+    }
+
+    /**
+     * Retrieve a user by its username from the database
+     *
+     * @param username
+     *            the username of the user to retrieve
+     * @return the {@link User user} object with the given username
+     * @throws UserNotFoundException
+     *             Thrown when a username cannot be found in the database
+     */
+    public User getUserByUsername( final String username ) throws UserNotFoundException
+    {
+        LOG.debug( format( "Retrieving User with name: %s", username ) );
+        try
+        {
+            final PreparedStatement sUserPS = prepare( QUERY_USER_BY_USERNAME );
+            sUserPS.setString( 1, username );
+
+            final ResultSet rs = sUserPS.executeQuery();
+
+            final List<User> users = userMapper.extractData( rs );
+
+            if ( users.size() <= 0 )
+            {
+                LOG.warn( format( "Could not find User with username: %s", username ) );
+                throw new UserNotFoundException( username );
+            }
+
+            return users.get( 0 );
+        } catch ( final SQLException e )
+        {
+            LOG.error( format( SQL_ERROR, QUERY_USER_BY_USERNAME ) );
+            LOG.error( e.getMessage() );
+            return null;
+        }
+    }
+
+    /**
+     * Get all user in the database
+     *
+     * @return A {@link List} of all the users in the database
+     */
+    public List<User> getUsers()
+    {
+        LOG.debug( "Retrieving all users" );
+        return query( SELECT_ALL_USERS, userMapper );
+    }
+
+    /**
+     * Just a quick little method for preparing SQL statements. This is done in
+     * an effort to reduce code duplication.
+     *
+     * @param sqlStatement
+     *            the statement to prepare on the connection given to
+     *            <code>this</code> {@link BeerJdbcManager manager}.
+     * @return The prepared statement. The returned statement must still be
+     *         processed by setting any <code>?</code> characters in it. Then it
+     *         may be executed.
+     * @throws SQLException
+     *             Thrown when an issue preparing the SQL statement occurs
+     */
+    private PreparedStatement prepare( final String sqlStatement ) throws SQLException
+    {
+        LOG.debug( format( "Preparing statement: %s", sqlStatement ) );
+        final Connection connection = getDataSource().getConnection();
+        final PreparedStatement ps = connection.prepareStatement( sqlStatement );
+        ps.closeOnCompletion();
+        return ps;
+    }
+
+    /**
      * Update the price of a beer
-     * 
+     *
      * @param beerName
      *            the name of the beer to change the price of
      * @param price
@@ -455,7 +399,7 @@ public class BeerJdbcManager extends JdbcTemplate
             uBeerPS.executeUpdate();
 
             LOG.info( format( "Price of Beer with name: %s, has changed to: %.2f", beerName, price ) );
-        } catch ( SQLException e )
+        } catch ( final SQLException e )
         {
             LOG.error( format( SQL_ERROR, UPDATE_PRICE_OF_BEER ) );
             LOG.error( e.getMessage() );
@@ -466,25 +410,66 @@ public class BeerJdbcManager extends JdbcTemplate
     }
 
     /**
-     * Just a quick little method for preparing SQL statements. This is done in
-     * an effort to reduce code duplication.
-     * 
-     * @param sqlStatement
-     *            the statement to prepare on the connection given to
-     *            <code>this</code> {@link BeerJdbcManager manager}.
-     * @return The prepared statement. The returned statement must still be
-     *         processed by setting any <code>?</code> characters in it. Then it
-     *         may be executed.
-     * @throws SQLException
-     *             Thrown when an issue preparing the SQL statement occurs
+     * Update the authorization token of a user
+     *
+     * @param user
+     *            The user to update the token for, or to create a token for if
+     *            it does not exist.
+     * @return <code>true</code> if the update was successful.
+     *         <code>false</code> if the user's password is incorrect.
      */
-    private PreparedStatement prepare( final String sqlStatement ) throws SQLException
+    public boolean updateUserToken( final User user )
     {
-        LOG.debug( format( "Preparing statement: %s", sqlStatement ) );
-        final Connection connection = getDataSource().getConnection();
-        final PreparedStatement ps = connection.prepareStatement( sqlStatement );
-        ps.closeOnCompletion();
-        return ps;
+        LOG.debug( format(
+            "Attempting to update the authorization token for username: %s, to expire %s from now.",
+            user.getUsername(), TOKEN_EXPIRATION_MINUTES ) );
+
+        Token token = null;
+        try
+        {
+            // Check to see if token exists already
+            token = getTokenByUsername( user.getUsername() );
+        } catch ( final AuthorizationTokenNotFoundException e )
+        {
+            LOG.trace( format( "Token for user: %s did NOT exist", user.getUsername() ) );
+        }
+
+        try
+        {
+            PreparedStatement uTokenPS;
+            if ( token == null )
+            {
+                LOG.info( format( "Creating Token for user: %s", user.getUsername() ) );
+
+                uTokenPS = prepare( INSERT_TOKEN_FOR_USER );
+
+                uTokenPS.setString( 1, generateHex() );
+                uTokenPS.setString( 2, user.getUsername() );
+                uTokenPS.setString( 3, TOKEN_EXPIRATION_MINUTES );
+
+            } else
+            {
+                LOG.debug( format( "Renewing Token for user: %s", user.getUsername() ) );
+                uTokenPS = prepare( UPDATE_TOKEN_FOR_EXPIRATION );
+
+                uTokenPS.setString( 1, TOKEN_EXPIRATION_MINUTES );
+                uTokenPS.setString( 2, user.getUsername() );
+            }
+
+            uTokenPS.executeUpdate();
+
+        } catch ( final SQLException e )
+        {
+            LOG.error( format( SQL_ERROR, token == null ? INSERT_TOKEN_FOR_USER
+                                                        : UPDATE_TOKEN_FOR_EXPIRATION ) );
+            LOG.error( e.getMessage() );
+            return false;
+        }
+
+        LOG.debug( format( "Token of User with username: %s, will expire %s from now.",
+            user.getUsername(), TOKEN_EXPIRATION_MINUTES ) );
+
+        return true;
     }
 
 }

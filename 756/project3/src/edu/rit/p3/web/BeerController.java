@@ -1,5 +1,6 @@
 package edu.rit.p3.web;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
@@ -7,6 +8,7 @@ import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.joda.time.Interval;
 
 import edu.rit.p3.data.BeerJdbcManager;
 import edu.rit.p3.data.entity.Beer;
@@ -15,6 +17,7 @@ import edu.rit.p3.data.entity.User;
 import edu.rit.p3.data.exception.AuthorizationTokenNotFoundException;
 import edu.rit.p3.data.exception.BeerNotFoundException;
 import edu.rit.p3.data.exception.BeerServiceClosedException;
+import edu.rit.p3.data.exception.MismatchingPasswordException;
 import edu.rit.p3.data.exception.TokenExpiredException;
 import edu.rit.p3.data.exception.UserHasInsufficientPrivilegesException;
 import edu.rit.p3.data.exception.UserNotFoundException;
@@ -33,64 +36,112 @@ import edu.rit.p3.data.exception.UserUnderageException;
  * able to be enforced through this layer as well as efficient access of our
  * data as it was intended.
  * </p>
- * 
+ *
  * @author Alex Aiezza
  *
  */
 public class BeerController
 {
-    public static final String    TIME_FORMAT = "HH:mm:ss";
+    public static final SimpleDateFormat TIME_FORMAT = new SimpleDateFormat( "HH:mm:ss" );
 
-    public final Date             CLOSE_TIME, OPEN_TIME;
+    public static String                 NO_BEER     = "NO_BEER";
 
-    private final Log             LOG         = LogFactory.getLog( getClass() );
+    public final Calendar                CLOSE_TIME, OPEN_TIME;
 
-    private final BeerJdbcManager BEER_MANAGER;
+    private final Log                    LOG         = LogFactory.getLog( getClass() );
 
-    public static String          NO_BEER     = "NO_BEER";
+    private final BeerJdbcManager        BEER_MANAGER;
+
+    /**
+     * This is retrieved from a <tt>project3.properties</tt>.<br>
+     * It is the minimum age necessary for accessing this service's
+     * access-protected methods.
+     */
+    private final int                    ACCESS_AGE;
 
     public BeerController(
-        final BeerJdbcManager beerJdbcManager,
-        final Date closeTime,
-        final Date openTime )
+            final BeerJdbcManager beerJdbcManager,
+            final Calendar closeTime,
+            final Calendar openTime,
+            final int accessAge )
     {
         BEER_MANAGER = beerJdbcManager;
         CLOSE_TIME = closeTime;
         OPEN_TIME = openTime;
+        ACCESS_AGE = accessAge;
         LOG.info( "Beer Controller initialized" );
     }
 
     /**
-     * Takes a string denoting the username, a string denoting a password and
-     * returns a "token" string if the username and password match.
-     * 
-     * @param username
-     *            the username
-     * @param password
-     *            the password
-     * @return a token that will expire after a certain amount of time. This is
-     *         <code>null</code> if user does not exist.
-     * @throws UserNotFoundException
-     *             Thrown if the given username is not found
-     * @throws UserUnderageException
-     *             Thrown when an underage user attempts to become authorized
+     * Takes no arguments and returns a list of the known beers.
+     *
+     * @param token
+     *            authentication token for accessing this method
+     * @return the beers in the database
      * @throws AuthorizationTokenNotFoundException
-     *             Thrown when an given username does not have a token
+     *             Thrown if the <code>tokenHash</code> given does not exist.
+     * @throws TokenExpiredException
+     *             Thrown when the <code>tokenHash</code> given is expired.
+     * @throws BeerServiceClosedException
+     *             Thrown if the Beer Service is being accessed outside of
+     *             working hours.
      */
-    public String getToken( final String username, final String password )
-            throws UserNotFoundException, UserUnderageException,
-            AuthorizationTokenNotFoundException
+    public List<Beer> getBeers( final String token ) throws AuthorizationTokenNotFoundException,
+    TokenExpiredException, BeerServiceClosedException
     {
-        // User is trying to get authenticated
-        if ( BEER_MANAGER.updateUserToken( username, password ) )
-            return BEER_MANAGER.getTokenByUsername( username ).getTokenHash();
-        else return null;
+        verifyToken( token );
+        return BEER_MANAGER.getBeers();
+    }
+
+    /**
+     * Takes no arguments and returns the least expensive beer.
+     *
+     * @param token
+     *            authentication token for accessing this method
+     * @return The least expensive beer
+     * @throws AuthorizationTokenNotFoundException
+     *             Thrown if the <code>tokenHash</code> given does not exist.
+     * @throws TokenExpiredException
+     *             Thrown when the <code>tokenHash</code> given is expired.
+     * @throws BeerServiceClosedException
+     *             Thrown if the Beer Service is being accessed outside of
+     *             working hours.
+     */
+    public Beer getCheapest( final String token ) throws AuthorizationTokenNotFoundException,
+    TokenExpiredException, BeerServiceClosedException
+    {
+        verifyToken( token );
+        final List<Beer> beers = getSortedBeers();
+        return beers.size() <= 0 ? null : beers.get( 0 );
+    }
+
+    /**
+     * Takes no arguments and returns the the most expensive beer.
+     *
+     * @param token
+     *            authentication token for accessing this method
+     * @return The most expensive beer. Returns <code>null</code> if no beers
+     *         exist.
+     * @throws AuthorizationTokenNotFoundException
+     *             Thrown if the <code>tokenHash</code> given does not exist.
+     * @throws TokenExpiredException
+     *             Thrown when the <code>tokenHash</code> given is expired.
+     * @throws BeerServiceClosedException
+     *             Thrown if the Beer Service is being accessed outside of
+     *             working hours.
+     */
+    public Beer getCostliest( final String token ) throws AuthorizationTokenNotFoundException,
+    TokenExpiredException, BeerServiceClosedException
+    {
+        verifyToken( token );
+        final List<Beer> beers = getSortedBeers();
+        return beers.size() <= 0 ? null : beers.get( beers.size() - 1 );
     }
 
     /**
      * Takes a string denoting the beer brand and returns a double representing
      * the beer price.
-     * 
+     *
      * @param beerName
      *            the name of the beer to get the price of
      * @param token
@@ -114,7 +165,7 @@ public class BeerController
         {
             final Beer beer = BEER_MANAGER.getBeerByName( beerName );
             price = beer.getPrice();
-        } catch ( BeerNotFoundException e )
+        } catch ( final BeerNotFoundException e )
         {
             LOG.error( e.getMessage() );
         }
@@ -123,9 +174,70 @@ public class BeerController
     }
 
     /**
+     * Gets all beers and sorts them by price
+     *
+     * @return Beers sorted by price
+     */
+    private List<Beer> getSortedBeers()
+    {
+        LOG.debug( "Calling: getSortedBeers()" );
+
+        final List<Beer> beers = BEER_MANAGER.getBeers();
+        Collections.sort( beers );
+        return beers;
+    }
+
+    /**
+     * Takes a string denoting the username, a string denoting a password and
+     * returns a "token" string if the username and password match.
+     *
+     * @param username
+     *            the username
+     * @param password
+     *            the password
+     * @return a token that will expire after a certain amount of time. This is
+     *         <code>null</code> if user does not exist.
+     * @throws UserNotFoundException
+     *             Thrown if the given username is not found
+     * @throws UserUnderageException
+     *             Thrown when an underage user attempts to become authorized
+     * @throws MismatchingPasswordException
+     *             In which case, the given password does not match the password
+     *             for the given username in the database, this exception is
+     *             thrown.
+     */
+    public String getToken( final String username, final String password )
+            throws UserNotFoundException, UserUnderageException, MismatchingPasswordException
+    {
+        // See if user exists
+        final User user = BEER_MANAGER.getUserByUsername( username );
+
+        // Check age restriction
+        if ( user.getAge() < ACCESS_AGE )
+            throw new UserUnderageException( user, ACCESS_AGE );
+
+        // Check if password is correct
+        if ( !user.getPassword().equals( password ) )
+            throw new MismatchingPasswordException();
+
+        // User is trying to get authenticated
+        if ( BEER_MANAGER.updateUserToken( user ) )
+            try
+        {
+                return BEER_MANAGER.getTokenByUsername( username ).getTokenHash();
+        } catch ( final AuthorizationTokenNotFoundException e )
+        {
+            // This would be bad, because this if block
+            // is only true if the token has been created!
+            LOG.fatal( e.getMessage() );
+        }
+        return null;
+    }
+
+    /**
      * Takes a string denoting the beer brand and a double denoting the price
      * returns <code>true</code> or <code>false</code> depending on success.
-     * 
+     *
      * @param beerName
      *            the name of the beer to set the price of
      * @param price
@@ -156,17 +268,15 @@ public class BeerController
         try
         {
             final User user = BEER_MANAGER.getUserByUsername( BEER_MANAGER.getTokenByHash( token )
-                    .getUsername() );
+                .getUsername() );
             if ( !user.isAccessLevel() )
-            {
                 throw new UserHasInsufficientPrivilegesException( user, beerName );
-            }
 
             return BEER_MANAGER.updatePriceOfBeer( beerName, price );
-        } catch ( UserNotFoundException e )
+        } catch ( final UserNotFoundException e )
         {
             LOG.error( e.getMessage() );
-        } catch ( BeerNotFoundException e )
+        } catch ( final BeerNotFoundException e )
         {
             LOG.error( e.getMessage() );
             throw e;
@@ -174,91 +284,11 @@ public class BeerController
         return false;
     }
 
-    /**
-     * Takes no arguments and returns a list of the known beers.
-     * 
-     * @param token
-     *            authentication token for accessing this method
-     * @return the beers in the database
-     * @throws AuthorizationTokenNotFoundException
-     *             Thrown if the <code>tokenHash</code> given does not exist.
-     * @throws TokenExpiredException
-     *             Thrown when the <code>tokenHash</code> given is expired.
-     * @throws BeerServiceClosedException
-     *             Thrown if the Beer Service is being accessed outside of
-     *             working hours.
-     */
-    public List<Beer> getBeers( final String token ) throws AuthorizationTokenNotFoundException,
-            TokenExpiredException, BeerServiceClosedException
-    {
-        verifyToken( token );
-        return BEER_MANAGER.getBeers();
-    }
-
-    /**
-     * Takes no arguments and returns the least expensive beer.
-     * 
-     * @param token
-     *            authentication token for accessing this method
-     * @return The least expensive beer
-     * @throws AuthorizationTokenNotFoundException
-     *             Thrown if the <code>tokenHash</code> given does not exist.
-     * @throws TokenExpiredException
-     *             Thrown when the <code>tokenHash</code> given is expired.
-     * @throws BeerServiceClosedException
-     *             Thrown if the Beer Service is being accessed outside of
-     *             working hours.
-     */
-    public Beer getCheapest( final String token ) throws AuthorizationTokenNotFoundException,
-            TokenExpiredException, BeerServiceClosedException
-    {
-        verifyToken( token );
-        final List<Beer> beers = getSortedBeers();
-        return beers.size() <= 0 ? null : beers.get( 0 );
-    }
-
-    /**
-     * Takes no arguments and returns the the most expensive beer.
-     * 
-     * @param token
-     *            authentication token for accessing this method
-     * @return The most expensive beer. Returns <code>null</code> if no beers
-     *         exist.
-     * @throws AuthorizationTokenNotFoundException
-     *             Thrown if the <code>tokenHash</code> given does not exist.
-     * @throws TokenExpiredException
-     *             Thrown when the <code>tokenHash</code> given is expired.
-     * @throws BeerServiceClosedException
-     *             Thrown if the Beer Service is being accessed outside of
-     *             working hours.
-     */
-    public Beer getCostliest( final String token ) throws AuthorizationTokenNotFoundException,
-            TokenExpiredException, BeerServiceClosedException
-    {
-        verifyToken( token );
-        final List<Beer> beers = getSortedBeers();
-        return beers.size() <= 0 ? null : beers.get( beers.size() - 1 );
-    }
-
-    /**
-     * Gets all beers and sorts them by price
-     * 
-     * @return Beers sorted by price
-     */
-    private List<Beer> getSortedBeers()
-    {
-        LOG.debug( "Calling: getSortedBeers()" );
-
-        final List<Beer> beers = BEER_MANAGER.getBeers();
-        Collections.sort( beers );
-        return beers;
-    }
-
 
     /**
      * This method is called locally within an instance of the BeerController in
      * methods that perform operations that require authentication.
-     * 
+     *
      * @param tokenHash
      *            the authentication token string
      * @throws AuthorizationTokenNotFoundException
@@ -270,7 +300,7 @@ public class BeerController
      *             working hours.
      */
     private void verifyToken( final String tokenHash ) throws AuthorizationTokenNotFoundException,
-            TokenExpiredException, BeerServiceClosedException
+    TokenExpiredException, BeerServiceClosedException
     {
         // What will make this method fail:
         // The token doesn't exist
@@ -283,26 +313,29 @@ public class BeerController
             throw new TokenExpiredException( tokenHash );
         }
 
-        // The time is between 00:00 and 10:00
+        // The time is between close and open
         final Calendar closing = Calendar.getInstance(), opening = Calendar.getInstance();
-        closing.setTime( CLOSE_TIME );
-        opening.setTime( OPEN_TIME );
+        closing.set( Calendar.HOUR_OF_DAY, CLOSE_TIME.get( Calendar.HOUR_OF_DAY ) );
+        closing.set( Calendar.MINUTE, CLOSE_TIME.get( Calendar.MINUTE ) );
+        closing.set( Calendar.SECOND, CLOSE_TIME.get( Calendar.SECOND ) );
+        opening.set( Calendar.HOUR_OF_DAY, OPEN_TIME.get( Calendar.HOUR_OF_DAY ) );
+        opening.set( Calendar.MINUTE, OPEN_TIME.get( Calendar.MINUTE ) );
+        opening.set( Calendar.SECOND, OPEN_TIME.get( Calendar.SECOND ) );
         final Date now = new Date();
 
         if ( now.after( closing.getTime() ) && now.before( opening.getTime() ) )
-        {
-            throw new BeerServiceClosedException();
-        }
+            throw new BeerServiceClosedException( new Interval( closing.getTimeInMillis(),
+                opening.getTimeInMillis() ) );
 
         // Otherwise, update this user's token
         try
         {
             final User user = BEER_MANAGER.getUserByUsername( token.getUsername() );
             // refresh token
-            BEER_MANAGER.updateUserToken( user.getUsername(), user.getPassword() );
-        } catch ( UserNotFoundException | UserUnderageException e )
+            BEER_MANAGER.updateUserToken( user );
+        } catch ( final UserNotFoundException e )
         {
-            LOG.error( e.getMessage() );
+            LOG.fatal( e.getMessage() );
         }
     }
 }

@@ -8,7 +8,7 @@ import edu.rit.p3.web.BeerController;
  * (Business Layer), an attempt to change a beer price is made. In order to do
  * this however, the user associated with the given tokenHash must have access
  * permissions.
- * 
+ *
  * @author Alex Aiezza
  *
  */

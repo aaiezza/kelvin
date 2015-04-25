@@ -5,7 +5,7 @@ import java.util.Date;
 
 /**
  * This class represents the entity that is a user.
- * 
+ *
  * @author Alex Aiezza
  *
  */
@@ -20,6 +20,14 @@ public class Token
         this.tokenHash = tokenHash;
         this.username = username;
         this.expiration = expiration;
+    }
+
+    /**
+     * @return the expiration
+     */
+    public Date getExpiration()
+    {
+        return expiration;
     }
 
     /**
@@ -39,13 +47,8 @@ public class Token
     }
 
     /**
-     * @return the expiration
+     * @return <tt>true</tt> if the current time is past the expiration time.
      */
-    public Date getExpiration()
-    {
-        return expiration;
-    }
-
     public boolean isExpired()
     {
         return new Date().after( expiration );

@@ -22,7 +22,7 @@ import edu.rit.p3.data.entity.User;
  * An instance of UserMapper is used by the {@link BeerJdbcManager} (Data Layer)
  * to more efficiently extract {@link User} entities from a given SQLite
  * {@link ResultSet}.
- * 
+ *
  * @author Alex Aiezza
  *
  */
@@ -39,7 +39,7 @@ public class TokenMapper implements ResultSetExtractor<List<Token>>
     public TokenMapper()
     {
         rowMapper = new RowMapper<Token>()
-        {
+                {
             @Override
             public Token mapRow( final ResultSet rs, final int numRows ) throws SQLException
             {
@@ -47,15 +47,15 @@ public class TokenMapper implements ResultSetExtractor<List<Token>>
                 try
                 {
                     token = new Token( rs.getString( "TokenHash" ), rs.getString( "Username" ),
-                            dateFormat.parse( rs.getString( "Expiration" ) ) );
-                } catch ( ParseException e )
+                        dateFormat.parse( rs.getString( "Expiration" ) ) );
+                } catch ( final ParseException e )
                 {
                     LOG.error( e.getMessage() );
                 }
 
                 return token;
             }
-        };
+                };
     }
 
     @Override

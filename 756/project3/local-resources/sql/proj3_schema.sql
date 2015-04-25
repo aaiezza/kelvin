@@ -62,5 +62,7 @@ COMMIT;
 -- -----------------------------------------------------
 BEGIN TRANSACTION;
 INSERT INTO `User` (`Username`, `Password`, `Age`, `AccessLevel`) VALUES ('test', 'testing', 25, 1);
+INSERT INTO `User` (`Username`, `Password`, `Age`, `AccessLevel`) VALUES ('tom', 'pass', 25, 0);
+INSERT INTO `User` (`Username`, `Password`, `Age`, `AccessLevel`) VALUES ('sam', 'testing', 19, 1);
 
 COMMIT;

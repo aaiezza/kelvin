@@ -10,7 +10,7 @@ import org.springframework.core.io.FileSystemResource;
 
 /**
  * Set properties from a properties file.
- * 
+ *
  * @author Alex Aiezza
  */
 public class PropertiesSetter
@@ -22,7 +22,7 @@ public class PropertiesSetter
      * </p>
      */
     private static final String PROPERTIES_FILE = getProperty( "com.sun.aas.instanceRoot" ) +
-                                                        "/applications/beer-service/resources/project3.properties";
+            "/applications/beer-service/resources/project3.properties";
 
     public PropertiesSetter() throws IOException
     {

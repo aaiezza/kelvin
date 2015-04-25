@@ -6,9 +6,9 @@ import edu.rit.p3.data.BeerJdbcManager;
 
 /**
  * Within some methods of the {@link BeerJdbcManager} (Data Layer), an attempt
- * at finding a User with a certain username may not exist. In which case, an instance
- * of this exception is thrown.
- * 
+ * at finding a User with a certain username may not exist. In which case, an
+ * instance of this exception is thrown.
+ *
  * @author Alex Aiezza
  *
  */
