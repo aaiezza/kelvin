@@ -1,0 +1,3 @@
+# Ignore the 646 Topic Approval System project.
+#    It has its own repository here: https://github.com/RIT-646-Spring-2015/tas.git
+tas/*
