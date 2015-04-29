@@ -1,0 +1,9 @@
+RewriteEngine on
+RewriteBase /~axa9070/756/week/13/php
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ MyService.php?request=$1 [L,QSA,NC]
+
+# L=Last; stop processing rewrite rules once a match is found
+# QSA=Query String Append; append existing query string to new one
+# NV=No Case; the resource name match is case insensitive
