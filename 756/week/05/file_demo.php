@@ -11,7 +11,7 @@
 // load file
 $a = 1000;
 $b = 2000;
-$data = file_get_contents( "http://kelvin.ist.rit.edu/~axa9070/756/week/5/sum.php?num1=$a&num2=$b" );
+$data = file_get_contents( "http://kelvin.ist.rit.edu/~axa9070/756/week/05/sum.php?num1=$a&num2=$b" );
 echo "<p>$a + $b = $data</p>";
 
 // part I - load one string
